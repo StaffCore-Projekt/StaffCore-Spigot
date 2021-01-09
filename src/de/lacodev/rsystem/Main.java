@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import de.lacodev.rsystem.commands.*;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -25,26 +26,6 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import de.lacodev.rsystem.commands.CMD_Ban;
-import de.lacodev.rsystem.commands.CMD_BanHistory;
-import de.lacodev.rsystem.commands.CMD_BanIP;
-import de.lacodev.rsystem.commands.CMD_BanList;
-import de.lacodev.rsystem.commands.CMD_BanManager;
-import de.lacodev.rsystem.commands.CMD_ChatFilter;
-import de.lacodev.rsystem.commands.CMD_Check;
-import de.lacodev.rsystem.commands.CMD_CheckAlts;
-import de.lacodev.rsystem.commands.CMD_Mute;
-import de.lacodev.rsystem.commands.CMD_Report;
-import de.lacodev.rsystem.commands.CMD_ReportManager;
-import de.lacodev.rsystem.commands.CMD_Reports;
-import de.lacodev.rsystem.commands.CMD_StaffCore;
-import de.lacodev.rsystem.commands.CMD_StaffUI;
-import de.lacodev.rsystem.commands.CMD_Ticket;
-import de.lacodev.rsystem.commands.CMD_UnBanIP;
-import de.lacodev.rsystem.commands.CMD_Unban;
-import de.lacodev.rsystem.commands.CMD_Unmute;
-import de.lacodev.rsystem.commands.CMD_Warn;
-import de.lacodev.rsystem.commands.CMD_Warns;
 import de.lacodev.rsystem.completer.Completer_Ban;
 import de.lacodev.rsystem.completer.Completer_BanManager;
 import de.lacodev.rsystem.completer.Completer_Mute;
@@ -606,6 +587,9 @@ public class Main extends JavaPlugin{
 		
 		// Ticket Command
 		getCommand("ticket").setExecutor(new CMD_Ticket());
+
+		//ChatClear Command
+		getCommand("chatclear").setExecutor(new CMD_ChatClear());
 	}
 
 	public void onDisable() {
@@ -716,7 +700,8 @@ public class Main extends JavaPlugin{
 		getConfig().addDefault("Permissions.Warn.Notify", "rsystem.warn.notify");
 		getConfig().addDefault("Permissions.Warns.See", "rsystem.warns.see");
 		getConfig().addDefault("Permissions.ChatLogs.Use", "rsystem.chatlogs.use");
-		getConfig().addDefault("Permissions.StaffChat.Chat", "rsystem.staffchat.chat");
+		getConfig().addDefault("Permissions.Chat.Clear", "rsystem.chat.cleat");
+		//getConfig().addDefault("Permissions.StaffChat.Chat", "rsystem.staffchat.chat");
 		
 		getConfig().addDefault("Chatfilter.ReporterName", "ChatController");
 		getConfig().addDefault("Chatfilter.Cursed-Words.Match-for-action-in-Percentage", 50);
@@ -726,6 +711,7 @@ public class Main extends JavaPlugin{
 		getConfig().addDefault("Chatfilter.Advertisment.AutoReport.Enable", true);
 		getConfig().addDefault("Chatfilter.Advertisment.AutoReport.Reason", "Advertisment");
 		getConfig().addDefault("Chatfilter.Advertisment.Block-Message.Enable", true);
+
 		
 		ArrayList<String> whitelist = new ArrayList<>();
 		

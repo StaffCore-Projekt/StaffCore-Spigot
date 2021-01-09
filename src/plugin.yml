@@ -49,3 +49,5 @@ commands:
       description: Verify Webaccounts
    ticket:
       description: Create and list your tickets
+   chatclear:
+      description: Clears your Chat
