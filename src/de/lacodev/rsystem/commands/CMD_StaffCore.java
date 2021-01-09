@@ -87,7 +87,7 @@ public class CMD_StaffCore implements CommandExecutor {
 					sender.sendMessage(Main.getPrefix() + "§8StaffCore: §7v" + Main.getInstance().getDescription().getVersion() + "§8(§cOUTDATED§8)");
 					sender.sendMessage(Main.getPrefix() + "§7/staffcore gui §8| §7To open the adminconsole");
 				}
-				sender.sendMessage(Main.getPrefix() + "§8Created by: §7LacoDev and Esmaybe");
+				sender.sendMessage(Main.getPrefix() + "§8Created by: §7LacoDev and ViaEnder");
 				sender.sendMessage("");
 			}
 		}

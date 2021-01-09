@@ -1,11 +1,13 @@
 package de.lacodev.rsystem.utils;
 
+import java.io.BufferedReader;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Random;
 
+import de.lacodev.staffcore.api.events.*;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
@@ -22,16 +24,6 @@ import org.bukkit.scheduler.BukkitRunnable;
 import com.connorlinfoot.actionbarapi.ActionBarAPI;
 
 import de.lacodev.rsystem.Main;
-import de.lacodev.rsystem.api.events.BanPlayerEvent;
-import de.lacodev.rsystem.api.events.BanReasonCreateEvent;
-import de.lacodev.rsystem.api.events.BanReasonDeleteEvent;
-import de.lacodev.rsystem.api.events.IpBanPlayerEvent;
-import de.lacodev.rsystem.api.events.IpUnBanPlayerEvent;
-import de.lacodev.rsystem.api.events.MutePlayerEvent;
-import de.lacodev.rsystem.api.events.MuteReasonCreateEvent;
-import de.lacodev.rsystem.api.events.MuteReasonDeleteEvent;
-import de.lacodev.rsystem.api.events.UnBanPlayerEvent;
-import de.lacodev.rsystem.api.events.WarnPlayerEvent;
 import de.lacodev.rsystem.enums.XMaterial;
 import de.lacodev.rsystem.mysql.MySQL;
 import de.lacodev.rsystem.objects.BanReasons;
@@ -64,24 +56,33 @@ public class BanManager {
 	
 	public static void warnPlayer(Player t, String team_uuid, String reason) {
 		if(!SystemManager.isProtected(t.getUniqueId().toString())) {
-			MySQL.update("INSERT INTO ReportSystem_warnsdb(UUID,TEAM_UUID,REASON) VALUES ('"+ t.getUniqueId().toString() +"','"+ team_uuid +"','"+ reason +"')");
-			
-			MySQL.update("UPDATE ReportSystem_playerdb SET WARNS = '"+ (getWarns(t.getUniqueId().toString()) + 1) +"' WHERE UUID = '"+ t.getUniqueId().toString() +"'");
-			
-			String teamUser = "";
-			if(!team_uuid.matches("Console")) {
-				teamUser = SystemManager.getUsernameByUUID(team_uuid);
-			} else {
-				teamUser = "Console";
-			}
-			
-			Bukkit.getServer().getPluginManager().callEvent(new WarnPlayerEvent(t, team_uuid, teamUser, reason));
-			
-			t.sendMessage(Main.getMSG("Messages.Layouts.Warn").replace("%team%", teamUser).replace("%reason%", reason).replace("%warns%", "" + (getWarns(t.getUniqueId().toString()) + 1)));
+				Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), () -> {
+					MySQL.update("INSERT INTO ReportSystem_warnsdb(UUID,TEAM_UUID,REASON) VALUES ('"+ t.getUniqueId().toString() +"','"+ team_uuid +"','"+ reason +"')");
+
+					MySQL.update("UPDATE ReportSystem_playerdb SET WARNS = '"+ (getWarns(t.getUniqueId().toString()) + 1) +"' WHERE UUID = '"+ t.getUniqueId().toString() +"'");
+
+					String teamUser = "";
+					if(!team_uuid.matches("Console")) {
+						teamUser = SystemManager.getUsernameByUUID(team_uuid);
+					} else {
+						teamUser = "Console";
+					}
+					new BukkitRunnable(){
+						@Override
+						public void run() {
+							Bukkit.getPluginManager().callEvent(new PlayerWarnEvent(t, team_uuid, reason));
+						}
+					}.runTask(Main.getInstance());
+
+					t.sendMessage(Main.getMSG("Messages.Layouts.Warn").replace("%team%", teamUser).replace("%reason%", reason).replace("%warns%", "" + (getWarns(t.getUniqueId().toString()) + 1)));
+				});
+
 		} else {
 			sendConsoleNotify("PROTECT", t.getUniqueId().toString());
 		}
 	}
+
+
 
 	public static void openPagedBanInv(Player p, String name, int page) {
 		String title = Main.getMSG("Messages.Ban-System.Inventory.Title") + "§e" + name;
@@ -215,9 +216,14 @@ public class BanManager {
 						try {
 							PreparedStatement st = MySQL.getCon().prepareStatement("INSERT INTO ReportSystem_reasonsdb(TYPE,NAME,BAN_LENGTH) VALUES ('BAN','"+ name +"','"+ (time * length) +"')");
 							st.executeUpdate();
-							
-							Bukkit.getServer().getPluginManager().callEvent(new BanReasonCreateEvent(name, unit, length));
-							
+
+							new BukkitRunnable(){
+								@Override
+								public void run() {
+									Bukkit.getServer().getPluginManager().callEvent(new BanReasonCreateEvent(name, unit, length));
+								}
+							}.runTask(Main.getInstance());
+
 						} catch (SQLException e) {
 							e.printStackTrace();
 						}
@@ -330,9 +336,14 @@ public class BanManager {
 					try {
 						PreparedStatement st = MySQL.getCon().prepareStatement("DELETE FROM ReportSystem_reasonsdb WHERE NAME = '"+ name +"' AND TYPE = 'BAN'");
 						st.executeUpdate();
-						
-						Bukkit.getServer().getPluginManager().callEvent(new BanReasonDeleteEvent(name));
-						
+
+						new BukkitRunnable(){
+							@Override
+							public void run() {
+								Bukkit.getServer().getPluginManager().callEvent(new BanReasonDeleteEvent(name));
+							}
+						}.runTask(Main.getInstance());
+
 					} catch (SQLException e) {
 						e.printStackTrace();
 					}
@@ -373,9 +384,9 @@ public class BanManager {
 			try {
 				PreparedStatement st = MySQL.getCon().prepareStatement("DELETE FROM ReportSystem_bansdb WHERE BANNED_UUID = '"+ uuid +"'");
 				if(st.executeUpdate() > 0) {
-					
-					Bukkit.getServer().getPluginManager().callEvent(new UnBanPlayerEvent(uuid));
-					
+
+					Bukkit.getServer().getPluginManager().callEvent(new PlayerUnbanEvent(uuid));
+
 					return true;
 				}
 			} catch (SQLException e) {
@@ -692,21 +703,20 @@ public class BanManager {
 	public static void submitBan(String targetuuid, String reason, String team) {
 		if(!SystemManager.isProtected(targetuuid)) {
 			Player target = Bukkit.getPlayer(SystemManager.getUsernameByUUID(targetuuid));
-			new BukkitRunnable() {
-
+			new BukkitRunnable(){
 				@Override
 				public void run() {
 					if(MySQL.isConnected()) {
 						if(existsBanReason(reason)) {
-							
+
 							long ban_end = 0;
-							
+
 							if(getRawBanLength(reason) == -1) {
 								ban_end = getRawBanLength(reason);
 							} else {
 								ban_end = getRawBanLength(reason) + System.currentTimeMillis();
 							}
-							
+
 							try {
 								PreparedStatement st = MySQL.getCon().prepareStatement("INSERT INTO ReportSystem_bansdb(BANNED_UUID,TEAM_UUID,REASON,BAN_END) VALUES ('"+ targetuuid +"','"+ team +"','"+ reason +"','"+ ban_end +"')");
 								if(st.executeUpdate() > 0) {
@@ -720,12 +730,17 @@ public class BanManager {
 									} else {
 										ReportManager.sendNotify("BAN", "Console", SystemManager.getUsernameByUUID(targetuuid), reason);
 									}
-									
-									Bukkit.getServer().getPluginManager().callEvent(new BanPlayerEvent(target, reason, team));
-									
+
+									new BukkitRunnable(){
+										@Override
+										public void run() {
+											Bukkit.getServer().getPluginManager().callEvent(new PlayerBanEvent(targetuuid, reason, team));
+										}
+									}.runTask(Main.getInstance());
+
 									if(Main.getInstance().getConfig().getBoolean("General.Include-Vault")) {
 										ArrayList<String> reporter_uuids = new ArrayList<>();
-										
+
 										ResultSet rs1 = MySQL.getResult("SELECT * FROM ReportSystem_reportsdb WHERE REPORTED_UUID = '"+ targetuuid +"'");
 										if(rs1.next()) {
 											while(rs1.next()) {
@@ -736,12 +751,12 @@ public class BanManager {
 											for(int i = 0; i < reporter_uuids.size(); i++) {
 												if(SystemManager.existsPlayerData(reporter_uuids.get(i))) {
 													Player reporter = Bukkit.getPlayer(SystemManager.getUsernameByUUID(reporter_uuids.get(i)));
-													
+
 													if(reporter != null) {
-														
+
 														Random rdm = new Random();
 														int rdmm = rdm.nextInt(Main.getInstance().getConfig().getInt("Vault.Rewards.Report.MAX"));
-														
+
 														Main.getEconomy().depositPlayer(reporter, rdmm);
 														reporter.sendMessage(Main.getPrefix() + Main.getMSG("Messages.Vault.Rewards.Report.Success").replace("%reward%", String.valueOf(rdmm)));
 													} else {
@@ -766,8 +781,8 @@ public class BanManager {
 						Bukkit.getConsoleSender().sendMessage("");
 					}
 				}
-				
 			}.runTaskAsynchronously(Main.getInstance());
+
 			new BukkitRunnable() {
 
 				@Override
@@ -839,13 +854,9 @@ public class BanManager {
 					Bukkit.getConsoleSender().sendMessage(Main.getPrefix() + "§cInvalid Sound §8- §7It seems like this sound is not available in this version!");
 				}
 				
-				a = Bukkit.getScheduler().scheduleAsyncRepeatingTask(Main.getInstance(), new Runnable() {
-
-					@Override
-					public void run() {
-						for(Player all : Bukkit.getOnlinePlayers()) {
-							all.playEffect(t.getLocation().add(0, 1, 0), Effect.ZOMBIE_INFECT, 10);
-						}
+				a = Bukkit.getScheduler().scheduleAsyncRepeatingTask(Main.getInstance(), () -> {
+					for(Player all : Bukkit.getOnlinePlayers()) {
+						all.playEffect(t.getLocation().add(0, 1, 0), Effect.ZOMBIE_INFECT, 10);
 					}
 				}, 0, 5);
 				
@@ -1014,35 +1025,40 @@ public class BanManager {
 
 	public static void banIPAddress(String team, Player target) {
 		if(!SystemManager.isProtected(target.getUniqueId().toString())) {
-			new BukkitRunnable() {
-
-				@Override
-				public void run() {
-					if(MySQL.isConnected()) {
+			if(MySQL.isConnected()) {
+				Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), new Runnable() {
+					@Override
+					public void run() {
 						if(!isIPBanned(target.getAddress().getAddress().toString())) {
-							
+
 							long current = System.currentTimeMillis();
 							long hours = 1000*60*60*Main.getInstance().getConfig().getInt("IP-Ban.Duration-in-Hours");
-							
+
 							long end = current + hours;
-							
+
 							String ip = target.getAddress().getAddress().toString();
-							
+
 							MySQL.update("INSERT INTO ReportSystem_ipbans(PLAYERNAME,IP_ADDRESS,END) VALUES ('"+ target.getName() +"','"+ ip +"','"+ end +"')");
-							
-							Bukkit.getServer().getPluginManager().callEvent(new IpBanPlayerEvent(target, team));
-							
+
+
+
+							new BukkitRunnable(){
+								@Override
+								public void run() {
+									Bukkit.getServer().getPluginManager().callEvent(new PlayerIPAdressBanEvent(team, target));
+								}
+							}.runTask(Main.getInstance());
+
 							for(Player all : Bukkit.getOnlinePlayers()) {
 								if(all.hasPermission(Main.getPermissionNotice("Permissions.IpBan.Notify"))) {
-									all.sendMessage(Main.getPrefix() + Main.getMSG("Messages.Ban-System.IP-Ban.Notify").replace("%player%", team).replace("%target%", target.getName()).replace("%duration%", 
+									all.sendMessage(Main.getPrefix() + Main.getMSG("Messages.Ban-System.IP-Ban.Notify").replace("%player%", team).replace("%target%", target.getName()).replace("%duration%",
 											Main.getInstance().getConfig().getInt("IP-Ban.Duration-in-Hours") + " " + Main.getMSG("Messages.Layouts.Ban.Remaining.Hours")));
 								}
 							}
 						}
 					}
-				}
-				
-			}.runTaskAsynchronously(Main.getInstance());
+				});
+			}
 			target.kickPlayer(Main.getMSG("IP-Ban.Kick-Message"));
 		} else {
 			sendConsoleNotify("PROTECT", target.getUniqueId().toString());
@@ -1050,17 +1066,12 @@ public class BanManager {
 	}
 	
 	public static void unbanIpAddress(String playername) {
-		new BukkitRunnable() {
-			
-			@Override
-			public void run() {
-				if(isIpBanned(playername)) {
-					MySQL.update("DELETE FROM ReportSystem_ipbans WHERE PLAYERNAME = '"+ playername +"'");
-					
-					Bukkit.getServer().getPluginManager().callEvent(new IpUnBanPlayerEvent(playername));
-				}
-			}
-		}.runTaskAsynchronously(Main.getInstance());
+		if(isIpBanned(playername)) {
+			MySQL.update("DELETE FROM ReportSystem_ipbans WHERE PLAYERNAME = '"+ playername +"'");
+
+			Bukkit.getServer().getPluginManager().callEvent(new PlayerIPAdressUnBanEvent(playername));
+
+		}
 	}
 
 	public static boolean isIPBanned(String address) {
@@ -1114,15 +1125,14 @@ public class BanManager {
 	}
 
 	public static void createMuteReason(String name, String unit, int length) {
-		new BukkitRunnable() {
-			
-			@Override
-			public void run() {
-				if(MySQL.isConnected()) {
+		if(MySQL.isConnected()) {
+			Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), new Runnable() {
+				@Override
+				public void run() {
 					if(!existsMuteReason(name)) {
-						
+
 						long time = 0;
-						
+
 						if(unit.toLowerCase().matches("d")) {
 							time = 1000*60*60*24;
 						} else if(unit.toLowerCase().matches("h")) {
@@ -1130,19 +1140,25 @@ public class BanManager {
 						} else if(unit.toLowerCase().matches("m")) {
 							time = 1000*60;
 						}
-						
+
 						try {
 							PreparedStatement st = MySQL.getCon().prepareStatement("INSERT INTO ReportSystem_reasonsdb(TYPE,NAME,BAN_LENGTH) VALUES ('MUTE','"+ name +"','"+ (time * length) +"')");
 							st.executeUpdate();
-							
-							Bukkit.getServer().getPluginManager().callEvent(new MuteReasonCreateEvent(name, unit, length));
+
+							new BukkitRunnable(){
+								@Override
+								public void run() {
+									Bukkit.getServer().getPluginManager().callEvent(new MuteReasonCreateEvent(name, unit, length));
+								}
+							}.runTask(Main.getInstance());
+
 						} catch (SQLException e) {
 							e.printStackTrace();
 						}
 					}
 				}
-			}
-		}.runTaskAsynchronously(Main.getInstance());
+			});
+		}
 	}
 	
 
@@ -1215,25 +1231,30 @@ public class BanManager {
 	}
 	
 	public static void deleteMuteReason(String name) {
-		new BukkitRunnable() {
-
-			@Override
-			public void run() {
-				if(MySQL.isConnected()) {
-					if(existsMuteReason(name)) {
+		if(MySQL.isConnected()) {
+			Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), new Runnable() {
+				@Override
+				public void run() {
+					if (existsMuteReason(name)) {
 						try {
-							PreparedStatement st = MySQL.getCon().prepareStatement("DELETE FROM ReportSystem_reasonsdb WHERE NAME = '"+ name +"' AND TYPE = 'MUTE'");
+							PreparedStatement st = MySQL.getCon().prepareStatement("DELETE FROM ReportSystem_reasonsdb WHERE NAME = '" + name + "' AND TYPE = 'MUTE'");
 							st.executeUpdate();
-							
-							Bukkit.getServer().getPluginManager().callEvent(new MuteReasonDeleteEvent(name));
-						} catch (SQLException e) {
+
+
+							new BukkitRunnable() {
+								@Override
+								public void run() {
+									Bukkit.getServer().getPluginManager().callEvent(new MuteReasonDeleteEvent(name));
+								}
+							}.runTask(Main.getInstance());
+
+						}catch(SQLException e){
 							e.printStackTrace();
 						}
 					}
 				}
-			}
-			
-		}.runTaskAsynchronously(Main.getInstance());
+			});
+		}
 	}
 	
 	public static boolean isMuted(String uuid) {
@@ -1263,6 +1284,7 @@ public class BanManager {
 			try {
 				PreparedStatement st = MySQL.getCon().prepareStatement("DELETE FROM ReportSystem_mutesdb WHERE MUTED_UUID = '"+ uuid +"'");
 				if(st.executeUpdate() > 0) {
+					Bukkit.getPluginManager().callEvent(new PlayerUnMuteEvent(uuid));
 					return true;
 				}
 			} catch (SQLException e) {
@@ -1365,7 +1387,7 @@ public class BanManager {
 		if(!SystemManager.isProtected(targetuuid)) {
 			if(MySQL.isConnected()) {
 				if(existsMuteReason(reason)) {
-					
+
 					long ban_end = getRawMuteLength(reason) + System.currentTimeMillis();
 					
 					try {
@@ -1381,9 +1403,10 @@ public class BanManager {
 							} else {
 								ReportManager.sendNotify("MUTE", "Console", SystemManager.getUsernameByUUID(targetuuid), reason);
 							}
-							
-							Bukkit.getServer().getPluginManager().callEvent(new MutePlayerEvent(targetuuid, reason, team));
-							
+
+							Bukkit.getServer().getPluginManager().callEvent(new PlayerMuteEvent(targetuuid, reason, team));
+
+
 							return true;
 						} else {
 							return false;

@@ -6,6 +6,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import com.sun.xml.internal.bind.v2.TODO;
+import de.lacodev.staffcore.api.events.ReportClaimEvent;
+import de.lacodev.staffcore.api.events.ReportCreateEvent;
+import de.lacodev.staffcore.api.events.ReportReasonCreateEvent;
+import de.lacodev.staffcore.api.events.ReportReasonDeleteEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
@@ -18,10 +23,6 @@ import org.bukkit.scheduler.BukkitRunnable;
 import com.connorlinfoot.actionbarapi.ActionBarAPI;
 
 import de.lacodev.rsystem.Main;
-import de.lacodev.rsystem.api.events.ReportClaimEvent;
-import de.lacodev.rsystem.api.events.ReportCreateEvent;
-import de.lacodev.rsystem.api.events.ReportReasonCreateEvent;
-import de.lacodev.rsystem.api.events.ReportReasonDeleteEvent;
 import de.lacodev.rsystem.enums.XMaterial;
 import de.lacodev.rsystem.mysql.MySQL;
 import de.lacodev.rsystem.objects.Reasons;
@@ -152,28 +153,38 @@ public class ReportManager {
 	
 	public static void createReport(String p, Player target, String reason) {
 		if(!(p.matches(Main.getPermissionNotice("MatrixAntiCheat.Autoreport.Name")) || p.matches(Main.getPermissionNotice("Chatfilter.ReporterName"))  || p.matches(Main.getPermissionNotice("SpartanAntiCheat.Autoreport.Name")))) {
-			try {
-				PreparedStatement st = MySQL.getCon().prepareStatement("INSERT INTO ReportSystem_reportsdb(REPORTER_UUID,REPORTED_UUID,REASON,TEAM_UUID,STATUS) VALUES ('"+ SystemManager.getUUIDByName(p) +"','"+ target.getUniqueId().toString() +"','"+ reason +"','null','0')");
-				st.executeUpdate();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+			Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), () -> {
+				try {
+					PreparedStatement st = MySQL.getCon().prepareStatement("INSERT INTO ReportSystem_reportsdb(REPORTER_UUID,REPORTED_UUID,REASON,TEAM_UUID,STATUS) VALUES ('" + SystemManager.getUUIDByName(p) + "','" + target.getUniqueId().toString() + "','" + reason + "','null','0')");
+					st.executeUpdate();
+
+					new BukkitRunnable() {
+						@Override
+						public void run() {
+							Bukkit.getServer().getPluginManager().callEvent(new ReportCreateEvent(SystemManager.getUUIDByName(p), target, reason));
+						}
+					}.runTask(Main.getInstance());
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			});
 			
 			addReport(target.getUniqueId().toString());
-			
-			Bukkit.getServer().getPluginManager().callEvent(new ReportCreateEvent(SystemManager.getUUIDByName(p), target, reason));
-			
+
 			Bukkit.getPlayer(p).sendMessage(Main.getPrefix() + Main.getMSG("Messages.Report-System.Notify.User.Report-Created"));
 		} else {
-			try {
-				PreparedStatement st = MySQL.getCon().prepareStatement("INSERT INTO ReportSystem_reportsdb(REPORTER_UUID,REPORTED_UUID,REASON,TEAM_UUID,STATUS) VALUES ('"+ p +"','"+ target.getUniqueId().toString() +"','"+ reason +"','null','0')");
-				st.executeUpdate();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-			
+			Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), () -> {
+				try {
+					PreparedStatement st = MySQL.getCon().prepareStatement("INSERT INTO ReportSystem_reportsdb(REPORTER_UUID,REPORTED_UUID,REASON,TEAM_UUID,STATUS) VALUES ('" + p + "','" + target.getUniqueId().toString() + "','" + reason + "','null','0')");
+					st.executeUpdate();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			});
+
+
 			Bukkit.getServer().getPluginManager().callEvent(new ReportCreateEvent(p, target, reason));
-			
+
 			addReport(target.getUniqueId().toString());
 		}
 		
@@ -328,17 +339,24 @@ public class ReportManager {
 	
 	public static void createReportReason(String name, ItemStack item, String senderName) {
 		if(MySQL.isConnected()) {
+			Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), () -> {
 			if(!existsReportReason(name)) {
 				try {
 					PreparedStatement st = MySQL.getCon().prepareStatement("INSERT INTO ReportSystem_reasonsdb(TYPE,NAME,REPORT_ITEM) VALUES ('REPORT','"+ name +"','"+ item.getType().toString() +"')");
 					st.executeUpdate();
 
-					Bukkit.getServer().getPluginManager().callEvent(new ReportReasonCreateEvent(name, item.getType(), senderName));
+					new BukkitRunnable(){
+						@Override
+						public void run() {
+							Bukkit.getServer().getPluginManager().callEvent(new ReportReasonCreateEvent(name, item));
+						}
+					}.runTask(Main.getInstance());
 
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
 			}
+			});
 		}
 	}
 	
@@ -359,18 +377,28 @@ public class ReportManager {
 	public static void deleteReportReason(String name, String senderName) {
 		if(MySQL.isConnected()) {
 			if(existsReportReason(name)) {
-				try {
-					PreparedStatement st = MySQL.getCon().prepareStatement("DELETE FROM ReportSystem_reasonsdb WHERE NAME = '"+ name +"' AND TYPE = 'REPORT'");
-					st.executeUpdate();
-					Bukkit.getServer().getPluginManager().callEvent(new ReportReasonDeleteEvent(name, senderName));
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
+				Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), () -> {
+					try {
+						PreparedStatement st = MySQL.getCon().prepareStatement("DELETE FROM ReportSystem_reasonsdb WHERE NAME = '"+ name +"' AND TYPE = 'REPORT'");
+						st.executeUpdate();
+						new BukkitRunnable() {
+							@Override
+							public void run() {
+								Bukkit.getServer().getPluginManager().callEvent(new ReportReasonDeleteEvent(name));
+							}
+						}.runTask(Main.getInstance());
+
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
+				});
+
 			}
 		}
 	}
 
 	public static void claimReport(Player p, String targetuuid) {
+		Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), () -> {
 		try {
 			Player target = Bukkit.getPlayer(SystemManager.getUsernameByUUID(targetuuid));
 			
@@ -380,8 +408,7 @@ public class ReportManager {
 				if(target != null) {
 					PreparedStatement st = MySQL.getCon().prepareStatement("UPDATE ReportSystem_reportsdb SET STATUS = '1', TEAM_UUID = '"+ p.getUniqueId().toString() +"' WHERE REPORTED_UUID = '"+ targetuuid +"'");
 					st.executeUpdate();
-					Bukkit.getServer().getPluginManager().callEvent(new ReportClaimEvent(p, targetuuid));
-					
+
 					new BukkitRunnable() {
 
 						@Override
@@ -391,6 +418,7 @@ public class ReportManager {
 								p.setGameMode(GameMode.SPECTATOR);	
 								
 							}
+							Bukkit.getPluginManager().callEvent(new ReportClaimEvent(p, targetuuid));
 							p.teleport(target.getLocation());
 						}
 						
@@ -427,6 +455,8 @@ public class ReportManager {
 		} catch (IllegalStateException e) {
 			
 		}
+		});
+
 	}
 
 	public static boolean isReportOpen(String targetuuid) {

@@ -188,9 +188,9 @@ public class Main extends JavaPlugin{
 				
 				Bukkit.getConsoleSender().sendMessage("");
 				Bukkit.getConsoleSender().sendMessage("§cSystem §8» Environment: §7" + Bukkit.getVersion());
-				if(experimental == true) {
+				if(experimental) {
 					Bukkit.getConsoleSender().sendMessage("§cSystem §8» StaffCore: §7v" + this.getDescription().getVersion() + "§8(§dEXPERIMENTAL§8)");
-				} else if(latest == true) {
+				} else if(latest) {
 					Bukkit.getConsoleSender().sendMessage("§cSystem §8» StaffCore: §7v" + this.getDescription().getVersion() + "§8(§aLATEST§8)");
 				} else {
 					Bukkit.getConsoleSender().sendMessage("§cSystem §8» StaffCore: §7v" + this.getDescription().getVersion() + "§8(§cOUTDATED§8)");
@@ -200,9 +200,9 @@ public class Main extends JavaPlugin{
 			} else {
 				Bukkit.getConsoleSender().sendMessage("");
 				Bukkit.getConsoleSender().sendMessage("§cSystem §8» §7Environment: " + Bukkit.getVersion());
-				if(experimental == true) {
+				if(experimental) {
 					Bukkit.getConsoleSender().sendMessage("§cSystem §8» StaffCore: §7v" + this.getDescription().getVersion() + "§8(§dEXPERIMENTAL§8)");
-				} else if(latest == true) {
+				} else if(latest) {
 					Bukkit.getConsoleSender().sendMessage("§cSystem §8» StaffCore: §7v" + this.getDescription().getVersion() + "§8(§aLATEST§8)");
 				} else {
 					Bukkit.getConsoleSender().sendMessage("§cSystem §8» StaffCore: §7v" + this.getDescription().getVersion() + "§8(§cOUTDATED§8)");
@@ -327,9 +327,9 @@ public class Main extends JavaPlugin{
 				
 				Bukkit.getConsoleSender().sendMessage("");
 				Bukkit.getConsoleSender().sendMessage("§cSystem §8» Environment: §7" + Bukkit.getVersion());
-				if(experimental == true) {
+				if(experimental) {
 					Bukkit.getConsoleSender().sendMessage("§cSystem §8» StaffCore: §7v" + this.getDescription().getVersion() + "§8(§dEXPERIMENTAL§8)");
-				} else if(latest == true) {
+				} else if(latest) {
 					Bukkit.getConsoleSender().sendMessage("§cSystem §8» StaffCore: §7v" + this.getDescription().getVersion() + "§8(§aLATEST§8)");
 				} else {
 					Bukkit.getConsoleSender().sendMessage("§cSystem §8» StaffCore: §7v" + this.getDescription().getVersion() + "§8(§cOUTDATED§8)");
@@ -532,6 +532,7 @@ public class Main extends JavaPlugin{
 		if(setupSpartanAC()) {
 			pm.registerEvents(new Listener_Spartan(), this);
 		}
+
 	}
 
 	private void registerCommands() {
@@ -715,6 +716,7 @@ public class Main extends JavaPlugin{
 		getConfig().addDefault("Permissions.Warn.Notify", "rsystem.warn.notify");
 		getConfig().addDefault("Permissions.Warns.See", "rsystem.warns.see");
 		getConfig().addDefault("Permissions.ChatLogs.Use", "rsystem.chatlogs.use");
+		getConfig().addDefault("Permissions.StaffChat.Chat", "rsystem.staffchat.chat");
 		
 		getConfig().addDefault("Chatfilter.ReporterName", "ChatController");
 		getConfig().addDefault("Chatfilter.Cursed-Words.Match-for-action-in-Percentage", 50);

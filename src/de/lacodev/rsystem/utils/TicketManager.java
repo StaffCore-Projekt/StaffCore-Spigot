@@ -13,7 +13,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import de.lacodev.rsystem.Main;
-import de.lacodev.rsystem.api.events.TicketCreateEvent;
 import de.lacodev.rsystem.enums.XMaterial;
 import de.lacodev.rsystem.listeners.Listener_Chat;
 import de.lacodev.rsystem.mysql.MySQL;
@@ -32,7 +31,7 @@ public class TicketManager {
 			
 			Listener_Chat.spam.put(player, System.currentTimeMillis() + Main.getInstance().getConfig().getInt("TicketSystem.Cooldown-In-Seconds") * 1000);
 			
-			Bukkit.getServer().getPluginManager().callEvent(new TicketCreateEvent(player));
+			//Bukkit.getServer().getPluginManager().callEvent(new TicketCreateEvent(player));
 		} else {
 			
 			player.sendMessage(Main.getPrefix() + Main.getMSG("Messages.Ticket-System.Create.Error"));
