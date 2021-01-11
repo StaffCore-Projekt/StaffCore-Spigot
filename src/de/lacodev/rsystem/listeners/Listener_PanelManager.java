@@ -5,6 +5,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -16,7 +17,6 @@ import de.lacodev.rsystem.utils.PageManager;
 import de.lacodev.rsystem.utils.PanelManager;
 import de.lacodev.rsystem.utils.SystemManager;
 import de.lacodev.rsystem.utils.WebUIHandler;
-import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ClickEvent.Action;
 import net.md_5.bungee.api.chat.ComponentBuilder;
@@ -31,12 +31,12 @@ public class Listener_PanelManager implements Listener {
 		Player p = (Player) e.getWhoClicked();
 		PanelManager manager = new PanelManager();
 		
-		if(e.getView().getTitle().equalsIgnoreCase("§cStaffCore §8- §7MainMenu")) {
+		if(e.getView().getTitle().equalsIgnoreCase(ChatColor.RED + "Staffcore" + ChatColor.DARK_GRAY + " - " + ChatColor.GRAY + "MainMenu")) {
 			e.setCancelled(true);
 			
 			if(e.getCurrentItem() != null) {
 				if(e.getCurrentItem().hasItemMeta()) {
-					if(e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§cReport a Bug")) {
+					if(e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.RED + "Report a Bug")) {
 						p.closeInventory();
 						
 						p.sendMessage("");
@@ -56,39 +56,39 @@ public class Listener_PanelManager implements Listener {
 						}
 						p.sendMessage("");
 					}
-					if(e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§7Player-Management")) {
+					if(e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.GRAY + "Player-Management")) {
 						manager.openPlayerManagement(p);
 					}
-					if(e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§7Settings")) {
+					if(e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.GRAY + "Settings")) {
 						manager.openSettingsMenu(p);
 					}
 				}
 			}
 		}
 		
-		if(e.getView().getTitle().equalsIgnoreCase("§cStaffCore §8- §7Settings")) {
+		if(e.getView().getTitle().equalsIgnoreCase(ChatColor.RED + "StaffCore " + ChatColor.DARK_GRAY + "- " + ChatColor.GRAY + "Settings")) {
 			e.setCancelled(true);
 			
 			if(e.getCurrentItem() != null) {
 				if(e.getCurrentItem().hasItemMeta()) {
-					if(e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§c◄ Go back")) {
+					if(e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.RED + "◄ Go back")) {
 						manager.openMainMenu(p);
 					}
-					if(e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§aDownload Latest Release")) {
+					if(e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.GREEN + "Download Latest Release")) {
 						p.closeInventory();
 						
 						if(!Main.getInstance().latest) {
 							SystemManager.downloadLatestVersion(p);
 						} else {
-							p.sendMessage(Main.getPrefix() + "§7You are using the §alatest build§7!");
+							p.sendMessage(Main.getPrefix() + ChatColor.GRAY + "You are using the " + ChatColor.GREEN + "latest build" + ChatColor.GRAY + "!");
 						}
 					}
-					if(e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§6Download Latest Experimental")) {
+					if(e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.GOLD + "Download Latest Experimental")) {
 						p.closeInventory();
 						
 						SystemManager.downloadExperimentalVersion(p);
 					}
-					if(e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§a►")) {
+					if(e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.GREEN + "►")) {
 						String lang = ChatColor.stripColor(e.getInventory().getItem(31).getItemMeta().getDisplayName());
 						
 						if(lang.matches("de")) {
@@ -184,7 +184,7 @@ public class Listener_PanelManager implements Listener {
 						}
 						Main.getTranslator().fetch(Main.getInstance().getConfig().getString("General.Language").substring(0, 2));
 					}
-					if(e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§a◄")) {
+					if(e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.GREEN + "◄")) {
 						String lang = ChatColor.stripColor(e.getInventory().getItem(31).getItemMeta().getDisplayName());
 						
 						if(lang.matches("de")) {
@@ -281,12 +281,12 @@ public class Listener_PanelManager implements Listener {
 						
 						Main.getTranslator().fetch(Main.getInstance().getConfig().getString("General.Language").substring(0, 2));
 					}
-					if(e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§7Reload §cStaffCore")) {
+					if(e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.GRAY + "Reload " + ChatColor.RED + "StaffCore")) {
 						p.closeInventory();
 						
 						SystemManager.reloadStaffCore(p);
 					}
-					if(e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§7Setup §cStaffCore-UI")) {
+					if(e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.GRAY + "Setup " + ChatColor.RED + "StaffCore-UI")) {
 						p.closeInventory();
 						
 						WebUIHandler.setupStaffCoreUI(p);
@@ -295,36 +295,36 @@ public class Listener_PanelManager implements Listener {
 			}
 		}
 		
-		if(e.getView().getTitle().equalsIgnoreCase("§cPlayer-Management")) {
+		if(e.getView().getTitle().equalsIgnoreCase(ChatColor.RED + "Player - Management")) {
 			e.setCancelled(true);
 			
 			if(e.getCurrentItem() != null) {
 				if(e.getCurrentItem().hasItemMeta()) {
-					if(e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§c◄ Go back")) {
+					if(e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.RED + "◄ Go back")) {
 						manager.openMainMenu(p);
 					}
-					if(e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§7Manage OnlinePlayers")) {
+					if(e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.GRAY + "Manage OnlinePlayers")) {
 						manager.openOnlinePlayerMenu(p, 1);
 					}
-					if(e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§7Protect a player")) {
+					if(e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.GRAY + "Protect a player")) {
 						manager.openProtectionInventory(p, 1);
 					}
 				}
 			}
 		}
 		
-		if(e.getView().getTitle().equalsIgnoreCase("§cManage OnlinePlayers")) {
+		if(e.getView().getTitle().equalsIgnoreCase(ChatColor.RED + "Manage OnlinePlayers")) {
 			e.setCancelled(true);
 			
 			if(e.getCurrentItem() != null) {
 				if(e.getCurrentItem().hasItemMeta()) {
-					if(e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§c◄ Go back")) {
+					if(e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.RED + "◄ Go back")) {
 						manager.openPlayerManagement(p);
 					}
-					if(e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§a◄")) {
+					if(e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.GREEN + "◄")) {
 						manager.openOnlinePlayerMenu(p, PageManager.page.get(p.getPlayer()) - 1);
 					}
-					if(e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§a►")) {
+					if(e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.GREEN + "►")) {
 						manager.openOnlinePlayerMenu(p, PageManager.page.get(p.getPlayer()) - 1);
 					}
 					if (e.getSlot() > 8 && e.getSlot() < 45) {
@@ -336,26 +336,26 @@ public class Listener_PanelManager implements Listener {
 			}
 		}
 		
-		if(e.getView().getTitle().endsWith("§8- §cStaffCore")) {
+		if(e.getView().getTitle().endsWith(ChatColor.DARK_GRAY + "- " + ChatColor.RED + "StaffCore")) {
 			e.setCancelled(true);
 			
 			if(e.getCurrentItem() != null) {
 				if(e.getCurrentItem().hasItemMeta()) {
-					String s = e.getView().getTitle().replace("§8- §cStaffCore", "");
+					String s = e.getView().getTitle().replace(ChatColor.DARK_GRAY + "- " + ChatColor.RED + "StaffCore", "");
 					String targetname = ChatColor.stripColor(s);
 					
-					if(e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§c◄ Go back")) {
+					if(e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.RED + "◄ Go back")) {
 						manager.openOnlinePlayerMenu(p, PageManager.page.get(p.getPlayer()));
 					}
-					if(e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§cCheck Player")) {
+					if(e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.RED + "Check Player")) {
 						p.closeInventory();
 						p.performCommand("check " + targetname);
 					}
-					if(e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§cMute Player")) {
+					if(e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.RED + "Mute Player")) {
 						p.closeInventory();
 						p.performCommand("mute " + targetname);
 					}
-					if(e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§cBan Player")) {
+					if(e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.RED + "Ban Player")) {
 						p.closeInventory();
 						p.performCommand("ban " + targetname);
 					}

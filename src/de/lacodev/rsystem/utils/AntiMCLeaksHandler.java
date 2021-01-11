@@ -7,6 +7,7 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -36,7 +37,7 @@ public class AntiMCLeaksHandler {
 		}
 		
 		Bukkit.getConsoleSender().sendMessage("");
-		Bukkit.getConsoleSender().sendMessage("§cSystem §8» §aSuccessfully §8cached §a" + totalAccounts + " Accounts");
+		Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» " + ChatColor.GREEN + "Successfully " + ChatColor.DARK_GRAY + "cached " + ChatColor.GREEN + totalAccounts + " Accounts");
 		Bukkit.getConsoleSender().sendMessage("");
 		
 	}
@@ -62,5 +63,4 @@ public class AntiMCLeaksHandler {
 		}
 		return null;
 	}
-
 }

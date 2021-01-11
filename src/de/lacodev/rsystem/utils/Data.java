@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.UUID;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -169,7 +170,7 @@ public class Data {
 	public static ItemStack buildPlace() {
 		ItemStack stack = XMaterial.BLACK_STAINED_GLASS_PANE.parseItem();
 		ItemMeta meta = stack.getItemMeta();
-		meta.setDisplayName("§8...");
+		meta.setDisplayName(ChatColor.DARK_GRAY + "...");
 		stack.setItemMeta(meta);
 		
 		return stack;

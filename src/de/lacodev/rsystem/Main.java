@@ -88,12 +88,12 @@ public class Main extends JavaPlugin{
 		
 		try {
 			Bukkit.getConsoleSender().sendMessage("");
-			Bukkit.getConsoleSender().sendMessage("§cSystem §8» Checking version... §8(§7"+ this.getDescription().getVersion() +"§8)");
+			Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» Checking version... " + ChatColor.DARK_GRAY + "(" + ChatColor.GRAY + this.getDescription().getVersion() + ChatColor.DARK_GRAY + ")");
 			Bukkit.getConsoleSender().sendMessage("");
 			checkLizenz(new URL("https://api.lacodev.de/staffcore/versions/"));
 		} catch (MalformedURLException e) {
 			Bukkit.getConsoleSender().sendMessage("");
-			Bukkit.getConsoleSender().sendMessage("§cSystem §8» §c§lFAILED §8(§7Versioncheck§8)");
+			Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» " + ChatColor.RED + "FAILED " + ChatColor.DARK_GRAY + "(" + ChatColor.GRAY + "Versioncheck" + ChatColor.DARK_GRAY + ")");
 			Bukkit.getConsoleSender().sendMessage("");
 		}
 		
@@ -103,11 +103,11 @@ public class Main extends JavaPlugin{
 		if(getConfig().getBoolean("General.Include-Vault")) {
 			if(setupEconomy()) {
 				Bukkit.getConsoleSender().sendMessage("");
-				Bukkit.getConsoleSender().sendMessage(prefix + "§aSuccessfully §7added Vault to our system");
+				Bukkit.getConsoleSender().sendMessage(prefix + ChatColor.GREEN + "Successfully " + ChatColor.GRAY + "added Vault to our system");
 				Bukkit.getConsoleSender().sendMessage("");
 			} else {
 				Bukkit.getConsoleSender().sendMessage("");
-				Bukkit.getConsoleSender().sendMessage(prefix + "§cFailed §7to add Vault to our system! Please make sure you have Vault installed!");
+				Bukkit.getConsoleSender().sendMessage(prefix + ChatColor.RED + "Failed " + ChatColor.GRAY + "to add Vault to our system! Please make sure you have Vault installed!");
 				Bukkit.getConsoleSender().sendMessage("");
 			}
 		}
@@ -115,11 +115,11 @@ public class Main extends JavaPlugin{
 		if(getConfig().getBoolean("General.Include-ActionBarAPI")) {
 			if(setupActionBar()) {
 				Bukkit.getConsoleSender().sendMessage("");
-				Bukkit.getConsoleSender().sendMessage(prefix + "§aSuccessfully §7added ActionBarAPI to our system");
+				Bukkit.getConsoleSender().sendMessage(prefix + ChatColor.GREEN + "Successfully " + ChatColor.GRAY + "added ActionBarAPI to our system");
 				Bukkit.getConsoleSender().sendMessage("");
 			} else {
 				Bukkit.getConsoleSender().sendMessage("");
-				Bukkit.getConsoleSender().sendMessage(prefix + "§cFailed §7to add ActionBarAPI to our system! Please make sure you have ActionBarAPI installed!");
+				Bukkit.getConsoleSender().sendMessage(prefix + ChatColor.RED + "Failed " + ChatColor.GRAY + "to add ActionBarAPI to our system! Please make sure you have ActionBarAPI installed!");
 				Bukkit.getConsoleSender().sendMessage("");
 			}
 		}
@@ -127,11 +127,11 @@ public class Main extends JavaPlugin{
 		if(getConfig().getBoolean("General.Include-MatrixAntiCheat")) {
 			if(setupMatrix()) {
 				Bukkit.getConsoleSender().sendMessage("");
-				Bukkit.getConsoleSender().sendMessage(prefix + "§aSuccessfully §7added Matrix to our system");
+				Bukkit.getConsoleSender().sendMessage(prefix + ChatColor.GREEN + "Successfully " + ChatColor.GRAY + "added Matrix to our system");
 				Bukkit.getConsoleSender().sendMessage("");
 			} else {
 				Bukkit.getConsoleSender().sendMessage("");
-				Bukkit.getConsoleSender().sendMessage(prefix + "§cFailed §7to add Matrix to our system! Please make sure you have Matrix installed and set up properly!");
+				Bukkit.getConsoleSender().sendMessage(prefix + ChatColor.RED + "Failed " + ChatColor.GRAY + "to add Matrix to our system! Please make sure you have Matrix installed and set up properly!");
 				Bukkit.getConsoleSender().sendMessage("");
 			}
 		}
@@ -140,11 +140,11 @@ public class Main extends JavaPlugin{
 			if(setupSpartanAC()) {
 				api = new API();
 				Bukkit.getConsoleSender().sendMessage("");
-				Bukkit.getConsoleSender().sendMessage(prefix + "§aSuccessfully §7added SpartanAntiCheat to our system");
+				Bukkit.getConsoleSender().sendMessage(prefix + ChatColor.GREEN + "Successfully " + ChatColor.GRAY + "added SpartanAntiCheat to our system");
 				Bukkit.getConsoleSender().sendMessage("");
 			} else {
 				Bukkit.getConsoleSender().sendMessage("");
-				Bukkit.getConsoleSender().sendMessage(prefix + "§cFailed §7to add SpartanAntiCheat to our system! Please make sure you have SpartanAntiCheat installed and set up properly!");
+				Bukkit.getConsoleSender().sendMessage(prefix + ChatColor.RED + "Failed " + ChatColor.GRAY + "to add SpartanAntiCheat to our system! Please make sure you have SpartanAntiCheat installed and set up properly!");
 				Bukkit.getConsoleSender().sendMessage("");
 			}
 		}
@@ -168,27 +168,27 @@ public class Main extends JavaPlugin{
 				}
 				
 				Bukkit.getConsoleSender().sendMessage("");
-				Bukkit.getConsoleSender().sendMessage("§cSystem §8» Environment: §7" + Bukkit.getVersion());
+				Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» Environment: " + ChatColor.GRAY + Bukkit.getVersion());
 				if(experimental) {
-					Bukkit.getConsoleSender().sendMessage("§cSystem §8» StaffCore: §7v" + this.getDescription().getVersion() + "§8(§dEXPERIMENTAL§8)");
+					Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» StaffCore: " + ChatColor.GRAY + "v" + this.getDescription().getVersion() + ChatColor.DARK_GRAY + "(" + ChatColor.LIGHT_PURPLE + "EXPERIMENTAL" + ChatColor.DARK_GRAY + ")");
 				} else if(latest) {
-					Bukkit.getConsoleSender().sendMessage("§cSystem §8» StaffCore: §7v" + this.getDescription().getVersion() + "§8(§aLATEST§8)");
+					Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» StaffCore: " + ChatColor.GRAY + "v" + this.getDescription().getVersion() + ChatColor.DARK_GRAY + "(" + ChatColor.GREEN + "LATEST" + ChatColor.DARK_GRAY + ")");
 				} else {
-					Bukkit.getConsoleSender().sendMessage("§cSystem §8» StaffCore: §7v" + this.getDescription().getVersion() + "§8(§cOUTDATED§8)");
+					Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» StaffCore: " + ChatColor.GRAY + "v" + this.getDescription().getVersion() + ChatColor.DARK_GRAY + "(" + ChatColor.RED + "OUTDATED" + ChatColor.DARK_GRAY + ")");
 				}
-				Bukkit.getConsoleSender().sendMessage("§cSystem §8» §a§lSUCCESS §8(§aPLUGIN STARTED§8)");
+				Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» " + ChatColor.GREEN + "" + ChatColor.BOLD + "SUCCESS " + ChatColor.DARK_GRAY + "(" + ChatColor.GREEN + "PLUGIN STARTED" + ChatColor.DARK_GRAY + ")");
 				Bukkit.getConsoleSender().sendMessage("");
 			} else {
 				Bukkit.getConsoleSender().sendMessage("");
-				Bukkit.getConsoleSender().sendMessage("§cSystem §8» §7Environment: " + Bukkit.getVersion());
+				Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» " + ChatColor.GRAY + "Environment: " + Bukkit.getVersion());
 				if(experimental) {
-					Bukkit.getConsoleSender().sendMessage("§cSystem §8» StaffCore: §7v" + this.getDescription().getVersion() + "§8(§dEXPERIMENTAL§8)");
+					Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» StaffCore: " + ChatColor.GRAY + "v" + this.getDescription().getVersion() + ChatColor.DARK_GRAY + "(" + ChatColor.LIGHT_PURPLE + "EXPERIMENTAL" + ChatColor.DARK_GRAY + ")");
 				} else if(latest) {
-					Bukkit.getConsoleSender().sendMessage("§cSystem §8» StaffCore: §7v" + this.getDescription().getVersion() + "§8(§aLATEST§8)");
+					Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» StaffCore: " + ChatColor.GRAY + "v" + this.getDescription().getVersion() + ChatColor.DARK_GRAY + "(" + ChatColor.GREEN + "LATEST" + ChatColor.DARK_GRAY + ")");
 				} else {
-					Bukkit.getConsoleSender().sendMessage("§cSystem §8» StaffCore: §7v" + this.getDescription().getVersion() + "§8(§cOUTDATED§8)");
+					Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» StaffCore: " + ChatColor.GRAY + "v" + this.getDescription().getVersion() + ChatColor.DARK_GRAY + "(" + ChatColor.RED + "OUTDATED" + ChatColor.DARK_GRAY + ")");
 				}
-				Bukkit.getConsoleSender().sendMessage("§cSystem §8» §c§lERROR §8(§cBanSystemDetectionService CRASHED§8)");
+				Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» " + ChatColor.RED + "" + ChatColor.BOLD + "ERROR " + ChatColor.DARK_GRAY + "(" + ChatColor.RED + "BanSystemDetectionService CRASHED" + ChatColor.DARK_GRAY + ")");
 				Bukkit.getConsoleSender().sendMessage("");
 			}
 		} else {
@@ -200,16 +200,16 @@ public class Main extends JavaPlugin{
 				public void run() {
 					if(!MySQL.isConnected()) {
 						Bukkit.getConsoleSender().sendMessage("");
-						Bukkit.getConsoleSender().sendMessage("§cStaffCore §8» §c§lERROR §8(§cNO CONNECTION§8)");
-						Bukkit.getConsoleSender().sendMessage("§cStaffCore §8» §7Please make sure to set up your database correctly!");
+						Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "StaffCore " + ChatColor.DARK_GRAY + "» " + ChatColor.RED + "" + ChatColor.BOLD + "ERROR " + ChatColor.DARK_GRAY + "(" + ChatColor.RED + "NO CONNECTION" + ChatColor.DARK_GRAY + ")");
+						Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "StaffCore " + ChatColor.DARK_GRAY + "» " + ChatColor.GRAY + "Please make sure to set up your database correctly!");
 						Bukkit.getConsoleSender().sendMessage("");
 					}
 				}
 			}.runTaskTimerAsynchronously(this, 0, 30*20);
 			
 			Bukkit.getConsoleSender().sendMessage("");
-			Bukkit.getConsoleSender().sendMessage("§cSystem §8» Environment: §7" + Bukkit.getVersion());
-			Bukkit.getConsoleSender().sendMessage("§cSystem §8» §c§lERROR §8(§cNO CONNECTION§8)");
+			Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» Environment: " + ChatColor.GRAY + Bukkit.getVersion());
+			Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» " + ChatColor.RED + "" + ChatColor.BOLD + "ERROR " + ChatColor.DARK_GRAY + "(" + ChatColor.RED + "NO CONNECTION" + ChatColor.DARK_GRAY + ")");
 			Bukkit.getConsoleSender().sendMessage("");
 		}
 	}
@@ -217,7 +217,7 @@ public class Main extends JavaPlugin{
 	private void startAntiMcLeaksServices() {
 		if(getConfig().getBoolean("MCLeaks-Blocker.Enable")) {
 			Bukkit.getConsoleSender().sendMessage("");
-			Bukkit.getConsoleSender().sendMessage("§cSystem §8» §8Activating MCLeaks-Blocker...");
+			Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» " + ChatColor.DARK_GRAY + "Activating MCLeaks-Blocker...");
 			
 			if(getConfig().getBoolean("MCLeaks-Blocker.Cache-Updater.Enable")) {
 				new BukkitRunnable() {
@@ -241,23 +241,23 @@ public class Main extends JavaPlugin{
 		
 		try {
 			Bukkit.getConsoleSender().sendMessage("");
-			Bukkit.getConsoleSender().sendMessage("§cSystem §8» Checking version... §8(§7"+ this.getDescription().getVersion() +"§8)");
+			Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» Checking version... " + ChatColor.DARK_GRAY + "(" + ChatColor.GRAY + ""+ this.getDescription().getVersion() +"" + ChatColor.DARK_GRAY + ")");
 			Bukkit.getConsoleSender().sendMessage("");
 			checkLizenz(new URL("https://api.lacodev.de/staffcore/versions/"));
 		} catch (MalformedURLException e) {
 			Bukkit.getConsoleSender().sendMessage("");
-			Bukkit.getConsoleSender().sendMessage("§cSystem §8» §c§lFAILED §8(§7Versioncheck§8)");
+			Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» " + ChatColor.RED + "" + ChatColor.BOLD + "FAILED " + ChatColor.DARK_GRAY + "(" + ChatColor.GRAY + "Versioncheck" + ChatColor.DARK_GRAY + ")");
 			Bukkit.getConsoleSender().sendMessage("");
 		}
 		
 		if(getConfig().getBoolean("General.Include-Vault")) {
 			if(setupEconomy()) {
 				Bukkit.getConsoleSender().sendMessage("");
-				Bukkit.getConsoleSender().sendMessage(prefix + "§aSuccessfully §7added Vault to our system");
+				Bukkit.getConsoleSender().sendMessage(prefix + ChatColor.GREEN + "Successfully " + ChatColor.GRAY + "added Vault to our system");
 				Bukkit.getConsoleSender().sendMessage("");
 			} else {
 				Bukkit.getConsoleSender().sendMessage("");
-				Bukkit.getConsoleSender().sendMessage(prefix + "§cFailed §7to add Vault to our system! Please make sure you have Vault installed!");
+				Bukkit.getConsoleSender().sendMessage(prefix + ChatColor.RED + "Failed " + ChatColor.GRAY + "to add Vault to our system! Please make sure you have Vault installed!");
 				Bukkit.getConsoleSender().sendMessage("");
 			}
 		}
@@ -265,11 +265,11 @@ public class Main extends JavaPlugin{
 		if(getConfig().getBoolean("General.Include-ActionBarAPI")) {
 			if(setupActionBar()) {
 				Bukkit.getConsoleSender().sendMessage("");
-				Bukkit.getConsoleSender().sendMessage(prefix + "§aSuccessfully §7added ActionBarAPI to our system");
+				Bukkit.getConsoleSender().sendMessage(prefix + ChatColor.GREEN + "Successfully " + ChatColor.GRAY + "added ActionBarAPI to our system");
 				Bukkit.getConsoleSender().sendMessage("");
 			} else {
 				Bukkit.getConsoleSender().sendMessage("");
-				Bukkit.getConsoleSender().sendMessage(prefix + "§cFailed §7to add ActionBarAPI to our system! Please make sure you have ActionBarAPI installed!");
+				Bukkit.getConsoleSender().sendMessage(prefix + ChatColor.RED + "Failed " + ChatColor.GRAY + "to add ActionBarAPI to our system! Please make sure you have ActionBarAPI installed!");
 				Bukkit.getConsoleSender().sendMessage("");
 			}
 		}
@@ -277,11 +277,11 @@ public class Main extends JavaPlugin{
 		if(getConfig().getBoolean("General.Include-MatrixAntiCheat")) {
 			if(setupMatrix()) {
 				Bukkit.getConsoleSender().sendMessage("");
-				Bukkit.getConsoleSender().sendMessage(prefix + "§aSuccessfully §7added Matrix to our system");
+				Bukkit.getConsoleSender().sendMessage(prefix + ChatColor.GREEN + "Successfully " + ChatColor.GRAY + "added Matrix to our system");
 				Bukkit.getConsoleSender().sendMessage("");
 			} else {
 				Bukkit.getConsoleSender().sendMessage("");
-				Bukkit.getConsoleSender().sendMessage(prefix + "§cFailed §7to add Matrix to our system! Please make sure you have Matrix installed and set up properly!");
+				Bukkit.getConsoleSender().sendMessage(prefix + ChatColor.RED + "Failed " + ChatColor.GRAY + "to add Matrix to our system! Please make sure you have Matrix installed and set up properly!");
 				Bukkit.getConsoleSender().sendMessage("");
 			}
 		}
@@ -290,11 +290,11 @@ public class Main extends JavaPlugin{
 			if(setupSpartanAC()) {
 				api = new API();
 				Bukkit.getConsoleSender().sendMessage("");
-				Bukkit.getConsoleSender().sendMessage(prefix + "§aSuccessfully §7added SpartanAntiCheat to our system");
+				Bukkit.getConsoleSender().sendMessage(prefix + ChatColor.GREEN + "Successfully " + ChatColor.GRAY + "added SpartanAntiCheat to our system");
 				Bukkit.getConsoleSender().sendMessage("");
 			} else {
 				Bukkit.getConsoleSender().sendMessage("");
-				Bukkit.getConsoleSender().sendMessage(prefix + "§cFailed §7to add SpartanAntiCheat to our system! Please make sure you have SpartanAntiCheat installed and set up properly!");
+				Bukkit.getConsoleSender().sendMessage(prefix + ChatColor.RED + "Failed " + ChatColor.GRAY + "to add SpartanAntiCheat to our system! Please make sure you have SpartanAntiCheat installed and set up properly!");
 				Bukkit.getConsoleSender().sendMessage("");
 			}
 		}
@@ -307,27 +307,27 @@ public class Main extends JavaPlugin{
 				startAntiMcLeaksServices();
 				
 				Bukkit.getConsoleSender().sendMessage("");
-				Bukkit.getConsoleSender().sendMessage("§cSystem §8» Environment: §7" + Bukkit.getVersion());
+				Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» Environment: " + ChatColor.GRAY + Bukkit.getVersion());
 				if(experimental) {
-					Bukkit.getConsoleSender().sendMessage("§cSystem §8» StaffCore: §7v" + this.getDescription().getVersion() + "§8(§dEXPERIMENTAL§8)");
+					Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» StaffCore: " + ChatColor.GRAY + "v" + this.getDescription().getVersion() + ChatColor.DARK_GRAY + "(" + ChatColor.LIGHT_PURPLE + "EXPERIMENTAL" + ChatColor.DARK_GRAY + ")");
 				} else if(latest) {
-					Bukkit.getConsoleSender().sendMessage("§cSystem §8» StaffCore: §7v" + this.getDescription().getVersion() + "§8(§aLATEST§8)");
+					Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» StaffCore: " + ChatColor.GRAY + "v" + this.getDescription().getVersion() + ChatColor.DARK_GRAY + "(" + ChatColor.GREEN + "LATEST" + ChatColor.DARK_GRAY + ")");
 				} else {
-					Bukkit.getConsoleSender().sendMessage("§cSystem §8» StaffCore: §7v" + this.getDescription().getVersion() + "§8(§cOUTDATED§8)");
+					Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» StaffCore: " + ChatColor.GRAY + "v" + this.getDescription().getVersion() + ChatColor.DARK_GRAY + "(" + ChatColor.RED + "OUTDATED" + ChatColor.DARK_GRAY + ")");
 				}
-				Bukkit.getConsoleSender().sendMessage("§cSystem §8» §a§lSUCCESS §8(§aPLUGIN STARTED§8)");
+				Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» " + ChatColor.GREEN + ChatColor.BOLD + "SUCCESS " + ChatColor.DARK_GRAY + "(" + ChatColor.GREEN + "PLUGIN STARTED" + ChatColor.DARK_GRAY + ")");
 				Bukkit.getConsoleSender().sendMessage("");
 			} else {
 				Bukkit.getConsoleSender().sendMessage("");
-				Bukkit.getConsoleSender().sendMessage("§cSystem §8» §7Environment: " + Bukkit.getVersion());
+				Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» " + ChatColor.GRAY + "Environment: " + Bukkit.getVersion());
 				if(experimental == true) {
-					Bukkit.getConsoleSender().sendMessage("§cSystem §8» StaffCore: §7v" + this.getDescription().getVersion() + "§8(§dEXPERIMENTAL§8)");
+					Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» StaffCore: " + ChatColor.GRAY + "v" + this.getDescription().getVersion() + ChatColor.DARK_GRAY + "(" + ChatColor.LIGHT_PURPLE + "EXPERIMENTAL" + ChatColor.DARK_GRAY + ")");
 				} else if(latest == true) {
-					Bukkit.getConsoleSender().sendMessage("§cSystem §8» StaffCore: §7v" + this.getDescription().getVersion() + "§8(§aLATEST§8)");
+					Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» StaffCore: " + ChatColor.GRAY + "v" + this.getDescription().getVersion() + ChatColor.DARK_GRAY + "(" + ChatColor.GREEN + "LATEST" + ChatColor.DARK_GRAY + ")");
 				} else {
-					Bukkit.getConsoleSender().sendMessage("§cSystem §8» StaffCore: §7v" + this.getDescription().getVersion() + "§8(§cOUTDATED§8)");
+					Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» StaffCore: " + ChatColor.GRAY + "v" + this.getDescription().getVersion() + ChatColor.DARK_GRAY + "(" + ChatColor.RED + "OUTDATED" + ChatColor.DARK_GRAY + ")");
 				}
-				Bukkit.getConsoleSender().sendMessage("§cSystem §8» §c§lERROR §8(§cBanSystemDetectionService CRASHED§8)");
+				Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» " + ChatColor.RED + "" + ChatColor.BOLD + "ERROR " + ChatColor.DARK_GRAY + "(" + ChatColor.RED + "BanSystemDetectionService CRASHED" + ChatColor.DARK_GRAY + ")");
 				Bukkit.getConsoleSender().sendMessage("");
 			}
 		} else {
@@ -339,16 +339,16 @@ public class Main extends JavaPlugin{
 				public void run() {
 					if(!MySQL.isConnected()) {
 						Bukkit.getConsoleSender().sendMessage("");
-						Bukkit.getConsoleSender().sendMessage("§cStaffCore §8» §c§lERROR §8(§cNO CONNECTION§8)");
-						Bukkit.getConsoleSender().sendMessage("§cStaffCore §8» §7Please make sure to set up your database correctly!");
+						Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "StaffCore " + ChatColor.DARK_GRAY + "» " + ChatColor.RED + "" + ChatColor.BOLD + "ERROR " + ChatColor.DARK_GRAY + "(" + ChatColor.RED + "NO CONNECTION" + ChatColor.DARK_GRAY + ")");
+						Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "StaffCore " + ChatColor.DARK_GRAY + "» " + ChatColor.GRAY + "Please make sure to set up your database correctly!");
 						Bukkit.getConsoleSender().sendMessage("");
 					}
 				}
 			}.runTaskTimerAsynchronously(this, 0, 30*20);
 			
 			Bukkit.getConsoleSender().sendMessage("");
-			Bukkit.getConsoleSender().sendMessage("§cSystem §8» Environment: §7" + Bukkit.getVersion());
-			Bukkit.getConsoleSender().sendMessage("§cSystem §8» §c§lERROR §8(§cNO CONNECTION§8)");
+			Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» Environment: " + ChatColor.GRAY + Bukkit.getVersion());
+			Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» " + ChatColor.RED + "" + ChatColor.BOLD + "ERROR " + ChatColor.DARK_GRAY + "(" + ChatColor.RED + "NO CONNECTION" + ChatColor.DARK_GRAY + ")");
 			Bukkit.getConsoleSender().sendMessage("");
 		}
 	}
@@ -388,7 +388,7 @@ public class Main extends JavaPlugin{
 						}
 					} catch (SQLException e) {
 						Bukkit.getConsoleSender().sendMessage("");
-						Bukkit.getConsoleSender().sendMessage("§cSystem §8» §cProblem with staffcoreui_sync detected!");
+						Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» " + ChatColor.RED + "Problem with staffcoreui_sync detected!");
 						Bukkit.getConsoleSender().sendMessage("");
 					}
 					
@@ -434,7 +434,7 @@ public class Main extends JavaPlugin{
 			bansystem = false;
 			
 			Bukkit.getConsoleSender().sendMessage("");
-			Bukkit.getConsoleSender().sendMessage("§cSystem §8» StaffCore BanSystem §8(§cDEACTIVATED§8)");
+			Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» StaffCore BanSystem " + ChatColor.DARK_GRAY + "(" + ChatColor.RED + "DEACTIVATED" + ChatColor.DARK_GRAY + ")");
 		}
 		
 		ArrayList<String> detectservice = new ArrayList<>();
@@ -450,7 +450,7 @@ public class Main extends JavaPlugin{
 			if(detectservice.contains(p.getName())) {
 				if(getInstance().getConfig().getBoolean("General.Activate-BanSystem-Detection")) {
 					Bukkit.getConsoleSender().sendMessage("");
-					Bukkit.getConsoleSender().sendMessage("§cSystem §8» Detected BanSystem §8(§d"+ p.getName() +"§8)");
+					Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» Detected BanSystem " + ChatColor.DARK_GRAY + "(" + ChatColor.LIGHT_PURPLE + ""+ p.getName() +"" + ChatColor.DARK_GRAY + ")");
 					deactivateBanningSystem();
 				}
 				return true;
@@ -466,7 +466,7 @@ public class Main extends JavaPlugin{
 		bansystem = false;
 			
 		Bukkit.getConsoleSender().sendMessage("");
-		Bukkit.getConsoleSender().sendMessage("§cSystem §8» StaffCore BanSystem §8(§cDEACTIVATED§8)");
+		Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» StaffCore BanSystem " + ChatColor.DARK_GRAY + "(" + ChatColor.RED + "DEACTIVATED" + ChatColor.DARK_GRAY + ")");
 	}
 
 	public boolean setupMatrix() {
@@ -590,6 +590,12 @@ public class Main extends JavaPlugin{
 
 		//ChatClear Command
 		getCommand("chatclear").setExecutor(new CMD_ChatClear());
+
+		//Broadcast Command
+		getCommand("broadcast").setExecutor(new CMD_BroadCast());
+
+		//GlobalMute Command
+		getCommand("globalmute").setExecutor(new CMD_MuteGlobal());
 	}
 
 	public void onDisable() {
@@ -598,7 +604,7 @@ public class Main extends JavaPlugin{
 
 	private void loadConfigs() {
 		Bukkit.getConsoleSender().sendMessage("");
-		Bukkit.getConsoleSender().sendMessage("§cSystem §8» Generating... §8(§econfig.yml§8)");
+		Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» Generating... " + ChatColor.DARK_GRAY + "(" + ChatColor.YELLOW + "config.yml" + ChatColor.DARK_GRAY + ")");
 		Bukkit.getConsoleSender().sendMessage("");
 		
 		getConfig().options().copyDefaults(true);
@@ -688,6 +694,8 @@ public class Main extends JavaPlugin{
 		getConfig().addDefault("Permissions.Ban.List", "rsystem.ban.list");
 		getConfig().addDefault("Permissions.Mute.Use", "rsystem.mute.use");
 		getConfig().addDefault("Permissions.Mute.Notify", "rsystem.mute.notify");
+		getConfig().addDefault("Permissions.Mute.Global.Change", "rsystem.mute.global.change");
+		getConfig().addDefault("Permissions.Mute.Global.Write", "rsystem.mute.global.write");
 		getConfig().addDefault("Permissions.UnBan.Use", "rsystem.unban.use");
 		getConfig().addDefault("Permissions.UnBan.Notify", "rsystem.unban.notify");
 		getConfig().addDefault("Permissions.UnMute.Use", "rsystem.unmute.use");
@@ -701,6 +709,7 @@ public class Main extends JavaPlugin{
 		getConfig().addDefault("Permissions.Warns.See", "rsystem.warns.see");
 		getConfig().addDefault("Permissions.ChatLogs.Use", "rsystem.chatlogs.use");
 		getConfig().addDefault("Permissions.Chat.Clear", "rsystem.chat.cleat");
+		getConfig().addDefault("Permissions.BroadCast.Send", "rsystem.broadcast.send");
 		//getConfig().addDefault("Permissions.StaffChat.Chat", "rsystem.staffchat.chat");
 		
 		getConfig().addDefault("Chatfilter.ReporterName", "ChatController");
@@ -763,11 +772,11 @@ public class Main extends JavaPlugin{
 		saveConfig();
 		
 		Bukkit.getConsoleSender().sendMessage("");
-		Bukkit.getConsoleSender().sendMessage("§cSystem §8» Generated §8(§econfig.yml§8)");
+		Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» Generated " + ChatColor.DARK_GRAY + "(" + ChatColor.YELLOW + "config.yml" + ChatColor.DARK_GRAY + ")");
 		Bukkit.getConsoleSender().sendMessage("");
 		
 		Bukkit.getConsoleSender().sendMessage("");
-		Bukkit.getConsoleSender().sendMessage("§cSystem §8» Fetching... §8(§eTranslations from translate.lacodev.de§8)");
+		Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» Fetching... " + ChatColor.DARK_GRAY + "(" + ChatColor.YELLOW + "Translations from translate.lacodev.de" + ChatColor.DARK_GRAY + ")");
 		Bukkit.getConsoleSender().sendMessage("");
 		
 		translator.init();
@@ -792,11 +801,11 @@ public class Main extends JavaPlugin{
 			try {
 				mcfg.save(mysql);
 				Bukkit.getConsoleSender().sendMessage("");
-				Bukkit.getConsoleSender().sendMessage("§cSystem §8» Generated §8(§emysql.yml§8)");
+				Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» Generated " + ChatColor.DARK_GRAY + "(" + ChatColor.YELLOW + "mysql.yml" + ChatColor.DARK_GRAY + ")");
 				Bukkit.getConsoleSender().sendMessage("");
 			} catch (IOException e) {
 				Bukkit.getConsoleSender().sendMessage("");
-				Bukkit.getConsoleSender().sendMessage("§cSystem §8» §cERROR while generating file §8(§emysql.yml§8)");
+				Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» " + ChatColor.RED + "ERROR while generating file " + ChatColor.DARK_GRAY + "(" + ChatColor.YELLOW + "mysql.yml" + ChatColor.DARK_GRAY + ")");
 				Bukkit.getConsoleSender().sendMessage("");
 			}
 		}
@@ -804,7 +813,7 @@ public class Main extends JavaPlugin{
 
 	public void applyConfigs() {
 		Bukkit.getConsoleSender().sendMessage("");
-		Bukkit.getConsoleSender().sendMessage("§cSystem §8» Applying values... §8(§econfig.yml§8)");
+		Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» Applying values... " + ChatColor.DARK_GRAY + "(" + ChatColor.YELLOW + "config.yml" + ChatColor.DARK_GRAY + ")");
 		Bukkit.getConsoleSender().sendMessage("");
 		
 		host = getMySQLFile().getString("MySQL.HOST");
@@ -820,7 +829,7 @@ public class Main extends JavaPlugin{
 		}
 		
 		Bukkit.getConsoleSender().sendMessage("");
-		Bukkit.getConsoleSender().sendMessage("§cSystem §8» Applied values §8(§econfig.yml§8)");
+		Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» Applied values " + ChatColor.DARK_GRAY + "(" + ChatColor.YELLOW + "config.yml" + ChatColor.DARK_GRAY + ")");
 		Bukkit.getConsoleSender().sendMessage("");
 		
 	}
@@ -864,7 +873,7 @@ public class Main extends JavaPlugin{
 			return ChatColor.stripColor(getInstance().getConfig().getString(config));
 		} else {
 			Bukkit.getConsoleSender().sendMessage("");
-			Bukkit.getConsoleSender().sendMessage("§cSystem §8» §cFAILED §8(§7Message Output§8)");
+			Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» " + ChatColor.RED + "FAILED " + ChatColor.DARK_GRAY + "(" + ChatColor.GRAY + "Message Output" + ChatColor.DARK_GRAY + ")");
 			Bukkit.getConsoleSender().sendMessage("");
 			return "Permission failed to load";
 		}
@@ -881,7 +890,7 @@ public class Main extends JavaPlugin{
 			return jsonObject;
 		} catch (IOException | ParseException | ClassCastException e) {
 			Bukkit.getConsoleSender().sendMessage("");
-			Bukkit.getConsoleSender().sendMessage("§cSystem §8» §c§lFAILED §8(§7Versioncheck§8)");
+			Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» " + ChatColor.RED + "" + ChatColor.BOLD + "FAILED " + ChatColor.DARK_GRAY + "(" + ChatColor.GRAY + "Versioncheck" + ChatColor.DARK_GRAY + ")");
 			Bukkit.getConsoleSender().sendMessage("");
 		}
 		return null;
@@ -897,24 +906,24 @@ public class Main extends JavaPlugin{
 			
 			if(version >= lizenz) {
 				Bukkit.getConsoleSender().sendMessage("");
-				Bukkit.getConsoleSender().sendMessage("§cSystem §8» §a§lSUCCESS §8(§7Versioncheck§8)");
+				Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» " + ChatColor.GREEN + "" + ChatColor.BOLD + "SUCCESS " + ChatColor.DARK_GRAY + "(" + ChatColor.GRAY + "Versioncheck" + ChatColor.DARK_GRAY + ")");
 				if(version > lizenz) {
 					experimental = true;
 					Bukkit.getConsoleSender().sendMessage("");
-					Bukkit.getConsoleSender().sendMessage("§7You are using an §dexperimental build§7!");
+					Bukkit.getConsoleSender().sendMessage("" + ChatColor.GRAY + "You are using an " + ChatColor.LIGHT_PURPLE + "experimental build" + ChatColor.GRAY + "!");
 					Bukkit.getConsoleSender().sendMessage("");
 				} else {
 					latest = true;
 					Bukkit.getConsoleSender().sendMessage("");
-					Bukkit.getConsoleSender().sendMessage("§7You are using the §alatest build§7!");
+					Bukkit.getConsoleSender().sendMessage("" + ChatColor.GRAY + "You are using the " + ChatColor.GREEN + "latest build" + ChatColor.GRAY + "!");
 					Bukkit.getConsoleSender().sendMessage("");
 				}
 			} else {
 				Bukkit.getConsoleSender().sendMessage("");
-				Bukkit.getConsoleSender().sendMessage("§cSystem §8» §a§lSUCCESS §8(§7Versioncheck§8)");
+				Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» " + ChatColor.GREEN + "" + ChatColor.BOLD + "SUCCESS " + ChatColor.DARK_GRAY + "(" + ChatColor.GRAY + "Versioncheck" + ChatColor.DARK_GRAY + ")");
 				Bukkit.getConsoleSender().sendMessage("");
-				Bukkit.getConsoleSender().sendMessage("§cThere is an update available!");
-				Bukkit.getConsoleSender().sendMessage("§8» §ehttps://www.spigotmc.org/resources/staffcore-1-7-1-15.48655/updates");
+				Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "There is an update available!");
+				Bukkit.getConsoleSender().sendMessage("" + ChatColor.DARK_GRAY + "» " + ChatColor.YELLOW + "https://www.spigotmc.org/resources/staffcore-1-7-1-15.48655/updates");
 				Bukkit.getConsoleSender().sendMessage("");
 			}
 		} catch(NullPointerException e) {

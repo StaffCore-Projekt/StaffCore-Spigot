@@ -4,6 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -67,8 +68,8 @@ public class CMD_CheckAlts implements CommandExecutor {
 										p.sendMessage(Main.getPrefix() + Main.getMSG("Messages.Altaccount-Check.Nothing-found"));
 									}
 								} catch (SQLException e) {
-									Bukkit.getConsoleSender().sendMessage("§cSystem §8(§7MySQL§8) §8- §cERROR while collecting data from MySQL-Table");
-						        	Bukkit.getConsoleSender().sendMessage("§cSystem §8(§7MySQL§8) §8- §8(§7Query: §eCheckAlts§8)");
+									Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "(" + ChatColor.GRAY + "MySQL" + ChatColor.DARK_GRAY + ") " + ChatColor.DARK_GRAY + "- " + ChatColor.RED + "ERROR while collecting data from MySQL-Table");
+						        	Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "(" + ChatColor.GRAY + "MySQL" + ChatColor.DARK_GRAY + ") " + ChatColor.DARK_GRAY + "- " + ChatColor.DARK_GRAY + "(" + ChatColor.GRAY + "Query: " + ChatColor.YELLOW + "CheckAlts" + ChatColor.DARK_GRAY + ")");
 								}
 							}
 							

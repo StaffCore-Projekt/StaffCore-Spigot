@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -52,7 +53,7 @@ public class CMD_BanList implements CommandExecutor {
 									}
 									p.sendMessage("");
 									for(int i = 0; i < banned_players.size(); i++) {
-										p.sendMessage(Main.getPrefix() + "§8- §e" + banned_players.get(i) + " §8» §7" + ban_reasons.get(banned_players.get(i)));
+										p.sendMessage(Main.getPrefix() + ChatColor.DARK_GRAY + "- " + ChatColor.YELLOW + "" + banned_players.get(i) + " " + ChatColor.DARK_GRAY + "» " + ChatColor.GRAY + "" + ban_reasons.get(banned_players.get(i)));
 									}
 									banned_players.clear();
 									ban_reasons.clear();
@@ -62,7 +63,7 @@ public class CMD_BanList implements CommandExecutor {
 								}
 							} catch (SQLException e) {
 								Bukkit.getConsoleSender().sendMessage("");
-								Bukkit.getConsoleSender().sendMessage("§cSystem §8» §c§lFAILED §8(§7Fetch BanList§8)");
+								Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» " + ChatColor.RED + "" + ChatColor.BOLD + "FAILED " + ChatColor.DARK_GRAY + "(" + ChatColor.GRAY + "Fetch BanList" + ChatColor.DARK_GRAY + ")");
 								Bukkit.getConsoleSender().sendMessage("");
 							}
 						}
@@ -98,7 +99,7 @@ public class CMD_BanList implements CommandExecutor {
 								}
 								sender.sendMessage("");
 								for(int i = 0; i < banned_players.size(); i++) {
-									sender.sendMessage(Main.getPrefix() + "§8- §e" + banned_players.get(i) + " §8» §7" + ban_reasons.get(banned_players.get(i)));
+									sender.sendMessage(Main.getPrefix() + ChatColor.DARK_GRAY + "- " + ChatColor.YELLOW + "" + banned_players.get(i) + " " + ChatColor.DARK_GRAY + "» " + ChatColor.GRAY + "" + ban_reasons.get(banned_players.get(i)));
 								}
 								sender.sendMessage("");
 							} else {
@@ -106,7 +107,7 @@ public class CMD_BanList implements CommandExecutor {
 							}
 						} catch (SQLException e) {
 							Bukkit.getConsoleSender().sendMessage("");
-							Bukkit.getConsoleSender().sendMessage("§cSystem §8» §c§lFAILED §8(§7Fetch BanList§8)");
+							Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» " + ChatColor.RED + "" + ChatColor.BOLD + "FAILED " + ChatColor.DARK_GRAY + "(" + ChatColor.GRAY + "Fetch BanList" + ChatColor.DARK_GRAY + ")");
 							Bukkit.getConsoleSender().sendMessage("");
 						}
 					}

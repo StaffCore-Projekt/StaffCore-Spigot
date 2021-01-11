@@ -1,6 +1,7 @@
 package de.lacodev.rsystem.commands;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -21,7 +22,7 @@ public class CMD_ChatFilter implements CommandExecutor {
 				if(args.length == 0) {
 					InventoryHandler.openChatFilterSettings(p);
 				} else {
-					p.sendMessage(Main.getPrefix() + "§cToo many arguments");
+					p.sendMessage(Main.getPrefix() + ChatColor.RED + "Too many arguments");
 				}
 			} else {
                 p.sendMessage(Main.getPrefix() + Main.getMSG("Messages.System.No-Permission").replace("%permission%", Main.getPermissionNotice("Permissions.Chatfilter.Manage")));
@@ -29,7 +30,7 @@ public class CMD_ChatFilter implements CommandExecutor {
 			
 		} else {
 			Bukkit.getConsoleSender().sendMessage("");
-			Bukkit.getConsoleSender().sendMessage("§cSystem §8» §c§lFAILED §8(§7Console-Input§8)");
+			Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» " + ChatColor.RED + ChatColor.BOLD + "FAILED " + ChatColor.DARK_GRAY + "(" + ChatColor.GRAY + "Console-Input" + ChatColor.DARK_GRAY + ")");
 			Bukkit.getConsoleSender().sendMessage("");
 		}
 		return true;

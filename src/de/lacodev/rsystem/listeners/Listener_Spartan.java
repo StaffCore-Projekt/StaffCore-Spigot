@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -33,7 +34,7 @@ public class Listener_Spartan implements Listener {
 						cfg.save(file);
 					} catch (IOException e1) {
 						Bukkit.getConsoleSender().sendMessage("");
-						Bukkit.getConsoleSender().sendMessage("§cSystem §8» §c§lFAILED §8(§7Save SpartanLog§8)");
+						Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» " + ChatColor.RED + ChatColor.BOLD + "FAILED " + ChatColor.DARK_GRAY + "(" + ChatColor.GRAY + "Save SpartanLog" + ChatColor.DARK_GRAY + ")");
 						Bukkit.getConsoleSender().sendMessage("");
 					}
 					
@@ -46,7 +47,7 @@ public class Listener_Spartan implements Listener {
 						cfg.save(file);
 					} catch (IOException e1) {
 						Bukkit.getConsoleSender().sendMessage("");
-						Bukkit.getConsoleSender().sendMessage("§cSystem §8» §c§lFAILED §8(§7Save SpartanLog§8)");
+						Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» " + ChatColor.RED + ChatColor.BOLD + "FAILED " + ChatColor.DARK_GRAY + "(" + ChatColor.GRAY + "Save SpartanLog" + ChatColor.DARK_GRAY + ")");
 						Bukkit.getConsoleSender().sendMessage("");
 					}
 				}
@@ -56,7 +57,7 @@ public class Listener_Spartan implements Listener {
 					cfg.save(file);
 				} catch (IOException e1) {
 					Bukkit.getConsoleSender().sendMessage("");
-					Bukkit.getConsoleSender().sendMessage("§cSystem §8» §c§lFAILED §8(§7Save SpartanLog§8)");
+					Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» " + ChatColor.RED + ChatColor.BOLD + "FAILED " + ChatColor.DARK_GRAY + "(" + ChatColor.GRAY + "Save SpartanLog" + ChatColor.DARK_GRAY + ")");
 					Bukkit.getConsoleSender().sendMessage("");
 				}
 			}

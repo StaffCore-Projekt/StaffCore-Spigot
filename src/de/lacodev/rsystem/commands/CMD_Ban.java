@@ -2,6 +2,7 @@ package de.lacodev.rsystem.commands;
 
 import java.util.ArrayList;
 
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -84,7 +85,7 @@ public class CMD_Ban implements CommandExecutor {
 
 	                                if (reasons.size() > 0) {
 	                                    for (int i = 0; i < reasons.size(); i++) {
-	                                        p.sendMessage(Main.getPrefix() + "§8- §e" + reasons.get(i).getName() + " §8(§e" + reasons.get(i).getID() + "§8 | §e"+ BanManager.getBanLength(reasons.get(i).getLength()) +"§8)");
+	                                        p.sendMessage(Main.getPrefix() + ChatColor.DARK_GRAY + "- " + ChatColor.YELLOW + reasons.get(i).getName() + ChatColor.DARK_GRAY + " (" + ChatColor.YELLOW + reasons.get(i).getID() + ChatColor.DARK_GRAY + " | " + ChatColor.YELLOW + ""+ BanManager.getBanLength(reasons.get(i).getLength()) +ChatColor.DARK_GRAY + ")");
 	                                    }
 	                                } else {
 	                                    p.sendMessage(Main.getPrefix() + Main.getMSG("Messages.Ban-System.No-Reasons"));
@@ -132,7 +133,7 @@ public class CMD_Ban implements CommandExecutor {
 
 	                            if (reasons.size() > 0) {
 	                                for (int i = 0; i < reasons.size(); i++) {
-	                                    p.sendMessage(Main.getPrefix() + "§8- §e" + reasons.get(i).getName() + " §8(§e" + reasons.get(i).getID() + "§8 | §e"+ BanManager.getBanLength(reasons.get(i).getLength()) +"§8)");
+	                                    p.sendMessage(Main.getPrefix() + ChatColor.DARK_GRAY + "- " + ChatColor.YELLOW + reasons.get(i).getName() + ChatColor.DARK_GRAY + " (" + ChatColor.YELLOW + reasons.get(i).getID() + ChatColor.DARK_GRAY + " | " + ChatColor.YELLOW + ""+ BanManager.getBanLength(reasons.get(i).getLength()) +ChatColor.DARK_GRAY + ")");
 	                                }
 	                            } else {
 	                                p.sendMessage(Main.getPrefix() + Main.getMSG("Messages.Ban-System.No-Reasons"));
@@ -176,7 +177,7 @@ public class CMD_Ban implements CommandExecutor {
 	                            ArrayList<BanReasons> reasons = BanManager.getBanReasons();
 	                            if (reasons.size() > 0) {
 	                                for (int i = 0; i < reasons.size(); i++) {
-	                                    sender.sendMessage(Main.getPrefix() + "§8- §e" + reasons.get(i).getName() + " §8(§e" + reasons.get(i).getID() + "§8 | §e"+ BanManager.getBanLength(reasons.get(i).getLength()) +"§8)");
+	                                    sender.sendMessage(Main.getPrefix() + ChatColor.DARK_GRAY + "- " + ChatColor.YELLOW + reasons.get(i).getName() + ChatColor.DARK_GRAY + " (" + ChatColor.YELLOW + reasons.get(i).getID() + ChatColor.DARK_GRAY + " | " + ChatColor.YELLOW + ""+ BanManager.getBanLength(reasons.get(i).getLength()) +ChatColor.DARK_GRAY + ")");
 	                                }
 	                            } else {
 	                                sender.sendMessage(Main.getPrefix() + Main.getMSG("Messages.Ban-System.No-Reasons"));
@@ -188,6 +189,7 @@ public class CMD_Ban implements CommandExecutor {
 	                        sender.sendMessage(Main.getPrefix() + Main.getMSG("Messages.Ban-System.Cannot-find-player"));
 	                    }
 
+
 	                } else {
 
 	                    sender.sendMessage(Main.getPrefix() + Main.getMSG("Messages.Ban-System.Usage"));
@@ -197,7 +199,7 @@ public class CMD_Ban implements CommandExecutor {
 
 	                    if (reasons.size() > 0) {
 	                        for (int i = 0; i < reasons.size(); i++) {
-	                            sender.sendMessage(Main.getPrefix() + "§8- §e" + reasons.get(i).getName() + " §8(§e" + reasons.get(i).getID() + "§8 | §e"+ BanManager.getBanLength(reasons.get(i).getLength()) +"§8)");
+	                            sender.sendMessage(Main.getPrefix() + ChatColor.DARK_GRAY + "- " + ChatColor.YELLOW + reasons.get(i).getName() + ChatColor.DARK_GRAY + " (" + ChatColor.YELLOW + reasons.get(i).getID() + ChatColor.DARK_GRAY + " | " + ChatColor.YELLOW + ""+ BanManager.getBanLength(reasons.get(i).getLength()) +ChatColor.DARK_GRAY + ")");
 	                        }
 	                    } else {
 	                        sender.sendMessage(Main.getPrefix() + Main.getMSG("Messages.Ban-System.No-Reasons"));

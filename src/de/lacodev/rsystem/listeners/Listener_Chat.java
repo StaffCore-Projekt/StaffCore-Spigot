@@ -48,7 +48,12 @@ public class Listener_Chat implements Listener {
 
 			e.setCancelled(true);
 		}else {*/
-
+		if (BanManager.isGMute()){
+			if(!(p.hasPermission(Main.getPermissionNotice("Permissions.Everything")) || p.hasPermission(Main.getPermissionNotice("Permissions.Mute.Global.Write")) )) {
+				p.sendMessage(Main.getPrefix() + Main.getMSG("Messages.Global-Mute-System.Message-when-a-player-writes-on-GlobalMute"));
+				e.setCancelled(true);
+			}
+		}else {
 			if (BanManager.isMuted(p.getUniqueId().toString())) {
 
 				p.sendMessage(Main.getMSG("Messages.Layouts.Mute").replace("%reason%", BanManager.getMuteReason(p.getUniqueId().toString())).replace("%remaining%", BanManager.getMuteFinalEnd(p.getUniqueId().toString())));
@@ -123,6 +128,7 @@ public class Listener_Chat implements Listener {
 					}
 				}
 			}
+		}
 		//}
 	}
 

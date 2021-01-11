@@ -4,6 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -41,7 +42,7 @@ public class CMD_Warns implements CommandExecutor {
 						
 						String listString = "\n";
 						for(String s : getWarnReasonsFromPlayer(SystemManager.getUUIDByName(target))) {
-							listString += "§8- §c"+ s + "\n";
+							listString += ChatColor.DARK_GRAY + "- " + ChatColor.RED + s + "\n";
 						}
 						
 						w.setHoverEvent(new HoverEvent(net.md_5.bungee.api.chat.HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(listString).create()));

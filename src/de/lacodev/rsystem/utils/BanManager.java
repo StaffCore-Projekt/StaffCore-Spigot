@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import de.lacodev.staffcore.api.events.*;
+import net.milkbowl.vault.chat.Chat;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
@@ -36,7 +37,24 @@ public class BanManager {
 	
 	public static Inventory baninv;
 	public static Inventory muteinv;
-	
+	private static boolean gMute;
+
+
+	//Glob Mute
+
+	public static void setGlobalMute(boolean mute){
+		gMute = mute;
+	}
+
+	public static boolean isGMute(){
+		return gMute;
+	}
+
+
+
+
+
+
 	public static int getWarns(String UUID) {
 		if(MySQL.isConnected()) {
 			ResultSet rs = MySQL.getResult("SELECT WARNS FROM ReportSystem_playerdb WHERE UUID = '"+ UUID +"'");
@@ -85,7 +103,7 @@ public class BanManager {
 
 
 	public static void openPagedBanInv(Player p, String name, int page) {
-		String title = Main.getMSG("Messages.Ban-System.Inventory.Title") + "§e" + name;
+		String title = Main.getMSG("Messages.Ban-System.Inventory.Title") + ChatColor.YELLOW + "" + name;
 		if(title.length() > 32) {
 			title = title.substring(0, 32);
 		}
@@ -129,17 +147,17 @@ public class BanManager {
 
 
 			for (BanReasons item : PageManager.getPageItems2(rows, page, 36)) {
-				baninv.setItem(baninv.firstEmpty(), Data.buildItemStack(Material.PAPER, 1, 0, "§e" + item.getName(), Main.getMSG("Messages.Ban-System.Inventory.BanItem-Lore.1").replace("%target%", name), Main.getMSG("Messages.Ban-System.Inventory.BanItem-Lore.2").replace("%reason%", item.getName())));
+				baninv.setItem(baninv.firstEmpty(), Data.buildItemStack(Material.PAPER, 1, 0, ChatColor.YELLOW + "" + item.getName(), Main.getMSG("Messages.Ban-System.Inventory.BanItem-Lore.1").replace("%target%", name), Main.getMSG("Messages.Ban-System.Inventory.BanItem-Lore.2").replace("%reason%", item.getName())));
 			}
 		} else {
-			baninv.setItem(13, Data.buildItem(Material.BARRIER, 1, 0, "§cNo Connection"));
+			baninv.setItem(13, Data.buildItem(Material.BARRIER, 1, 0, ChatColor.RED + "No Connection"));
 		}
 
 		p.openInventory(baninv);
 	}
 
 	public static void openPagedMuteInv(Player p, String name, int page) {
-		String title = Main.getMSG("Messages.Mute-System.Inventory.Title") + "§e" + name;
+		String title = Main.getMSG("Messages.Mute-System.Inventory.Title") + ChatColor.YELLOW + "" + name;
 		if(title.length() > 32) {
 			title = title.substring(0, 32);
 		}
@@ -183,10 +201,10 @@ public class BanManager {
 
 
 			for (MuteReasons item : PageManager.getPageItems3(rows, page, 36)) {
-				muteinv.setItem(muteinv.firstEmpty(), Data.buildItemStack(Material.PAPER, 1, 0, "§e" + item.getName(), Main.getMSG("Messages.Mute-System.Inventory.MuteItem-Lore.1").replace("%target%", name), Main.getMSG("Messages.Mute-System.Inventory.MuteItem-Lore.2").replace("%reason%", item.getName())));
+				muteinv.setItem(muteinv.firstEmpty(), Data.buildItemStack(Material.PAPER, 1, 0, ChatColor.YELLOW + "" + item.getName(), Main.getMSG("Messages.Mute-System.Inventory.MuteItem-Lore.1").replace("%target%", name), Main.getMSG("Messages.Mute-System.Inventory.MuteItem-Lore.2").replace("%reason%", item.getName())));
 			}
 		} else {
-			muteinv.setItem(13, Data.buildItem(Material.BARRIER, 1, 0, "§cNo Connection"));
+			muteinv.setItem(13, Data.buildItem(Material.BARRIER, 1, 0, ChatColor.RED + "No Connection"));
 		}
 
 		p.openInventory(muteinv);
@@ -200,9 +218,9 @@ public class BanManager {
 			public void run() {
 				if(MySQL.isConnected()) {
 					if(!existsBanReason(name)) {
-						
+
 						long time = 0;
-						
+
 						if(unit.toLowerCase().matches("d")) {
 							time = 1000*60*60*24;
 						} else if(unit.toLowerCase().matches("h")) {
@@ -212,7 +230,7 @@ public class BanManager {
 						} else if(unit.toLowerCase().matches("perma")) {
 							time = 1;
 						}
-						
+
 						try {
 							PreparedStatement st = MySQL.getCon().prepareStatement("INSERT INTO ReportSystem_reasonsdb(TYPE,NAME,BAN_LENGTH) VALUES ('BAN','"+ name +"','"+ (time * length) +"')");
 							st.executeUpdate();
@@ -230,10 +248,10 @@ public class BanManager {
 					}
 				}
 			}
-			
+
 		}.runTaskAsynchronously(Main.getInstance());
 	}
-	
+
 
 	public static boolean existsBanID(int id) {
 
@@ -263,7 +281,7 @@ public class BanManager {
 
 	public static Integer getIDFromBanReason(String reason) {
 		ArrayList<BanReasons> r = getBanReasons();
-		
+
 		for(BanReasons b : r) {
 			if(b.getName().equals(reason)) {
 				return b.getID();
@@ -271,10 +289,10 @@ public class BanManager {
 		}
 		return null;
 	}
-	
+
 	public static Integer getIDFromMuteReason(String reason) {
 		ArrayList<MuteReasons> r = getMuteReasons();
-		
+
 		for(MuteReasons b : r) {
 			if(b.getName().equals(reason)) {
 				return b.getID();
@@ -308,7 +326,7 @@ public class BanManager {
 		return "Unknown";
 
 	}
-	
+
 	public static boolean existsBanReason(String name) {
 		if(MySQL.isConnected()) {
 			ResultSet rs = MySQL.getResult("SELECT * FROM ReportSystem_reasonsdb WHERE TYPE = 'BAN' AND NAME = '"+ name +"'");
@@ -326,7 +344,7 @@ public class BanManager {
 		}
 		return false;
 	}
-	
+
 	public static void deleteBanReason(String name) {
 		new BukkitRunnable() {
 
@@ -349,10 +367,10 @@ public class BanManager {
 					}
 				}
 			}
-			
+
 		}.runTaskAsynchronously(Main.getInstance());
 	}
-	
+
 	public static boolean isBanned(String uuid) {
 		if(MySQL.isConnected()) {
 			ResultSet rs = MySQL.getResult("SELECT * FROM ReportSystem_bansdb WHERE BANNED_UUID = '"+ uuid +"'");
@@ -366,7 +384,7 @@ public class BanManager {
 								return true;
 							} else {
 								if(unban(uuid)) {
-									sendConsoleNotify("UNBAN", uuid);	
+									sendConsoleNotify("UNBAN", uuid);
 								}
 							}
 						}
@@ -378,7 +396,7 @@ public class BanManager {
 		}
 		return false;
 	}
-	
+
 	public static boolean unban(String uuid) {
 		if(MySQL.isConnected()) {
 			try {
@@ -441,7 +459,7 @@ public class BanManager {
 			Main.getInstance().getLogger().info(ChatColor.stripColor(msg));
 		}
 	}
-	
+
 	public static long getRawBanLength(String reason) {
 		if(MySQL.isConnected()) {
 			ResultSet rs = MySQL.getResult("SELECT BAN_LENGTH FROM ReportSystem_reasonsdb WHERE NAME = '"+ reason +"' AND TYPE = 'BAN'");
@@ -455,7 +473,7 @@ public class BanManager {
 		}
 		return 0;
 	}
-	
+
 	public static long getBanEnd(String uuid) {
 		if(MySQL.isConnected()) {
 			ResultSet rs = MySQL.getResult("SELECT BAN_END FROM ReportSystem_bansdb WHERE BANNED_UUID = '"+ uuid +"'");
@@ -469,7 +487,7 @@ public class BanManager {
 		}
 		return 0;
 	}
-	
+
 	public static String getBanReason(String uuid) {
 		if(MySQL.isConnected()) {
 			ResultSet rs = MySQL.getResult("SELECT REASON FROM ReportSystem_bansdb WHERE BANNED_UUID = '"+ uuid +"'");
@@ -483,7 +501,7 @@ public class BanManager {
 		}
 		return "Unknown";
 	}
-	
+
 
 	public static ArrayList<BanReasons> getBanReasons() {
 
@@ -514,7 +532,7 @@ public class BanManager {
 		return reasons;
 
 	}
-	
+
 	private static void addBan(String uuid) {
 		new BukkitRunnable() {
 
@@ -529,7 +547,7 @@ public class BanManager {
 					}
 				}
 			}
-			
+
 		}.runTaskAsynchronously(Main.getInstance());
 	}
 
@@ -544,18 +562,18 @@ public class BanManager {
 		}
 		return 0;
 	}
-	
+
 	public static String getBanFinalEnd(String UUID) {
 		long uhrzeit = System.currentTimeMillis();
 		long end = getBanEnd(UUID);
-		
+
 		long millis = end - uhrzeit;
-		
+
 		long sekunden = 0L;
 		long minuten = 0L;
 		long stunden = 0L;
 		long tage = 0L;
-		
+
 		while(millis >= 1000L) {
 			millis -= 1000L;
 			sekunden += 1L;
@@ -573,29 +591,29 @@ public class BanManager {
 			tage += 1L;
 		}
 		if (tage != 0L) {
-			return "§a" + tage + " §7"+ Main.getMSG("Messages.Layouts.Ban.Remaining.Days") +" §a" + stunden + " §7"+ Main.getMSG("Messages.Layouts.Ban.Remaining.Hours") +" §a" + minuten + " §7" + Main.getMSG("Messages.Layouts.Ban.Remaining.Minutes");
+			return ChatColor.GREEN + "" + tage + " " + ChatColor.GRAY + ""+ Main.getMSG("Messages.Layouts.Ban.Remaining.Days") + ChatColor.GREEN + stunden + " " + ChatColor.GRAY + Main.getMSG("Messages.Layouts.Ban.Remaining.Hours") + ChatColor.GREEN + minuten + " " + ChatColor.GRAY + "" + Main.getMSG("Messages.Layouts.Ban.Remaining.Minutes");
 		}
 		if ((tage == 0L) && (stunden != 0L)) {
-			return "§a" + stunden + " §7"+ Main.getMSG("Messages.Layouts.Ban.Remaining.Hours") +" §a" + minuten + " §7"+ Main.getMSG("Messages.Layouts.Ban.Remaining.Minutes") +" §a" + sekunden + " §7" + Main.getMSG("Messages.Layouts.Ban.Remaining.Seconds");
+			return ChatColor.GREEN + "" + stunden + " " + ChatColor.GRAY + ""+ Main.getMSG("Messages.Layouts.Ban.Remaining.Hours") + ChatColor.GREEN + minuten + " " + ChatColor.GRAY + Main.getMSG("Messages.Layouts.Ban.Remaining.Minutes") + ChatColor.GREEN + sekunden + " " + ChatColor.GRAY + "" + Main.getMSG("Messages.Layouts.Ban.Remaining.Seconds");
 		}
 		if ((tage == 0L) && (stunden == 0L) && (minuten != 0L)) {
-			return "§a" + minuten + " §7"+ Main.getMSG("Messages.Layouts.Ban.Remaining.Minutes") +" §a" + sekunden + " §7"+ Main.getMSG("Messages.Layouts.Ban.Remaining.Seconds");
+			return ChatColor.GREEN + "" + minuten + " " + ChatColor.GRAY + ""+ Main.getMSG("Messages.Layouts.Ban.Remaining.Minutes") + ChatColor.GREEN + sekunden + " " + ChatColor.GRAY + Main.getMSG("Messages.Layouts.Ban.Remaining.Seconds");
 		}
 		if ((tage == 0L) && (stunden == 0L) && (minuten == 0L) && (sekunden != 0L)) {
-			return "§a" + sekunden + " §7"+ Main.getMSG("Messages.Layouts.Ban.Remaining.Seconds");
+			return ChatColor.GREEN + "" + sekunden + " " + ChatColor.GRAY + ""+ Main.getMSG("Messages.Layouts.Ban.Remaining.Seconds");
 		}
-		return "§4Fehler in der Berechnung!";
+		return ChatColor.DARK_RED + "Fehler in der Berechnung!";
 	}
-	
+
 	public static String getBanLength(long end) {
 		if(end != -1) {
 			long millis = end;
-			
+
 			long sekunden = 0;
 			long minuten = 0;
 			long stunden = 0;
 			long tage = 0;
-			
+
 			while(millis >= 1000) {
 				millis -= 1000;
 				sekunden += 1;
@@ -616,40 +634,40 @@ public class BanManager {
 				if(stunden != 0) {
 					if(minuten != 0) {
 						if(sekunden != 0) {
-							return "§a" + tage + " §7"+ Main.getMSG("Messages.Layouts.Ban.Remaining.Days") +" §a" + stunden + " §7"+ Main.getMSG("Messages.Layouts.Ban.Remaining.Hours") +" §a" + minuten + " §7" + Main.getMSG("Messages.Layouts.Ban.Remaining.Minutes");
+							return ChatColor.GREEN + "" + tage + " " + ChatColor.GRAY + ""+ Main.getMSG("Messages.Layouts.Ban.Remaining.Days") + ChatColor.GREEN + stunden + " " + ChatColor.GRAY + Main.getMSG("Messages.Layouts.Ban.Remaining.Hours") +" §a" + minuten + " " + ChatColor.GRAY + "" + Main.getMSG("Messages.Layouts.Ban.Remaining.Minutes");
 						} else {
-							return "§a" + tage + " §7"+ Main.getMSG("Messages.Layouts.Ban.Remaining.Days") +" §a" + stunden + " §7"+ Main.getMSG("Messages.Layouts.Ban.Remaining.Hours") +" §a" + minuten + " §7" + Main.getMSG("Messages.Layouts.Ban.Remaining.Minutes");
+							return ChatColor.GREEN + "" + tage + " " + ChatColor.GRAY + ""+ Main.getMSG("Messages.Layouts.Ban.Remaining.Days") + ChatColor.GREEN + stunden + " " + ChatColor.GRAY + Main.getMSG("Messages.Layouts.Ban.Remaining.Hours") +" §a" + minuten + " " + ChatColor.GRAY + "" + Main.getMSG("Messages.Layouts.Ban.Remaining.Minutes");
 						}
 					} else {
-						return "§a" + tage + " §7"+ Main.getMSG("Messages.Layouts.Ban.Remaining.Days") +" §a" + stunden + " §7"+ Main.getMSG("Messages.Layouts.Ban.Remaining.Hours");
+						return ChatColor.GREEN + "" + tage + " " + ChatColor.GRAY + ""+ Main.getMSG("Messages.Layouts.Ban.Remaining.Days") + ChatColor.GREEN + stunden + " " + ChatColor.GRAY + Main.getMSG("Messages.Layouts.Ban.Remaining.Hours");
 					}
 				} else {
 					if(minuten != 0) {
-						return "§a" + tage + " §7"+ Main.getMSG("Messages.Layouts.Ban.Remaining.Days") +" §a" + stunden + " §7"+ Main.getMSG("Messages.Layouts.Ban.Remaining.Hours") +" §a" + minuten + " §7" + Main.getMSG("Messages.Layouts.Ban.Remaining.Minutes");
+						return ChatColor.GREEN + "" + tage + " " + ChatColor.GRAY + ""+ Main.getMSG("Messages.Layouts.Ban.Remaining.Days") + ChatColor.GREEN + stunden + " " + ChatColor.GRAY + Main.getMSG("Messages.Layouts.Ban.Remaining.Hours") +" §a" + minuten + " " + ChatColor.GRAY + "" + Main.getMSG("Messages.Layouts.Ban.Remaining.Minutes");
 					} else {
-						return "§a" + tage + " §7"+ Main.getMSG("Messages.Layouts.Ban.Remaining.Days");
+						return ChatColor.GREEN + "" + tage + " " + ChatColor.GRAY + ""+ Main.getMSG("Messages.Layouts.Ban.Remaining.Days");
 					}
 				}
 			} else {
 				if(stunden != 0) {
 					if(minuten != 0) {
 						if(sekunden != 0) {
-							return "§a" + stunden + " §7"+ Main.getMSG("Messages.Layouts.Ban.Remaining.Hours") +" §a" + minuten + " §7" + Main.getMSG("Messages.Layouts.Ban.Remaining.Minutes") +" §a" + sekunden + " §7"+ Main.getMSG("Messages.Layouts.Ban.Remaining.Seconds");
+							return ChatColor.GREEN + "" + stunden + " " + ChatColor.GRAY + ""+ Main.getMSG("Messages.Layouts.Ban.Remaining.Hours") +" §a" + minuten + " " + ChatColor.GRAY + "" + Main.getMSG("Messages.Layouts.Ban.Remaining.Minutes") +" §a" + sekunden + " " + ChatColor.GRAY + ""+ Main.getMSG("Messages.Layouts.Ban.Remaining.Seconds");
 						} else {
-							return "§a" + stunden + " §7"+ Main.getMSG("Messages.Layouts.Ban.Remaining.Hours") +" §a" + minuten + " §7" + Main.getMSG("Messages.Layouts.Ban.Remaining.Minutes");
+							return ChatColor.GREEN + "" + stunden + " " + ChatColor.GRAY + ""+ Main.getMSG("Messages.Layouts.Ban.Remaining.Hours") +" §a" + minuten + " " + ChatColor.GRAY + "" + Main.getMSG("Messages.Layouts.Ban.Remaining.Minutes");
 						}
 					} else {
-						return "§a" + stunden + " §7"+ Main.getMSG("Messages.Layouts.Ban.Remaining.Hours");
+						return ChatColor.GREEN + "" + stunden + " " + ChatColor.GRAY + ""+ Main.getMSG("Messages.Layouts.Ban.Remaining.Hours");
 					}
 				} else {
 					if(minuten != 0) {
 						if(sekunden != 0) {
-							return "§a" + minuten + " §7" + Main.getMSG("Messages.Layouts.Ban.Remaining.Minutes") +" §a" + sekunden + " §7"+ Main.getMSG("Messages.Layouts.Ban.Remaining.Seconds");
+							return ChatColor.GREEN + "" + minuten + " " + ChatColor.GRAY + "" + Main.getMSG("Messages.Layouts.Ban.Remaining.Minutes") +" §a" + sekunden + " " + ChatColor.GRAY + ""+ Main.getMSG("Messages.Layouts.Ban.Remaining.Seconds");
 						} else {
-							return "§a" + minuten + " §7" + Main.getMSG("Messages.Layouts.Ban.Remaining.Minutes");
+							return ChatColor.GREEN + "" + minuten + " " + ChatColor.GRAY + "" + Main.getMSG("Messages.Layouts.Ban.Remaining.Minutes");
 						}
 					} else {
-						return "§4ERROR";
+						return ChatColor.DARK_RED + "ERROR";
 					}
 				}
 			}
@@ -657,18 +675,18 @@ public class BanManager {
 			return Main.getMSG("Messages.Layouts.Ban.Length-Values.Permanently");
 		}
 	}
-	
+
 	public static String getMuteFinalEnd(String UUID) {
 		long uhrzeit = System.currentTimeMillis();
 		long end = getMuteEnd(UUID);
-		
+
 		long millis = end - uhrzeit;
-		
+
 		long sekunden = 0L;
 		long minuten = 0L;
 		long stunden = 0L;
 		long tage = 0L;
-		
+
 		while(millis > 1000L) {
 			millis -= 1000L;
 			sekunden += 1L;
@@ -686,18 +704,18 @@ public class BanManager {
 			tage += 1L;
 		}
 		if (tage != 0L) {
-			return "§a" + tage + " §7"+ Main.getMSG("Messages.Layouts.Mute.Remaining.Days") +" §a" + stunden + " §7"+ Main.getMSG("Messages.Layouts.Mute.Remaining.Hours") +" §a" + minuten + " §7" + Main.getMSG("Messages.Layouts.Mute.Remaining.Minutes");
+			return ChatColor.GREEN + String.valueOf(tage) + ChatColor.GRAY + " " + Main.getMSG("Messages.Layouts.Mute.Remaining.Days") + ChatColor.GREEN + String.valueOf(stunden) + ChatColor.GRAY + " " + Main.getMSG("Messages.Layouts.Mute.Remaining.Hours") + ChatColor.GREEN + String.valueOf(minuten) + " " + ChatColor.GRAY + Main.getMSG("Messages.Layouts.Mute.Remaining.Minutes");
 		}
 		if ((tage == 0L) && (stunden != 0L)) {
-			return "§a" + stunden + " §7"+ Main.getMSG("Messages.Layouts.Mute.Remaining.Hours") +" §a" + minuten + " §7"+ Main.getMSG("Messages.Layouts.Mute.Remaining.Minutes") +" §a" + sekunden + " §7" + Main.getMSG("Messages.Layouts.Mute.Remaining.Seconds");
+			return ChatColor.GREEN + String.valueOf(stunden) + ChatColor.GRAY + " " + Main.getMSG("Messages.Layouts.Mute.Remaining.Hours") + ChatColor.GREEN + String.valueOf(minuten) + ChatColor.GRAY + " " + Main.getMSG("Messages.Layouts.Mute.Remaining.Minutes") + ChatColor.GREEN + String.valueOf(sekunden) + " " + ChatColor.GRAY + Main.getMSG("Messages.Layouts.Mute.Remaining.Seconds");
 		}
 		if ((tage == 0L) && (stunden == 0L) && (minuten != 0L)) {
-			return "§a" + minuten + " §7"+ Main.getMSG("Messages.Layouts.Mute.Remaining.Minutes") +" §a" + sekunden + " §7"+ Main.getMSG("Messages.Layouts.Mute.Remaining.Seconds");
+			return ChatColor.GREEN + String.valueOf(minuten) + ChatColor.GRAY + " " + Main.getMSG("Messages.Layouts.Mute.Remaining.Minutes") + ChatColor.GREEN + String.valueOf(sekunden) + ChatColor.GRAY + " " + Main.getMSG("Messages.Layouts.Mute.Remaining.Seconds");
 		}
 		if ((tage == 0L) && (stunden == 0L) && (minuten == 0L) && (sekunden != 0L)) {
-			return "§a" + sekunden + " §7"+ Main.getMSG("Messages.Layouts.Mute.Remaining.Seconds");
+			return ChatColor.GREEN + "" + sekunden + " " + ChatColor.GRAY + ""+ Main.getMSG("Messages.Layouts.Mute.Remaining.Seconds");
 		}
-		return "§4Fehler in der Berechnung!";
+		return ChatColor.DARK_RED + "Fehler in der Berechnung!";
 	}
 	
 	public static void submitBan(String targetuuid, String reason, String team) {
@@ -772,12 +790,12 @@ public class BanManager {
 							}
 						} else {
 							Bukkit.getConsoleSender().sendMessage("");
-							Bukkit.getConsoleSender().sendMessage("§cSystem §8» §c§lFAILED §8(§7Reason does not exist§8)");
+							Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» " + ChatColor.RED + ChatColor.BOLD + "FAILED " + ChatColor.DARK_GRAY + "(" + ChatColor.GRAY + "Reason does not exist" + ChatColor.DARK_GRAY + ")");
 							Bukkit.getConsoleSender().sendMessage("");
 						}
 					} else {
 						Bukkit.getConsoleSender().sendMessage("");
-						Bukkit.getConsoleSender().sendMessage("§cSystem §8» §c§lFAILED §8(§7MySQL Connection§8)");
+						Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» " + ChatColor.RED + ChatColor.BOLD + "FAILED " + ChatColor.DARK_GRAY + "(" + ChatColor.GRAY + "MySQL Connection" + ChatColor.DARK_GRAY + ")");
 						Bukkit.getConsoleSender().sendMessage("");
 					}
 				}
@@ -851,7 +869,7 @@ public class BanManager {
 						all.playSound(all.getLocation(), Sound.valueOf(Main.getPermissionNotice("Ban-Animation.Sound")), 100, 100);
 					}
 				} else {
-					Bukkit.getConsoleSender().sendMessage(Main.getPrefix() + "§cInvalid Sound §8- §7It seems like this sound is not available in this version!");
+					Bukkit.getConsoleSender().sendMessage(Main.getPrefix() + ChatColor.RED + "Invalid Sound " + ChatColor.DARK_GRAY + "- " + ChatColor.GRAY + "It seems like this sound is not available in this version!");
 				}
 				
 				a = Bukkit.getScheduler().scheduleAsyncRepeatingTask(Main.getInstance(), () -> {
@@ -884,12 +902,12 @@ public class BanManager {
 			} else {
 				Bukkit.getConsoleSender().sendMessage("");
 				t.kickPlayer(Main.getMSG("Messages.Ban-System.Player-Kick-Screen").replace("%reason%", reason));
-				Bukkit.getConsoleSender().sendMessage(Main.getPrefix() + "§cInvalid Enviroment §8- §7" + Bukkit.getVersion());
+				Bukkit.getConsoleSender().sendMessage(Main.getPrefix() + ChatColor.RED + "Invalid Enviroment " + ChatColor.DARK_GRAY + "- " + ChatColor.GRAY + "" + Bukkit.getVersion());
 				Bukkit.getConsoleSender().sendMessage("");
-				Bukkit.getConsoleSender().sendMessage(Main.getPrefix() + "§7Choose one, which is available:");
-				Bukkit.getConsoleSender().sendMessage(Main.getPrefix() + "§3Guardian §8(§71.13+§8)");
-				Bukkit.getConsoleSender().sendMessage(Main.getPrefix() + "§3TNT §8(§71.7+§8)");
-				Bukkit.getConsoleSender().sendMessage(Main.getPrefix() + "§3Zombie §8(§71.7+§8)");
+				Bukkit.getConsoleSender().sendMessage(Main.getPrefix() + ChatColor.GRAY + "Choose one, which is available:");
+				Bukkit.getConsoleSender().sendMessage(Main.getPrefix() + ChatColor.DARK_AQUA + "Guardian " + ChatColor.DARK_GRAY + "(" + ChatColor.GRAY + "1.13+" + ChatColor.DARK_GRAY + ")");
+				Bukkit.getConsoleSender().sendMessage(Main.getPrefix() + ChatColor.DARK_AQUA + "TNT " + ChatColor.DARK_GRAY + "(" + ChatColor.GRAY + "1.7+" + ChatColor.DARK_GRAY + ")");
+				Bukkit.getConsoleSender().sendMessage(Main.getPrefix() + ChatColor.DARK_AQUA + "Zombie " + ChatColor.DARK_GRAY + "(" + ChatColor.GRAY + "1.7+" + ChatColor.DARK_GRAY + ")");
 			}
 		} else if(Main.getPermissionNotice("Ban-Animation.Type").toLowerCase().equalsIgnoreCase("zombie")) {
 			int a;
@@ -899,7 +917,7 @@ public class BanManager {
 			Zombie z = (Zombie) en;
 			
 			z.setTarget(null);
-			z.setCustomName("§cBan §8» §7" + t.getName());
+			z.setCustomName(ChatColor.RED + "Ban " + ChatColor.DARK_GRAY + "» " + ChatColor.GRAY + "" + t.getName());
 			z.setCustomNameVisible(false);
 			z.setFireTicks(0);
 			
@@ -909,7 +927,7 @@ public class BanManager {
 					all.playSound(all.getLocation(), Sound.valueOf(Main.getPermissionNotice("Ban-Animation.Sound")), 100, 100);
 				}
 			} else {
-				Bukkit.getConsoleSender().sendMessage(Main.getPrefix() + "§cInvalid Sound §8- §7It seems like this sound is not available in this version!");
+				Bukkit.getConsoleSender().sendMessage(Main.getPrefix() + ChatColor.RED + "Invalid Sound " + ChatColor.DARK_GRAY + "- " + ChatColor.GRAY + "It seems like this sound is not available in this version!");
 			}
 			
 			a = Bukkit.getScheduler().scheduleAsyncRepeatingTask(Main.getInstance(), new Runnable() {
@@ -955,7 +973,7 @@ public class BanManager {
 					all.playSound(all.getLocation(), Sound.valueOf(Main.getPermissionNotice("Ban-Animation.Sound")), 100, 100);
 				}
 			} else {
-				Bukkit.getConsoleSender().sendMessage(Main.getPrefix() + "§cInvalid Sound §8- §7It seems like this sound is not available in this version!");
+				Bukkit.getConsoleSender().sendMessage(Main.getPrefix() + ChatColor.RED + "Invalid Sound " + ChatColor.DARK_GRAY + "- " + ChatColor.GRAY + "It seems like this sound is not available in this version!");
 			}
 			
 			a = Bukkit.getScheduler().scheduleAsyncRepeatingTask(Main.getInstance(), new Runnable() {
@@ -995,12 +1013,12 @@ public class BanManager {
 		} else {
 			Bukkit.getConsoleSender().sendMessage("");
 			t.kickPlayer(Main.getMSG("Messages.Ban-System.Player-Kick-Screen").replace("%reason%", reason));
-			Bukkit.getConsoleSender().sendMessage(Main.getPrefix() + "§cInvalid AnimationType!");
+			Bukkit.getConsoleSender().sendMessage(Main.getPrefix() + ChatColor.RED + "Invalid AnimationType!");
 			Bukkit.getConsoleSender().sendMessage("");
-			Bukkit.getConsoleSender().sendMessage(Main.getPrefix() + "§7Choose one, which is available:");
-			Bukkit.getConsoleSender().sendMessage(Main.getPrefix() + "§3Guardian §8(§71.13+§8)");
-			Bukkit.getConsoleSender().sendMessage(Main.getPrefix() + "§3TNT §8(§71.7+§8)");
-			Bukkit.getConsoleSender().sendMessage(Main.getPrefix() + "§3Zombie §8(§71.7+§8)");
+			Bukkit.getConsoleSender().sendMessage(Main.getPrefix() + ChatColor.GRAY + "Choose one, which is available:");
+			Bukkit.getConsoleSender().sendMessage(Main.getPrefix() + ChatColor.DARK_AQUA + "Guardian " + ChatColor.DARK_GRAY + "(" + ChatColor.GRAY + "1.13+" + ChatColor.DARK_GRAY + ")");
+			Bukkit.getConsoleSender().sendMessage(Main.getPrefix() + ChatColor.DARK_AQUA + "TNT " + ChatColor.DARK_GRAY + "(" + ChatColor.GRAY + "1.7+" + ChatColor.DARK_GRAY + ")");
+			Bukkit.getConsoleSender().sendMessage(Main.getPrefix() + ChatColor.DARK_AQUA + "Zombie " + ChatColor.DARK_GRAY + "(" + ChatColor.GRAY + "1.7+" + ChatColor.DARK_GRAY + ")");
 		}
 		
 	}

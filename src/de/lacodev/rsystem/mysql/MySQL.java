@@ -6,7 +6,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import net.milkbowl.vault.chat.Chat;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -25,46 +27,46 @@ public class MySQL {
     
     private static Connection con;
     
-    private static String mysql = "§cSystem §8(§7MySQL§8) §8- ";
+    private static String mysql = ChatColor.RED + "System " + ChatColor.DARK_GRAY + "(" + ChatColor.GRAY + "MySQL" + ChatColor.DARK_GRAY + ") - ";
     
     // Opens MySQL Connection
     public static void connect() {
-        Bukkit.getConsoleSender().sendMessage(mysql + "§7Hooking §cDatabase Services§7...");
+        Bukkit.getConsoleSender().sendMessage(mysql + ChatColor.GRAY + "Hooking " + ChatColor.RED + "Database Services" + ChatColor.GRAY + "...");
         
         try {
             Class.forName("com.mysql.jdbc.Driver");
             setCon(DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + database + "?autoreconnect=true&useSSL=false", username, password));
-            Bukkit.getConsoleSender().sendMessage(mysql + "§aSuccessfully §7hooked §aDatabase " + database);
+            Bukkit.getConsoleSender().sendMessage(mysql + ChatColor.GREEN + "Successfully " + ChatColor.GRAY + "hooked " + ChatColor.GREEN + "Database " + database);
         } catch (SQLException e) {
         	if(Main.getInstance().getConfig().getBoolean("General.MySQL.Debug")) {
         		getDebug(e);
         	} else {
-                Bukkit.getConsoleSender().sendMessage(mysql + "§cFailed §7to hook §aDatabase Services");
-                Bukkit.getConsoleSender().sendMessage(mysql + "§7May the service is in maintenance...");
-                Bukkit.getConsoleSender().sendMessage(mysql + "§7Please check your database host!");
+                Bukkit.getConsoleSender().sendMessage(mysql + ChatColor.RED + "Failed " + ChatColor.GRAY + "to hook " + ChatColor.GREEN + "Database Services");
+                Bukkit.getConsoleSender().sendMessage(mysql + ChatColor.GRAY + "May the service is in maintenance...");
+                Bukkit.getConsoleSender().sendMessage(mysql + ChatColor.GRAY + "Please check your database host!");
         	}
         } catch (ClassNotFoundException e) {
         	if(Main.getInstance().getConfig().getBoolean("General.MySQL.Debug")) {
         		getDebug(e);
         	} else {
-                Bukkit.getConsoleSender().sendMessage(mysql + "§cFailed §7to hook §aDatabase Services");
-                Bukkit.getConsoleSender().sendMessage(mysql + "§7May the service is in maintenance...");
-                Bukkit.getConsoleSender().sendMessage(mysql + "§7Please check your database host!");
+                Bukkit.getConsoleSender().sendMessage(mysql + ChatColor.RED + "Failed " + ChatColor.GRAY + "to hook " + ChatColor.GREEN + "Database Services");
+                Bukkit.getConsoleSender().sendMessage(mysql + ChatColor.GRAY + "May the service is in maintenance...");
+                Bukkit.getConsoleSender().sendMessage(mysql + ChatColor.GRAY + "Please check your database host!");
         	}
         }
     }
     
     public static void getDebug(ClassNotFoundException e) {
-    	Bukkit.getConsoleSender().sendMessage(mysql + "§cFailed §7to hook §aDatabase Services");
-    	Bukkit.getConsoleSender().sendMessage(mysql + "§cMySQL Driver not found! Please use §eJava 8 or above");
+    	Bukkit.getConsoleSender().sendMessage(mysql + ChatColor.RED + "Failed " + ChatColor.GRAY + "to hook " + ChatColor.GREEN + "Database Services");
+    	Bukkit.getConsoleSender().sendMessage(mysql + ChatColor.RED + "MySQL Driver not found! Please use " + ChatColor.YELLOW + "Java 8 or above");
 	}
 
 	public static void getDebug(SQLException e) {
-		Bukkit.getConsoleSender().sendMessage("§8==================================================");
-		Bukkit.getConsoleSender().sendMessage(mysql + "§cFailed §7to hook §aDatabase Services");
-		Bukkit.getConsoleSender().sendMessage(mysql + "§4§lSQLState: " + e.getSQLState());
-		Bukkit.getConsoleSender().sendMessage(mysql + "§4§lPossible Issues: " + getMySQLError(e.getSQLState()));
-		Bukkit.getConsoleSender().sendMessage("§8==================================================");
+		Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_GRAY + "==================================================");
+		Bukkit.getConsoleSender().sendMessage(mysql + ChatColor.RED + "Failed " + ChatColor.GRAY + "to hook " + ChatColor.GREEN + "Database Services");
+		Bukkit.getConsoleSender().sendMessage(mysql + ChatColor.DARK_RED + ChatColor.BOLD + "SQLState: " + e.getSQLState());
+		Bukkit.getConsoleSender().sendMessage(mysql + ChatColor.DARK_RED + ChatColor.BOLD + "Possible Issues: " + getMySQLError(e.getSQLState()));
+		Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_GRAY + "==================================================");
 	}
 
 	public static String getMySQLError(String sqlState) {
@@ -100,14 +102,14 @@ public class MySQL {
     
     public static void disconnect() {
         if(isConnected()) {
-            Bukkit.getConsoleSender().sendMessage(mysql + "§7Detaching from §cDatabase Services§7...");
+            Bukkit.getConsoleSender().sendMessage(mysql + ChatColor.GRAY + "Detaching from " + ChatColor.RED + "Database Services" + ChatColor.GRAY + "...");
             try {
                 getCon().close();
-                Bukkit.getConsoleSender().sendMessage(mysql + "§aSuccessfully §7detached from §aDatabase " + database);
+                Bukkit.getConsoleSender().sendMessage(mysql + ChatColor.GREEN + "Successfully " + ChatColor.GRAY + "detached from " + ChatColor.GREEN + "Database " + database);
             } catch (SQLException e) {
-                Bukkit.getConsoleSender().sendMessage(mysql + "§cFailed §7to detach from §aDatabase Services");
-                Bukkit.getConsoleSender().sendMessage(mysql + "§7May the service is not connected...");
-                Bukkit.getConsoleSender().sendMessage(mysql + "§7Please check your database host!");
+                Bukkit.getConsoleSender().sendMessage(mysql + ChatColor.RED + "Failed " + ChatColor.GRAY + "to detach from " + ChatColor.GREEN + "Database Services");
+                Bukkit.getConsoleSender().sendMessage(mysql + ChatColor.GRAY + "May the service is not connected...");
+                Bukkit.getConsoleSender().sendMessage(mysql + ChatColor.GRAY + "Please check your database host!");
             }
         }
     }
@@ -142,12 +144,12 @@ public class MySQL {
             	st13.executeUpdate();
             	PreparedStatement st14 = getCon().prepareStatement("CREATE TABLE IF NOT EXISTS ReportSystem_ticketdb_messages(id INT(6) AUTO_INCREMENT UNIQUE, TICKET_ID INT(6), COMMENT TEXT, AUTHOR VARCHAR(255), POSTED VARCHAR(255))");
             	st14.executeUpdate();
-                Bukkit.getConsoleSender().sendMessage(mysql + "§aSuccessfully §7created/loaded §aMySQL-Table");
+                Bukkit.getConsoleSender().sendMessage(mysql + ChatColor.GREEN + "Successfully " + ChatColor.GRAY + "created/loaded " + ChatColor.GREEN + "MySQL-Table");
             } catch (SQLException e) {
             	if(Main.getInstance().getConfig().getBoolean("General.MySQL.Debug")) {
             		getDebug(e);
             	} else {
-            		Bukkit.getConsoleSender().sendMessage(mysql + "§cERROR while creating/loading MySQL-Table!");
+            		Bukkit.getConsoleSender().sendMessage(mysql + ChatColor.RED + "ERROR while creating/loading MySQL-Table!");
             	}
                
             }
@@ -170,7 +172,7 @@ public class MySQL {
 		            	if(Main.getInstance().getConfig().getBoolean("General.MySQL.Debug")) {
 		            		getDebug(e);
 		            	} else {
-		            		Bukkit.getConsoleSender().sendMessage(mysql + "§cERROR while updating MySQL-Table");
+		            		Bukkit.getConsoleSender().sendMessage(mysql + ChatColor.RED + "ERROR while updating MySQL-Table");
 		            	}
 					}
 				}
@@ -192,7 +194,7 @@ public class MySQL {
 		            	if(Main.getInstance().getConfig().getBoolean("General.MySQL.Debug")) {
 		            		getDebug(e);
 		            	} else {
-		            		Bukkit.getConsoleSender().sendMessage(mysql + "§cERROR while updating MySQL-Table");
+		            		Bukkit.getConsoleSender().sendMessage(mysql + ChatColor.RED + "ERROR while updating MySQL-Table");
 		            	}
 					}
 				}
@@ -220,8 +222,8 @@ public class MySQL {
             	if(Main.getInstance().getConfig().getBoolean("General.MySQL.Debug")) {
             		getDebug(e);
             	} else {
-            		Bukkit.getConsoleSender().sendMessage(mysql + "§cERROR while collecting data from MySQL-Table");
-            		Bukkit.getConsoleSender().sendMessage(mysql + "§8(§7Query: §e" + qry + "§8)");
+            		Bukkit.getConsoleSender().sendMessage(mysql + ChatColor.RED + "ERROR while collecting data from MySQL-Table");
+            		Bukkit.getConsoleSender().sendMessage(mysql + ChatColor.DARK_GRAY + "(" + ChatColor.GRAY + "Query: " + ChatColor.YELLOW + qry + ChatColor.DARK_GRAY + ")");
             	}
             	
             }
@@ -237,7 +239,7 @@ public class MySQL {
             	if(Main.getInstance().getConfig().getBoolean("General.MySQL.Debug")) {
             		getDebug(e);
             	} else {
-            		Bukkit.getConsoleSender().sendMessage(mysql + "§7You didn't set up the Web-UI, please §cdisable Sync-with-WebInterface §7or §csetup the WebInterface");
+            		Bukkit.getConsoleSender().sendMessage(mysql + ChatColor.GRAY + "You didn't set up the Web-UI, please " + ChatColor.RED + "disable Sync-with-WebInterface " + ChatColor.GRAY + "or " + ChatColor.RED + "setup the WebInterface");
             	}
             	
             }

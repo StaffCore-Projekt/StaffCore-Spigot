@@ -11,12 +11,15 @@ import org.bukkit.scheduler.BukkitRunnable;
 public class CMD_ChatClear implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] strings) {
-        System.out.println("ChatClear Triggered!");
         if (sender instanceof Player){
             Player p = (Player) sender;
             if( p.hasPermission(Main.getPermissionNotice("Permissions.Everything")) || p.hasPermission(Main.getPermissionNotice("Permissions.Chat.Clear")) ) {
                 int a = 200;
 
+                new BukkitRunnable(){
+
+                    @Override
+                    public void run() {
                         for (int i = 0; i < a; i++) {
                             for (Player all : Bukkit.getOnlinePlayers()){
                                 all.sendMessage("\n");
@@ -26,7 +29,12 @@ public class CMD_ChatClear implements CommandExecutor {
                         for (Player s : Bukkit.getOnlinePlayers()){
                             s.sendMessage(Main.prefix + Main.getMSG("Messages.System.ChatClear.Player").replace("%player%", p.getName()));
                         }
+                    }
+                }.runTaskAsynchronously(Main.getInstance());
 
+
+            }else{
+                p.sendMessage(Main.getPrefix() + Main.getMSG("Messages.System.No-Permission").replace("%permission%", Main.getPermissionNotice("Permissions.Chat.Clear")));
             }
         }else{
             int a = 200;

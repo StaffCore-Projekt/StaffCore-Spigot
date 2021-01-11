@@ -1,5 +1,6 @@
 package de.lacodev.rsystem.listeners;
 
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -15,7 +16,7 @@ public class Listener_NoConnection implements Listener {
 		Player p = e.getPlayer();
 		
 		if(p.hasPermission(Main.getPermissionNotice("Permissions.Everything"))) {
-			p.sendTitle("§cMySQL Connection invalid", "§7Please make sure to enter your data in mysql.yml");
+			p.sendTitle(ChatColor.RED + "MySQL Connection invalid", ChatColor.GRAY + "Please make sure to enter your data in mysql.yml");
 		}
 	}
 

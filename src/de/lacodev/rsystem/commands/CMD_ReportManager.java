@@ -1,6 +1,7 @@
 package de.lacodev.rsystem.commands;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -97,18 +98,18 @@ public class CMD_ReportManager implements CommandExecutor {
 			            }
 					} else {
 						p.sendMessage("");
-						p.sendMessage(Main.getPrefix() + "§8[§eReportManager§8]");
+						p.sendMessage(Main.getPrefix() + ChatColor.DARK_GRAY + "[" + ChatColor.YELLOW + "ReportManager" + ChatColor.DARK_GRAY + "]");
 						p.sendMessage("");
-						p.sendMessage(Main.getPrefix() + "§7/reportmanager addreason <Reason>");
-						p.sendMessage(Main.getPrefix() + "§7/reportmanager removereason <Reason>");
+						p.sendMessage(Main.getPrefix() + ChatColor.GRAY + "/reportmanager addreason <Reason>");
+						p.sendMessage(Main.getPrefix() + ChatColor.GRAY + "/reportmanager removereason <Reason>");
 						p.sendMessage("");
 					}
 				} else {
 					p.sendMessage("");
-					p.sendMessage(Main.getPrefix() + "§8[§eReportManager§8]");
+					p.sendMessage(Main.getPrefix() + ChatColor.DARK_GRAY + "[" + ChatColor.YELLOW + "ReportManager" + ChatColor.DARK_GRAY + "]");
 					p.sendMessage("");
-					p.sendMessage(Main.getPrefix() + "§7/reportmanager addreason <Reason>");
-					p.sendMessage(Main.getPrefix() + "§7/reportmanager removereason <Reason>");
+					p.sendMessage(Main.getPrefix() + ChatColor.GRAY + "/reportmanager addreason <Reason>");
+					p.sendMessage(Main.getPrefix() + ChatColor.GRAY + "/reportmanager removereason <Reason>");
 					p.sendMessage("");
 				}
 			} else {
@@ -117,7 +118,7 @@ public class CMD_ReportManager implements CommandExecutor {
 			
 		} else {
 			Bukkit.getConsoleSender().sendMessage("");
-			Bukkit.getConsoleSender().sendMessage("§cSystem §8» §c§lFAILED §8(§7Console-Input§8)");
+			Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» " + ChatColor.RED + ChatColor.BOLD + "FAILED " + ChatColor.DARK_GRAY + "(" + ChatColor.GRAY + "Console-Input" + ChatColor.DARK_GRAY + ")");
 			Bukkit.getConsoleSender().sendMessage("");
 		}
 		return true;

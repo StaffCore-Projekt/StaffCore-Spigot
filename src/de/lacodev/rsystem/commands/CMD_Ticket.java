@@ -2,6 +2,7 @@ package de.lacodev.rsystem.commands;
 
 import java.sql.SQLException;
 
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -20,8 +21,8 @@ public class CMD_Ticket implements CommandExecutor {
 			Player p = (Player)sender;
 			
 			if(args.length == 0) {
-				p.sendMessage(Main.getPrefix() + "§7/ticket create");
-				p.sendMessage(Main.getPrefix() + "§7/ticket list");
+				p.sendMessage(Main.getPrefix() + ChatColor.GRAY + "/ticket create");
+				p.sendMessage(Main.getPrefix() + ChatColor.GRAY + "/ticket list");
 			}
 			
 			if(args.length == 1) {

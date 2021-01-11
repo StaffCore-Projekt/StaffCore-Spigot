@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -58,7 +59,7 @@ public class CMD_Reports implements CommandExecutor {
 												
 									String listString = Main.getMSG("Messages.Report-System.Reports.Layout-Hover-Title") + "\n\n";
 									for(String s : getReportReasonsFromPlayer(reported.get(i))) {
-										listString += "§8- §e"+ s + "\n";
+										listString += ChatColor.DARK_GRAY + "- " + ChatColor.YELLOW + s + "\n";
 									}
 									
 									tc.setHoverEvent(new HoverEvent(net.md_5.bungee.api.chat.HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(listString).create()));
@@ -109,9 +110,9 @@ public class CMD_Reports implements CommandExecutor {
 		Player target = Bukkit.getPlayer(SystemManager.getUsernameByUUID(string));
 		
 		if(target != null) {
-			return "§aOnline";
+			return ChatColor.GREEN + "Online";
 		} else {
-			return "§cOffline";
+			return ChatColor.RED + "Offline";
 		}
 	}
 

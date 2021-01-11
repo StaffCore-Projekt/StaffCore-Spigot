@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.Date;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -64,7 +65,7 @@ public class CMD_BanHistory implements CommandExecutor {
 										p.sendMessage("");
 									} catch (SQLException e) {
 										Bukkit.getConsoleSender().sendMessage("");
-										Bukkit.getConsoleSender().sendMessage("§cSystem §8» §c§lFAILED §8(§7Fetch BanHistory§8)");
+										Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» " + ChatColor.RED + ChatColor.BOLD + "FAILED " + ChatColor.DARK_GRAY + "(" + ChatColor.GRAY + "Fetch BanHistory" + ChatColor.DARK_GRAY + ")");
 										Bukkit.getConsoleSender().sendMessage("");
 									}
 								}					
@@ -148,7 +149,7 @@ public class CMD_BanHistory implements CommandExecutor {
 									sender.sendMessage("");
 								} catch (SQLException e) {
 									Bukkit.getConsoleSender().sendMessage("");
-									Bukkit.getConsoleSender().sendMessage("§cSystem §8» §c§lFAILED §8(§7Fetch BanHistory§8)");
+									Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» " + ChatColor.RED + ChatColor.BOLD + "FAILED " + ChatColor.DARK_GRAY + "(" + ChatColor.GRAY + "Fetch BanHistory" + ChatColor.DARK_GRAY + ")");
 									Bukkit.getConsoleSender().sendMessage("");
 								}
 							}					
@@ -195,14 +196,14 @@ public class CMD_BanHistory implements CommandExecutor {
 
 	protected String checkForExpiration(String uuid, String reason, long long1) {
 		if(System.currentTimeMillis() > long1) {
-			return "§8(§cExpired§8)";
+			return ChatColor.DARK_GRAY + "(" + ChatColor.RED + "Expired" + ChatColor.DARK_GRAY + ")";
 		} else {
 			if(BanManager.isBanned(uuid)) {
 				if(BanManager.getBanReason(uuid).matches(reason)) {
 					if(BanManager.getBanEnd(uuid) == -1) {
-						return "§8("+ Main.getMSG("Layout.Ban.Length-Values.Permanently") +"§8)";
+						return ChatColor.DARK_GRAY + "("+ Main.getMSG("Layout.Ban.Length-Values.Permanently") +ChatColor.DARK_GRAY + ")";
 					} else {
-						return "§8("+ BanManager.getBanFinalEnd(uuid) + "§8)";
+						return ChatColor.DARK_GRAY + "("+ BanManager.getBanFinalEnd(uuid) + ChatColor.DARK_GRAY + ")";
 					}
 				} else {
 					return Main.getMSG("Messages.Ban-System.History.Status.Unbanned");

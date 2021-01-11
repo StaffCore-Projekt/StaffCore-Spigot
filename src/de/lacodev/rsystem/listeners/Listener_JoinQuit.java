@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -37,13 +38,13 @@ public class Listener_JoinQuit implements Listener {
 			if(!Main.getInstance().latest) {
 				if(!Main.getInstance().experimental) {
 					p.sendMessage("");
-					p.sendMessage(Main.getPrefix() + "§cThere is an update available!");
-					
+					p.sendMessage(Main.getPrefix() + ChatColor.RED + "There is an update available!");
+
 					TextComponent tc = new TextComponent();
-					tc.setText(Main.getPrefix() + "§7Download: ");
+					tc.setText(Main.getPrefix() + ChatColor.GRAY + "Download: ");
 					
 					TextComponent tc2 = new TextComponent();
-					tc2.setText("§cClick here");
+					tc2.setText(ChatColor.RED + "Click here");
 					tc2.setClickEvent(new ClickEvent(Action.OPEN_URL, "https://www.spigotmc.org/resources/staffcore-1-7-1-15.48655/updates"));
 					tc.addExtra(tc2);
 					p.spigot().sendMessage(tc);
@@ -55,8 +56,8 @@ public class Listener_JoinQuit implements Listener {
 					}
 				} else {
 					p.sendMessage("");
-					p.sendMessage(Main.getPrefix() + "§7You are using an §dexperimental build§7!");
-					p.sendMessage(Main.getPrefix() + "§7If you find any errors, please report them!");
+					p.sendMessage(Main.getPrefix() + ChatColor.GRAY + "You are using an " + ChatColor.LIGHT_PURPLE + "experimental build" + ChatColor.GRAY + "!");
+					p.sendMessage(Main.getPrefix() + ChatColor.GRAY + "If you find any errors, please report them!");
 					p.sendMessage("");
 				}
 			}
@@ -100,7 +101,7 @@ public class Listener_JoinQuit implements Listener {
 								cfg.save(file);
 							} catch (IOException e1) {
 								Bukkit.getConsoleSender().sendMessage("");
-								Bukkit.getConsoleSender().sendMessage("§cSystem §8» §c§lFAILED §8(§7Save MatrixLog§8)");
+								Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» " + ChatColor.RED + ChatColor.BOLD + "FAILED " + ChatColor.DARK_GRAY + "(" + ChatColor.GRAY + "Save MatrixLog" + ChatColor.DARK_GRAY + ")");
 								Bukkit.getConsoleSender().sendMessage("");
 							}
 						}
@@ -122,7 +123,7 @@ public class Listener_JoinQuit implements Listener {
 								cfg.save(file);
 							} catch (IOException e1) {
 								Bukkit.getConsoleSender().sendMessage("");
-								Bukkit.getConsoleSender().sendMessage("§cSystem §8» §c§lFAILED §8(§7Save SpartanLog§8)");
+								Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» " + ChatColor.RED + ChatColor.BOLD + "FAILED " + ChatColor.DARK_GRAY + "(" + ChatColor.GRAY + "Save SpartanLog" + ChatColor.DARK_GRAY + ")");
 								Bukkit.getConsoleSender().sendMessage("");
 							}
 						}

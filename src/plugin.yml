@@ -51,3 +51,8 @@ commands:
       description: Create and list your tickets
    chatclear:
       description: Clears your Chat
+   broadcast:
+      aliases: [ bc ]
+      description: BroadCast a Message
+   globalmute:
+      description: Mute or Unmute the GlobalChat

@@ -1,5 +1,6 @@
 package de.lacodev.rsystem.listeners;
 
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Guardian;
 import org.bukkit.entity.Player;
@@ -56,7 +57,7 @@ public class Listener_GuardianDMG implements Listener {
 		
 		if(en instanceof Zombie) {
 			if(en.getCustomName() != null) {
-				if(e.getEntity().getCustomName().startsWith("§cBan §8» §7")) {
+				if(e.getEntity().getCustomName().startsWith(ChatColor.RED + "Ban " + ChatColor.DARK_GRAY + "» " + ChatColor.GRAY)) {
 					e.setCancelled(true);
 				}
 			}
@@ -76,7 +77,7 @@ public class Listener_GuardianDMG implements Listener {
 	@EventHandler
 	public void onZombie(EntityTargetLivingEntityEvent e) {
 		if(e.getEntity().getCustomName() != null) {
-			if(e.getEntity().getCustomName().startsWith("§cBan §8» §7")) {
+			if(e.getEntity().getCustomName().startsWith(ChatColor.RED + "Ban " + ChatColor.DARK_GRAY + "» " + ChatColor.GRAY)) {
 				e.setCancelled(true);
 			}
 		}

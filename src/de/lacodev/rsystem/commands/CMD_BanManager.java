@@ -1,6 +1,7 @@
 package de.lacodev.rsystem.commands;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -173,13 +174,13 @@ public class CMD_BanManager implements CommandExecutor {
 
 						p.sendMessage("");
 
-						p.sendMessage(Main.getPrefix() + "§8[§eBanManager§8]");
+						p.sendMessage(Main.getPrefix() + ChatColor.DARK_GRAY + "[" + ChatColor.YELLOW + "BanManager" + ChatColor.DARK_GRAY + "]");
 
 						p.sendMessage("");
 
-						p.sendMessage(Main.getPrefix() + "§7/banmanager addreason <Ban/Mute> <Length: 30d / Perma> <Reason>");
+						p.sendMessage(Main.getPrefix() + ChatColor.GRAY + "/banmanager addreason <Ban/Mute> <Length: 30d / Perma> <Reason>");
 
-						p.sendMessage(Main.getPrefix() + "§7/banmanager removereason <Ban/Mute> <ID>");
+						p.sendMessage(Main.getPrefix() + ChatColor.GRAY + "/banmanager removereason <Ban/Mute> <ID>");
 
 						p.sendMessage("");
 
@@ -293,13 +294,13 @@ public class CMD_BanManager implements CommandExecutor {
 
 						p.sendMessage("");
 
-						p.sendMessage(Main.getPrefix() + "§8[§eBanManager§8]");
+						p.sendMessage(Main.getPrefix() + ChatColor.DARK_GRAY + "[" + ChatColor.YELLOW + "BanManager" + ChatColor.DARK_GRAY + "]");
 
 						p.sendMessage("");
 
-						p.sendMessage(Main.getPrefix() + "§7/banmanager addreason <Ban/Mute> <Length: 30d / Perma> <Reason>");
+						p.sendMessage(Main.getPrefix() + ChatColor.GRAY + "/banmanager addreason <Ban/Mute> <Length: 30d / Perma> <Reason>");
 
-						p.sendMessage(Main.getPrefix() + "§7/banmanager removereason <Ban/Mute> <ID>");
+						p.sendMessage(Main.getPrefix() + ChatColor.GRAY + "/banmanager removereason <Ban/Mute> <ID>");
 
 						p.sendMessage("");
 
@@ -309,13 +310,13 @@ public class CMD_BanManager implements CommandExecutor {
 
 					p.sendMessage("");
 
-					p.sendMessage(Main.getPrefix() + "§8[§eBanManager§8]");
+					p.sendMessage(Main.getPrefix() + ChatColor.DARK_GRAY + "[" + ChatColor.YELLOW + "BanManager" + ChatColor.DARK_GRAY + "]");
 
 					p.sendMessage("");
 
-					p.sendMessage(Main.getPrefix() + "§7/banmanager addreason <Ban/Mute> <Length: 30d / Perma> <Reason>");
+					p.sendMessage(Main.getPrefix() + ChatColor.GRAY + "/banmanager addreason <Ban/Mute> <Length: 30d / Perma> <Reason>");
 
-					p.sendMessage(Main.getPrefix() + "§7/banmanager removereason <Ban/Mute> <ID>");
+					p.sendMessage(Main.getPrefix() + ChatColor.GRAY + "/banmanager removereason <Ban/Mute> <ID>");
 
 					p.sendMessage("");
 
@@ -333,7 +334,7 @@ public class CMD_BanManager implements CommandExecutor {
 
 			Bukkit.getConsoleSender().sendMessage("");
 
-			Bukkit.getConsoleSender().sendMessage("§cSystem §8» §c§lFAILED §8(§7Console-Input§8)");
+			Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» " + ChatColor.RED + ChatColor.BOLD + "FAILED " + ChatColor.DARK_GRAY + "(" + ChatColor.GRAY + "Console-Input" + ChatColor.DARK_GRAY + ")");
 
 			Bukkit.getConsoleSender().sendMessage("");
 

@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -55,7 +56,7 @@ public class TranslationHandler {
 		}
 		
 		Bukkit.getConsoleSender().sendMessage("");
-		Bukkit.getConsoleSender().sendMessage("§cSystem §8» §aSuccessfully §8cached §a" + fallback.size() + " Fallback-Translations§8(§7US§8)");
+		Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» " + ChatColor.GREEN + "Successfully " + ChatColor.DARK_GRAY + "cached " + ChatColor.GREEN + fallback.size() + " Fallback-Translations" + ChatColor.DARK_GRAY + "(" + ChatColor.GRAY + "US" + ChatColor.DARK_GRAY + ")");
 		Bukkit.getConsoleSender().sendMessage("");
 		
 	}
@@ -77,7 +78,7 @@ public class TranslationHandler {
 		}
 		
 		Bukkit.getConsoleSender().sendMessage("");
-		Bukkit.getConsoleSender().sendMessage("§cSystem §8» §aSuccessfully §8cached §a" + language.size() + " Translations§8(§7"+ lang.toUpperCase() +"§8)");
+		Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» " + ChatColor.GREEN + "Successfully " + ChatColor.DARK_GRAY + "cached " + ChatColor.GREEN + language.size() + " Translations" + ChatColor.DARK_GRAY + "(" +ChatColor.GRAY + lang.toUpperCase() + ChatColor.DARK_GRAY + ")");
 		Bukkit.getConsoleSender().sendMessage("");
 		
 	}
@@ -99,7 +100,7 @@ public class TranslationHandler {
 		}
 		
 		Bukkit.getConsoleSender().sendMessage("");
-		Bukkit.getConsoleSender().sendMessage("§cSystem §8» §aSuccessfully §8cached §a" + custom.size() + " Messages§8(§7CUSTOM§8)");
+		Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System" + ChatColor.DARK_GRAY + "» " + ChatColor.GREEN + "Successfully " + ChatColor.DARK_GRAY + "cached " + ChatColor.GREEN + custom.size() + " Messages" + ChatColor.DARK_GRAY + "(" + ChatColor.GRAY + "CUSTOM" + ChatColor.DARK_GRAY + ")");
 		Bukkit.getConsoleSender().sendMessage("");
 		
 	}

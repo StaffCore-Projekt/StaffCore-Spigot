@@ -2,6 +2,7 @@ package de.lacodev.rsystem.listeners;
 
 import java.sql.SQLException;
 
+import net.milkbowl.vault.chat.Chat;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.enchantments.Enchantment;
@@ -258,15 +259,15 @@ public class Listener_Inventories implements Listener {
 			}
 		}
 		
-		if(e.getView().getTitle().startsWith("§cStaffCore §8- §7Protections")) {
+		if(e.getView().getTitle().startsWith(ChatColor.RED + "StaffCore " + ChatColor.DARK_GRAY + "- " + ChatColor.GRAY + "Protections")) {
 			e.setCancelled(true);
 			PanelManager manager = new PanelManager();
 
 			if(e.getCurrentItem() != null) {
 				if (e.getSlot() > 8 && e.getSlot() < 45) {
 					if(e.getCurrentItem().hasItemMeta()) {
-						if(e.getCurrentItem().getItemMeta().getDisplayName().endsWith(" §8| §cUnprotected")) {
-							String s = e.getCurrentItem().getItemMeta().getDisplayName().replace(" §8| §cUnprotected", "");
+						if(e.getCurrentItem().getItemMeta().getDisplayName().endsWith(ChatColor.DARK_GRAY + " | " + ChatColor.RED + "Unprotected")) {
+							String s = e.getCurrentItem().getItemMeta().getDisplayName().replace(ChatColor.DARK_GRAY + " | " + ChatColor.RED + "Unprotected", "");
 							String playername = ChatColor.stripColor(s);
 							
 							SystemManager.changeProtectionState(playername);
@@ -275,18 +276,18 @@ public class Listener_Inventories implements Listener {
 							SkullMeta meta = (SkullMeta) player.getItemMeta();
 							meta.setOwner(playername);
 							if(SystemManager.isProtected(SystemManager.getUUIDByName(playername))) {
-								meta.setDisplayName("§7" + playername + " §8| §aProtected");
+								meta.setDisplayName(ChatColor.GRAY + playername + ChatColor.DARK_GRAY + " | " + ChatColor.GREEN + "Protected");
 								meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
 								meta.addEnchant(Enchantment.DURABILITY, 1, true);
 							} else {
-								meta.setDisplayName("§7" + playername + " §8| §cUnprotected");
+								meta.setDisplayName(ChatColor.GRAY + playername + ChatColor.DARK_GRAY + " | " + ChatColor.RED + "Unprotected");
 							}
 							player.setItemMeta(meta);
 								
 							e.getClickedInventory().setItem(e.getSlot(), player);
 							
-						} else if(e.getCurrentItem().getItemMeta().getDisplayName().endsWith(" §8| §aProtected")) {
-							String s = e.getCurrentItem().getItemMeta().getDisplayName().replace(" §8| §aProtected", "");
+						} else if(e.getCurrentItem().getItemMeta().getDisplayName().endsWith(ChatColor.DARK_GRAY + " | " + ChatColor.GREEN + "Protected")) {
+							String s = e.getCurrentItem().getItemMeta().getDisplayName().replace(ChatColor.DARK_GRAY + " | " + ChatColor.GREEN + "Protected", "");
 							String playername = ChatColor.stripColor(s);
 							
 							SystemManager.changeProtectionState(playername);
@@ -295,11 +296,11 @@ public class Listener_Inventories implements Listener {
 							SkullMeta meta = (SkullMeta) player.getItemMeta();
 							meta.setOwner(playername);
 							if(SystemManager.isProtected(SystemManager.getUUIDByName(playername))) {
-								meta.setDisplayName("§7" + playername + " §8| §aProtected");
+								meta.setDisplayName(ChatColor.GRAY + playername + ChatColor.DARK_GRAY + " | " + ChatColor.GREEN + "Protected");
 								meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
 								meta.addEnchant(Enchantment.DURABILITY, 1, true);
 							} else {
-								meta.setDisplayName("§7" + playername + " §8| §cUnprotected");
+								meta.setDisplayName(ChatColor.GRAY + playername + ChatColor.DARK_GRAY + " | " + ChatColor.RED + "Unprotected");
 							}
 							player.setItemMeta(meta);
 								
@@ -307,7 +308,7 @@ public class Listener_Inventories implements Listener {
 						}
 					}
 				} else {
-					if(e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§c◄ Go back")) {
+					if(e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.RED + "◄ Go back")) {
 						manager.openPlayerManagement(p);
 					}
 					int page = PageManager.page.get(((Player) e.getWhoClicked()).getPlayer());
@@ -413,20 +414,20 @@ public class Listener_Inventories implements Listener {
 			}
 		}
 		
-		if(e.getView().getTitle().startsWith("§7Settings §8- §eChatFilter")) {
+		if(e.getView().getTitle().startsWith(ChatColor.GRAY + "Settings " + ChatColor.DARK_GRAY + "- " + ChatColor.YELLOW + "ChatFilter")) {
 			e.setCancelled(true);
 			
 			if(e.getCurrentItem() != null) {
 				if(e.getCurrentItem().hasItemMeta()) {
-					if(e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§3Add Cursed-Words §8| §7Deactivated")) {
+					if(e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.DARK_AQUA + "Add Cursed-Words " + ChatColor.DARK_GRAY + "| " + ChatColor.GRAY + "Deactivated")) {
 						InventoryHandler.filter.add(p);
 						p.closeInventory();
-						p.sendMessage(Main.getPrefix() + "§7You are now able to write your curse words which will be blocked afterwards!");
+						p.sendMessage(Main.getPrefix() + ChatColor.GRAY + "You are now able to write your curse words which will be blocked afterwards!");
 					}
-					if(e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§3Add Cursed-Words §8| §aActivated")) {
+					if(e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.DARK_AQUA + "Add Cursed-Words " + ChatColor.DARK_GRAY + "| " + ChatColor.GREEN + "Activated")) {
 						InventoryHandler.filter.remove(p);
 						p.closeInventory();
-						p.sendMessage(Main.getPrefix() + "§7You can now use the chat as before!");
+						p.sendMessage(Main.getPrefix() + ChatColor.GRAY + "You can now use the chat as before!");
 					}
 				}
 			}

@@ -3,6 +3,7 @@ package de.lacodev.rsystem.commands;
 import java.util.ArrayList;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -27,13 +28,13 @@ public class CMD_Report implements CommandExecutor {
 				} else if(args.length == 1) {
 					if(args[0].toLowerCase().equalsIgnoreCase("templates")) {
 						p.sendMessage("");
-						p.sendMessage(Main.getPrefix() + "§eReport Templates");
+						p.sendMessage(Main.getPrefix() + ChatColor.YELLOW + "Report Templates");
 						p.sendMessage("");
 						ArrayList<String> reasons = ReportManager.getReportReasons();
 						
 						if(reasons.size() > 0) {
 							for(int i = 0; i < reasons.size(); i++) {
-								p.sendMessage(Main.getPrefix() + "§8- §e" + reasons.get(i));
+								p.sendMessage(Main.getPrefix() + ChatColor.DARK_GRAY + "- " + ChatColor.YELLOW + reasons.get(i));
 							}
 						} else {
 							p.sendMessage(Main.getPrefix() + Main.getMSG("Messages.Report-System.No-Reportreasons"));
@@ -92,7 +93,7 @@ public class CMD_Report implements CommandExecutor {
 			
 		} else {
 			Bukkit.getConsoleSender().sendMessage("");
-			Bukkit.getConsoleSender().sendMessage("§cSystem §8» §c§lFAILED §8(§7Console-Input§8)");
+			Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» " + ChatColor.RED + ChatColor.BOLD + "FAILED " + ChatColor.DARK_GRAY + "(" + ChatColor.GRAY + "Console-Input" + ChatColor.DARK_GRAY + ")");
 			Bukkit.getConsoleSender().sendMessage("");
 		}
 		return true;
