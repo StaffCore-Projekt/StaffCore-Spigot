@@ -88,12 +88,12 @@ public class Main extends JavaPlugin{
 		
 		try {
 			Bukkit.getConsoleSender().sendMessage("");
-			Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» Checking version... " + ChatColor.DARK_GRAY + "(" + ChatColor.GRAY + this.getDescription().getVersion() + ChatColor.DARK_GRAY + ")");
+			Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "Â» Checking version... " + ChatColor.DARK_GRAY + "(" + ChatColor.GRAY + this.getDescription().getVersion() + ChatColor.DARK_GRAY + ")");
 			Bukkit.getConsoleSender().sendMessage("");
 			checkLizenz(new URL("https://api.lacodev.de/staffcore/versions/"));
 		} catch (MalformedURLException e) {
 			Bukkit.getConsoleSender().sendMessage("");
-			Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» " + ChatColor.RED + "FAILED " + ChatColor.DARK_GRAY + "(" + ChatColor.GRAY + "Versioncheck" + ChatColor.DARK_GRAY + ")");
+			Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "Â» " + ChatColor.RED + "FAILED " + ChatColor.DARK_GRAY + "(" + ChatColor.GRAY + "Versioncheck" + ChatColor.DARK_GRAY + ")");
 			Bukkit.getConsoleSender().sendMessage("");
 		}
 		
@@ -168,27 +168,27 @@ public class Main extends JavaPlugin{
 				}
 				
 				Bukkit.getConsoleSender().sendMessage("");
-				Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» Environment: " + ChatColor.GRAY + Bukkit.getVersion());
+				Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "Â» Environment: " + ChatColor.GRAY + Bukkit.getVersion());
 				if(experimental) {
-					Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» StaffCore: " + ChatColor.GRAY + "v" + this.getDescription().getVersion() + ChatColor.DARK_GRAY + "(" + ChatColor.LIGHT_PURPLE + "EXPERIMENTAL" + ChatColor.DARK_GRAY + ")");
+					Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "Â» StaffCore: " + ChatColor.GRAY + "v" + this.getDescription().getVersion() + ChatColor.DARK_GRAY + "(" + ChatColor.LIGHT_PURPLE + "EXPERIMENTAL" + ChatColor.DARK_GRAY + ")");
 				} else if(latest) {
-					Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» StaffCore: " + ChatColor.GRAY + "v" + this.getDescription().getVersion() + ChatColor.DARK_GRAY + "(" + ChatColor.GREEN + "LATEST" + ChatColor.DARK_GRAY + ")");
+					Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "Â» StaffCore: " + ChatColor.GRAY + "v" + this.getDescription().getVersion() + ChatColor.DARK_GRAY + "(" + ChatColor.GREEN + "LATEST" + ChatColor.DARK_GRAY + ")");
 				} else {
-					Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» StaffCore: " + ChatColor.GRAY + "v" + this.getDescription().getVersion() + ChatColor.DARK_GRAY + "(" + ChatColor.RED + "OUTDATED" + ChatColor.DARK_GRAY + ")");
+					Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "Â» StaffCore: " + ChatColor.GRAY + "v" + this.getDescription().getVersion() + ChatColor.DARK_GRAY + "(" + ChatColor.RED + "OUTDATED" + ChatColor.DARK_GRAY + ")");
 				}
-				Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» " + ChatColor.GREEN + "" + ChatColor.BOLD + "SUCCESS " + ChatColor.DARK_GRAY + "(" + ChatColor.GREEN + "PLUGIN STARTED" + ChatColor.DARK_GRAY + ")");
+				Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "Â» " + ChatColor.GREEN + "" + ChatColor.BOLD + "SUCCESS " + ChatColor.DARK_GRAY + "(" + ChatColor.GREEN + "PLUGIN STARTED" + ChatColor.DARK_GRAY + ")");
 				Bukkit.getConsoleSender().sendMessage("");
 			} else {
 				Bukkit.getConsoleSender().sendMessage("");
-				Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» " + ChatColor.GRAY + "Environment: " + Bukkit.getVersion());
+				Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "Â» " + ChatColor.GRAY + "Environment: " + Bukkit.getVersion());
 				if(experimental) {
-					Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» StaffCore: " + ChatColor.GRAY + "v" + this.getDescription().getVersion() + ChatColor.DARK_GRAY + "(" + ChatColor.LIGHT_PURPLE + "EXPERIMENTAL" + ChatColor.DARK_GRAY + ")");
+					Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "Â» StaffCore: " + ChatColor.GRAY + "v" + this.getDescription().getVersion() + ChatColor.DARK_GRAY + "(" + ChatColor.LIGHT_PURPLE + "EXPERIMENTAL" + ChatColor.DARK_GRAY + ")");
 				} else if(latest) {
-					Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» StaffCore: " + ChatColor.GRAY + "v" + this.getDescription().getVersion() + ChatColor.DARK_GRAY + "(" + ChatColor.GREEN + "LATEST" + ChatColor.DARK_GRAY + ")");
+					Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "Â» StaffCore: " + ChatColor.GRAY + "v" + this.getDescription().getVersion() + ChatColor.DARK_GRAY + "(" + ChatColor.GREEN + "LATEST" + ChatColor.DARK_GRAY + ")");
 				} else {
-					Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» StaffCore: " + ChatColor.GRAY + "v" + this.getDescription().getVersion() + ChatColor.DARK_GRAY + "(" + ChatColor.RED + "OUTDATED" + ChatColor.DARK_GRAY + ")");
+					Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "Â» StaffCore: " + ChatColor.GRAY + "v" + this.getDescription().getVersion() + ChatColor.DARK_GRAY + "(" + ChatColor.RED + "OUTDATED" + ChatColor.DARK_GRAY + ")");
 				}
-				Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» " + ChatColor.RED + "" + ChatColor.BOLD + "ERROR " + ChatColor.DARK_GRAY + "(" + ChatColor.RED + "BanSystemDetectionService CRASHED" + ChatColor.DARK_GRAY + ")");
+				Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "Â» " + ChatColor.RED + "" + ChatColor.BOLD + "ERROR " + ChatColor.DARK_GRAY + "(" + ChatColor.RED + "BanSystemDetectionService CRASHED" + ChatColor.DARK_GRAY + ")");
 				Bukkit.getConsoleSender().sendMessage("");
 			}
 		} else {
@@ -200,16 +200,16 @@ public class Main extends JavaPlugin{
 				public void run() {
 					if(!MySQL.isConnected()) {
 						Bukkit.getConsoleSender().sendMessage("");
-						Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "StaffCore " + ChatColor.DARK_GRAY + "» " + ChatColor.RED + "" + ChatColor.BOLD + "ERROR " + ChatColor.DARK_GRAY + "(" + ChatColor.RED + "NO CONNECTION" + ChatColor.DARK_GRAY + ")");
-						Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "StaffCore " + ChatColor.DARK_GRAY + "» " + ChatColor.GRAY + "Please make sure to set up your database correctly!");
+						Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "StaffCore " + ChatColor.DARK_GRAY + "Â» " + ChatColor.RED + "" + ChatColor.BOLD + "ERROR " + ChatColor.DARK_GRAY + "(" + ChatColor.RED + "NO CONNECTION" + ChatColor.DARK_GRAY + ")");
+						Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "StaffCore " + ChatColor.DARK_GRAY + "Â» " + ChatColor.GRAY + "Please make sure to set up your database correctly!");
 						Bukkit.getConsoleSender().sendMessage("");
 					}
 				}
 			}.runTaskTimerAsynchronously(this, 0, 30*20);
 			
 			Bukkit.getConsoleSender().sendMessage("");
-			Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» Environment: " + ChatColor.GRAY + Bukkit.getVersion());
-			Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» " + ChatColor.RED + "" + ChatColor.BOLD + "ERROR " + ChatColor.DARK_GRAY + "(" + ChatColor.RED + "NO CONNECTION" + ChatColor.DARK_GRAY + ")");
+			Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "Â» Environment: " + ChatColor.GRAY + Bukkit.getVersion());
+			Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "Â» " + ChatColor.RED + "" + ChatColor.BOLD + "ERROR " + ChatColor.DARK_GRAY + "(" + ChatColor.RED + "NO CONNECTION" + ChatColor.DARK_GRAY + ")");
 			Bukkit.getConsoleSender().sendMessage("");
 		}
 	}
@@ -217,7 +217,7 @@ public class Main extends JavaPlugin{
 	private void startAntiMcLeaksServices() {
 		if(getConfig().getBoolean("MCLeaks-Blocker.Enable")) {
 			Bukkit.getConsoleSender().sendMessage("");
-			Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» " + ChatColor.DARK_GRAY + "Activating MCLeaks-Blocker...");
+			Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "Â» " + ChatColor.DARK_GRAY + "Activating MCLeaks-Blocker...");
 			
 			if(getConfig().getBoolean("MCLeaks-Blocker.Cache-Updater.Enable")) {
 				new BukkitRunnable() {
@@ -241,12 +241,12 @@ public class Main extends JavaPlugin{
 		
 		try {
 			Bukkit.getConsoleSender().sendMessage("");
-			Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» Checking version... " + ChatColor.DARK_GRAY + "(" + ChatColor.GRAY + ""+ this.getDescription().getVersion() +"" + ChatColor.DARK_GRAY + ")");
+			Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "Â» Checking version... " + ChatColor.DARK_GRAY + "(" + ChatColor.GRAY + ""+ this.getDescription().getVersion() +"" + ChatColor.DARK_GRAY + ")");
 			Bukkit.getConsoleSender().sendMessage("");
 			checkLizenz(new URL("https://api.lacodev.de/staffcore/versions/"));
 		} catch (MalformedURLException e) {
 			Bukkit.getConsoleSender().sendMessage("");
-			Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» " + ChatColor.RED + "" + ChatColor.BOLD + "FAILED " + ChatColor.DARK_GRAY + "(" + ChatColor.GRAY + "Versioncheck" + ChatColor.DARK_GRAY + ")");
+			Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "Â» " + ChatColor.RED + "" + ChatColor.BOLD + "FAILED " + ChatColor.DARK_GRAY + "(" + ChatColor.GRAY + "Versioncheck" + ChatColor.DARK_GRAY + ")");
 			Bukkit.getConsoleSender().sendMessage("");
 		}
 		
@@ -307,27 +307,27 @@ public class Main extends JavaPlugin{
 				startAntiMcLeaksServices();
 				
 				Bukkit.getConsoleSender().sendMessage("");
-				Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» Environment: " + ChatColor.GRAY + Bukkit.getVersion());
+				Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "Â» Environment: " + ChatColor.GRAY + Bukkit.getVersion());
 				if(experimental) {
-					Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» StaffCore: " + ChatColor.GRAY + "v" + this.getDescription().getVersion() + ChatColor.DARK_GRAY + "(" + ChatColor.LIGHT_PURPLE + "EXPERIMENTAL" + ChatColor.DARK_GRAY + ")");
+					Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "Â» StaffCore: " + ChatColor.GRAY + "v" + this.getDescription().getVersion() + ChatColor.DARK_GRAY + "(" + ChatColor.LIGHT_PURPLE + "EXPERIMENTAL" + ChatColor.DARK_GRAY + ")");
 				} else if(latest) {
-					Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» StaffCore: " + ChatColor.GRAY + "v" + this.getDescription().getVersion() + ChatColor.DARK_GRAY + "(" + ChatColor.GREEN + "LATEST" + ChatColor.DARK_GRAY + ")");
+					Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "Â» StaffCore: " + ChatColor.GRAY + "v" + this.getDescription().getVersion() + ChatColor.DARK_GRAY + "(" + ChatColor.GREEN + "LATEST" + ChatColor.DARK_GRAY + ")");
 				} else {
-					Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» StaffCore: " + ChatColor.GRAY + "v" + this.getDescription().getVersion() + ChatColor.DARK_GRAY + "(" + ChatColor.RED + "OUTDATED" + ChatColor.DARK_GRAY + ")");
+					Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "Â» StaffCore: " + ChatColor.GRAY + "v" + this.getDescription().getVersion() + ChatColor.DARK_GRAY + "(" + ChatColor.RED + "OUTDATED" + ChatColor.DARK_GRAY + ")");
 				}
-				Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» " + ChatColor.GREEN + ChatColor.BOLD + "SUCCESS " + ChatColor.DARK_GRAY + "(" + ChatColor.GREEN + "PLUGIN STARTED" + ChatColor.DARK_GRAY + ")");
+				Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "Â» " + ChatColor.GREEN + ChatColor.BOLD + "SUCCESS " + ChatColor.DARK_GRAY + "(" + ChatColor.GREEN + "PLUGIN STARTED" + ChatColor.DARK_GRAY + ")");
 				Bukkit.getConsoleSender().sendMessage("");
 			} else {
 				Bukkit.getConsoleSender().sendMessage("");
-				Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» " + ChatColor.GRAY + "Environment: " + Bukkit.getVersion());
+				Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "Â» " + ChatColor.GRAY + "Environment: " + Bukkit.getVersion());
 				if(experimental == true) {
-					Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» StaffCore: " + ChatColor.GRAY + "v" + this.getDescription().getVersion() + ChatColor.DARK_GRAY + "(" + ChatColor.LIGHT_PURPLE + "EXPERIMENTAL" + ChatColor.DARK_GRAY + ")");
+					Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "Â» StaffCore: " + ChatColor.GRAY + "v" + this.getDescription().getVersion() + ChatColor.DARK_GRAY + "(" + ChatColor.LIGHT_PURPLE + "EXPERIMENTAL" + ChatColor.DARK_GRAY + ")");
 				} else if(latest == true) {
-					Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» StaffCore: " + ChatColor.GRAY + "v" + this.getDescription().getVersion() + ChatColor.DARK_GRAY + "(" + ChatColor.GREEN + "LATEST" + ChatColor.DARK_GRAY + ")");
+					Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "Â» StaffCore: " + ChatColor.GRAY + "v" + this.getDescription().getVersion() + ChatColor.DARK_GRAY + "(" + ChatColor.GREEN + "LATEST" + ChatColor.DARK_GRAY + ")");
 				} else {
-					Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» StaffCore: " + ChatColor.GRAY + "v" + this.getDescription().getVersion() + ChatColor.DARK_GRAY + "(" + ChatColor.RED + "OUTDATED" + ChatColor.DARK_GRAY + ")");
+					Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "Â» StaffCore: " + ChatColor.GRAY + "v" + this.getDescription().getVersion() + ChatColor.DARK_GRAY + "(" + ChatColor.RED + "OUTDATED" + ChatColor.DARK_GRAY + ")");
 				}
-				Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» " + ChatColor.RED + "" + ChatColor.BOLD + "ERROR " + ChatColor.DARK_GRAY + "(" + ChatColor.RED + "BanSystemDetectionService CRASHED" + ChatColor.DARK_GRAY + ")");
+				Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "Â» " + ChatColor.RED + "" + ChatColor.BOLD + "ERROR " + ChatColor.DARK_GRAY + "(" + ChatColor.RED + "BanSystemDetectionService CRASHED" + ChatColor.DARK_GRAY + ")");
 				Bukkit.getConsoleSender().sendMessage("");
 			}
 		} else {
@@ -339,16 +339,16 @@ public class Main extends JavaPlugin{
 				public void run() {
 					if(!MySQL.isConnected()) {
 						Bukkit.getConsoleSender().sendMessage("");
-						Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "StaffCore " + ChatColor.DARK_GRAY + "» " + ChatColor.RED + "" + ChatColor.BOLD + "ERROR " + ChatColor.DARK_GRAY + "(" + ChatColor.RED + "NO CONNECTION" + ChatColor.DARK_GRAY + ")");
-						Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "StaffCore " + ChatColor.DARK_GRAY + "» " + ChatColor.GRAY + "Please make sure to set up your database correctly!");
+						Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "StaffCore " + ChatColor.DARK_GRAY + "Â» " + ChatColor.RED + "" + ChatColor.BOLD + "ERROR " + ChatColor.DARK_GRAY + "(" + ChatColor.RED + "NO CONNECTION" + ChatColor.DARK_GRAY + ")");
+						Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "StaffCore " + ChatColor.DARK_GRAY + "Â» " + ChatColor.GRAY + "Please make sure to set up your database correctly!");
 						Bukkit.getConsoleSender().sendMessage("");
 					}
 				}
 			}.runTaskTimerAsynchronously(this, 0, 30*20);
 			
 			Bukkit.getConsoleSender().sendMessage("");
-			Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» Environment: " + ChatColor.GRAY + Bukkit.getVersion());
-			Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» " + ChatColor.RED + "" + ChatColor.BOLD + "ERROR " + ChatColor.DARK_GRAY + "(" + ChatColor.RED + "NO CONNECTION" + ChatColor.DARK_GRAY + ")");
+			Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "Â» Environment: " + ChatColor.GRAY + Bukkit.getVersion());
+			Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "Â» " + ChatColor.RED + "" + ChatColor.BOLD + "ERROR " + ChatColor.DARK_GRAY + "(" + ChatColor.RED + "NO CONNECTION" + ChatColor.DARK_GRAY + ")");
 			Bukkit.getConsoleSender().sendMessage("");
 		}
 	}
@@ -388,7 +388,7 @@ public class Main extends JavaPlugin{
 						}
 					} catch (SQLException e) {
 						Bukkit.getConsoleSender().sendMessage("");
-						Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» " + ChatColor.RED + "Problem with staffcoreui_sync detected!");
+						Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "Â» " + ChatColor.RED + "Problem with staffcoreui_sync detected!");
 						Bukkit.getConsoleSender().sendMessage("");
 					}
 					
@@ -434,7 +434,7 @@ public class Main extends JavaPlugin{
 			bansystem = false;
 			
 			Bukkit.getConsoleSender().sendMessage("");
-			Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» StaffCore BanSystem " + ChatColor.DARK_GRAY + "(" + ChatColor.RED + "DEACTIVATED" + ChatColor.DARK_GRAY + ")");
+			Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "Â» StaffCore BanSystem " + ChatColor.DARK_GRAY + "(" + ChatColor.RED + "DEACTIVATED" + ChatColor.DARK_GRAY + ")");
 		}
 		
 		ArrayList<String> detectservice = new ArrayList<>();
@@ -450,7 +450,7 @@ public class Main extends JavaPlugin{
 			if(detectservice.contains(p.getName())) {
 				if(getInstance().getConfig().getBoolean("General.Activate-BanSystem-Detection")) {
 					Bukkit.getConsoleSender().sendMessage("");
-					Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» Detected BanSystem " + ChatColor.DARK_GRAY + "(" + ChatColor.LIGHT_PURPLE + ""+ p.getName() +"" + ChatColor.DARK_GRAY + ")");
+					Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "Â» Detected BanSystem " + ChatColor.DARK_GRAY + "(" + ChatColor.LIGHT_PURPLE + ""+ p.getName() +"" + ChatColor.DARK_GRAY + ")");
 					deactivateBanningSystem();
 				}
 				return true;
@@ -466,7 +466,7 @@ public class Main extends JavaPlugin{
 		bansystem = false;
 			
 		Bukkit.getConsoleSender().sendMessage("");
-		Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» StaffCore BanSystem " + ChatColor.DARK_GRAY + "(" + ChatColor.RED + "DEACTIVATED" + ChatColor.DARK_GRAY + ")");
+		Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "Â» StaffCore BanSystem " + ChatColor.DARK_GRAY + "(" + ChatColor.RED + "DEACTIVATED" + ChatColor.DARK_GRAY + ")");
 	}
 
 	public boolean setupMatrix() {
@@ -606,7 +606,7 @@ public class Main extends JavaPlugin{
 
 	private void loadConfigs() {
 		Bukkit.getConsoleSender().sendMessage("");
-		Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» Generating... " + ChatColor.DARK_GRAY + "(" + ChatColor.YELLOW + "config.yml" + ChatColor.DARK_GRAY + ")");
+		Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "\u00BB Generating... " + ChatColor.DARK_GRAY + "(" + ChatColor.YELLOW + "config.yml" + ChatColor.DARK_GRAY + ")");
 		Bukkit.getConsoleSender().sendMessage("");
 		
 		getConfig().options().copyDefaults(true);
@@ -775,11 +775,11 @@ public class Main extends JavaPlugin{
 		saveConfig();
 		
 		Bukkit.getConsoleSender().sendMessage("");
-		Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» Generated " + ChatColor.DARK_GRAY + "(" + ChatColor.YELLOW + "config.yml" + ChatColor.DARK_GRAY + ")");
+		Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "Â» Generated " + ChatColor.DARK_GRAY + "(" + ChatColor.YELLOW + "config.yml" + ChatColor.DARK_GRAY + ")");
 		Bukkit.getConsoleSender().sendMessage("");
 		
 		Bukkit.getConsoleSender().sendMessage("");
-		Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» Fetching... " + ChatColor.DARK_GRAY + "(" + ChatColor.YELLOW + "Translations from translate.lacodev.de" + ChatColor.DARK_GRAY + ")");
+		Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "Â» Fetching... " + ChatColor.DARK_GRAY + "(" + ChatColor.YELLOW + "Translations from translate.lacodev.de" + ChatColor.DARK_GRAY + ")");
 		Bukkit.getConsoleSender().sendMessage("");
 		
 		translator.init();
@@ -804,11 +804,11 @@ public class Main extends JavaPlugin{
 			try {
 				mcfg.save(mysql);
 				Bukkit.getConsoleSender().sendMessage("");
-				Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» Generated " + ChatColor.DARK_GRAY + "(" + ChatColor.YELLOW + "mysql.yml" + ChatColor.DARK_GRAY + ")");
+				Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "Â» Generated " + ChatColor.DARK_GRAY + "(" + ChatColor.YELLOW + "mysql.yml" + ChatColor.DARK_GRAY + ")");
 				Bukkit.getConsoleSender().sendMessage("");
 			} catch (IOException e) {
 				Bukkit.getConsoleSender().sendMessage("");
-				Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» " + ChatColor.RED + "ERROR while generating file " + ChatColor.DARK_GRAY + "(" + ChatColor.YELLOW + "mysql.yml" + ChatColor.DARK_GRAY + ")");
+				Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "Â» " + ChatColor.RED + "ERROR while generating file " + ChatColor.DARK_GRAY + "(" + ChatColor.YELLOW + "mysql.yml" + ChatColor.DARK_GRAY + ")");
 				Bukkit.getConsoleSender().sendMessage("");
 			}
 		}
@@ -816,7 +816,7 @@ public class Main extends JavaPlugin{
 
 	public void applyConfigs() {
 		Bukkit.getConsoleSender().sendMessage("");
-		Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» Applying values... " + ChatColor.DARK_GRAY + "(" + ChatColor.YELLOW + "config.yml" + ChatColor.DARK_GRAY + ")");
+		Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "Â» Applying values... " + ChatColor.DARK_GRAY + "(" + ChatColor.YELLOW + "config.yml" + ChatColor.DARK_GRAY + ")");
 		Bukkit.getConsoleSender().sendMessage("");
 		
 		host = getMySQLFile().getString("MySQL.HOST");
@@ -826,13 +826,13 @@ public class Main extends JavaPlugin{
 		password = getMySQLFile().getString("MySQL.PASSWORD");
 		
 		if(getConfig().getString("General.System-Prefix").contains("%double_arrow%")) {
-			prefix = ChatColor.translateAlternateColorCodes('&', getConfig().getString("General.System-Prefix").replace("%double_arrow%", "»"));
+			prefix = ChatColor.translateAlternateColorCodes('&', getConfig().getString("General.System-Prefix").replace("%double_arrow%", "Â»"));
 		} else {
 			prefix = ChatColor.translateAlternateColorCodes('&', getConfig().getString("General.System-Prefix"));
 		}
 		
 		Bukkit.getConsoleSender().sendMessage("");
-		Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» Applied values " + ChatColor.DARK_GRAY + "(" + ChatColor.YELLOW + "config.yml" + ChatColor.DARK_GRAY + ")");
+		Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "Â» Applied values " + ChatColor.DARK_GRAY + "(" + ChatColor.YELLOW + "config.yml" + ChatColor.DARK_GRAY + ")");
 		Bukkit.getConsoleSender().sendMessage("");
 		
 	}
@@ -876,7 +876,7 @@ public class Main extends JavaPlugin{
 			return ChatColor.stripColor(getInstance().getConfig().getString(config));
 		} else {
 			Bukkit.getConsoleSender().sendMessage("");
-			Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» " + ChatColor.RED + "FAILED " + ChatColor.DARK_GRAY + "(" + ChatColor.GRAY + "Message Output" + ChatColor.DARK_GRAY + ")");
+			Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "Â» " + ChatColor.RED + "FAILED " + ChatColor.DARK_GRAY + "(" + ChatColor.GRAY + "Message Output" + ChatColor.DARK_GRAY + ")");
 			Bukkit.getConsoleSender().sendMessage("");
 			return "Permission failed to load";
 		}
@@ -893,7 +893,7 @@ public class Main extends JavaPlugin{
 			return jsonObject;
 		} catch (IOException | ParseException | ClassCastException e) {
 			Bukkit.getConsoleSender().sendMessage("");
-			Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» " + ChatColor.RED + "" + ChatColor.BOLD + "FAILED " + ChatColor.DARK_GRAY + "(" + ChatColor.GRAY + "Versioncheck" + ChatColor.DARK_GRAY + ")");
+			Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "Â» " + ChatColor.RED + "" + ChatColor.BOLD + "FAILED " + ChatColor.DARK_GRAY + "(" + ChatColor.GRAY + "Versioncheck" + ChatColor.DARK_GRAY + ")");
 			Bukkit.getConsoleSender().sendMessage("");
 		}
 		return null;
@@ -909,7 +909,7 @@ public class Main extends JavaPlugin{
 			
 			if(version >= lizenz) {
 				Bukkit.getConsoleSender().sendMessage("");
-				Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» " + ChatColor.GREEN + "" + ChatColor.BOLD + "SUCCESS " + ChatColor.DARK_GRAY + "(" + ChatColor.GRAY + "Versioncheck" + ChatColor.DARK_GRAY + ")");
+				Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "Â» " + ChatColor.GREEN + "" + ChatColor.BOLD + "SUCCESS " + ChatColor.DARK_GRAY + "(" + ChatColor.GRAY + "Versioncheck" + ChatColor.DARK_GRAY + ")");
 				if(version > lizenz) {
 					experimental = true;
 					Bukkit.getConsoleSender().sendMessage("");
@@ -923,10 +923,10 @@ public class Main extends JavaPlugin{
 				}
 			} else {
 				Bukkit.getConsoleSender().sendMessage("");
-				Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» " + ChatColor.GREEN + "" + ChatColor.BOLD + "SUCCESS " + ChatColor.DARK_GRAY + "(" + ChatColor.GRAY + "Versioncheck" + ChatColor.DARK_GRAY + ")");
+				Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "Â» " + ChatColor.GREEN + "" + ChatColor.BOLD + "SUCCESS " + ChatColor.DARK_GRAY + "(" + ChatColor.GRAY + "Versioncheck" + ChatColor.DARK_GRAY + ")");
 				Bukkit.getConsoleSender().sendMessage("");
 				Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "There is an update available!");
-				Bukkit.getConsoleSender().sendMessage("" + ChatColor.DARK_GRAY + "» " + ChatColor.YELLOW + "https://www.spigotmc.org/resources/staffcore-1-7-1-15.48655/updates");
+				Bukkit.getConsoleSender().sendMessage("" + ChatColor.DARK_GRAY + "Â» " + ChatColor.YELLOW + "https://www.spigotmc.org/resources/staffcore-1-7-1-15.48655/updates");
 				Bukkit.getConsoleSender().sendMessage("");
 			}
 		} catch(NullPointerException e) {
