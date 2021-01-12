@@ -56,3 +56,6 @@ commands:
       description: BroadCast a Message
    globalmute:
       description: Mute or Unmute the GlobalChat
+   staffchat:
+      aliases: [ sc ]
+      description: StaffChat for the Staffs of the Server
