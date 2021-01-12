@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import de.lacodev.rsystem.commands.*;
+import de.lacodev.rsystem.completer.*;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -26,12 +27,6 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import de.lacodev.rsystem.completer.Completer_Ban;
-import de.lacodev.rsystem.completer.Completer_BanManager;
-import de.lacodev.rsystem.completer.Completer_Mute;
-import de.lacodev.rsystem.completer.Completer_Report;
-import de.lacodev.rsystem.completer.Completer_ReportManager;
-import de.lacodev.rsystem.completer.Completer_StaffCore;
 import de.lacodev.rsystem.listeners.Listener_Chat;
 import de.lacodev.rsystem.listeners.Listener_ChatLog;
 import de.lacodev.rsystem.listeners.Listener_GuardianDMG;
@@ -391,7 +386,13 @@ public class Main extends JavaPlugin{
 						Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» " + ChatColor.RED + "Problem with staffcoreui_sync detected!");
 						Bukkit.getConsoleSender().sendMessage("");
 					}
-					
+				}
+			}.runTaskTimerAsynchronously(getInstance(), 5*20, 5*20);
+
+			new BukkitRunnable() {
+
+				@Override
+				public void run() {
 					long current = System.currentTimeMillis();
 					ResultSet unbancheck = MySQL.getResult("SELECT * FROM ReportSystem_bansdb");
 					
@@ -422,7 +423,7 @@ public class Main extends JavaPlugin{
 					} catch (SQLException e) {
 						
 					}
-					
+
 				}
 			}.runTaskTimerAsynchronously(getInstance(), 5*20, 5*20);
 		}
@@ -596,6 +597,8 @@ public class Main extends JavaPlugin{
 
 		//GlobalMute Command
 		getCommand("globalmute").setExecutor(new CMD_MuteGlobal());
+		getCommand("globalmute").setTabCompleter(new Completer_MuteGlobal());
+
 
 		getCommand("staffchat").setExecutor(new CMD_StaffChat());
 	}
