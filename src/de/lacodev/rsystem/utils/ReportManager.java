@@ -12,6 +12,7 @@ import de.lacodev.staffcore.api.events.ReportCreateEvent;
 import de.lacodev.staffcore.api.events.ReportReasonCreateEvent;
 import de.lacodev.staffcore.api.events.ReportReasonDeleteEvent;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -40,7 +41,7 @@ public class ReportManager {
 
 	public static void openPagedReportInv(Player p, String name, int page) {
 
-		String title = Main.getMSG("Messages.Report-System.Inventory.Title") + "§e" + name;
+		String title = Main.getMSG("Messages.Report-System.Inventory.Title") + ChatColor.YELLOW + name;
 
 		if(title.length() > 32) {
 
@@ -117,12 +118,12 @@ public class ReportManager {
 			}
 			for (Reasons item : PageManager.getPageItems(rows, page, 36)) {
 
-				reportinv.setItem(reportinv.firstEmpty(), Data.buildItemStack(item.getItem(), 1, 0, "§e" + item.getName(), Main.getMSG("Messages.Report-System.Inventory.ReportItem-Lore.1").replace("%target%", name), Main.getMSG("Messages.Report-System.Inventory.ReportItem-Lore.2").replace("%reason%", item.getName())));
+				reportinv.setItem(reportinv.firstEmpty(), Data.buildItemStack(item.getItem(), 1, 0, ChatColor.YELLOW + item.getName(), Main.getMSG("Messages.Report-System.Inventory.ReportItem-Lore.1").replace("%target%", name), Main.getMSG("Messages.Report-System.Inventory.ReportItem-Lore.2").replace("%reason%", item.getName())));
 
 			}
 		} else {
 
-			reportinv.setItem(13, Data.buildItem(Material.BARRIER, 1, 0, "§cNo Connection"));
+			reportinv.setItem(13, Data.buildItem(Material.BARRIER, 1, 0, ChatColor.RED + "No Connection"));
 
 		}
 
@@ -145,8 +146,8 @@ public class ReportManager {
 			}
 			return reasons;
 		} catch (SQLException e) {
-			Bukkit.getConsoleSender().sendMessage("§cSystem §8(§7MySQL§8) §8- §cERROR while collecting data from MySQL-Table");
-        	Bukkit.getConsoleSender().sendMessage("§cSystem §8(§7MySQL§8) §8- §8(§7Query: §egetReportReasons§8)");
+			Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "(" + ChatColor.GRAY + "MySQL" + ChatColor.DARK_GRAY + ") - " + ChatColor.RED + "ERROR while collecting data from MySQL-Table");
+        	Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "(" + ChatColor.GRAY + "MySQL" + ChatColor.DARK_GRAY + ") - (" + ChatColor.GRAY + "Query: " + ChatColor.YELLOW + "getReportReasons" + ChatColor.DARK_GRAY + ")");
 		}
 		return reasons;
 	}
@@ -217,7 +218,7 @@ public class ReportManager {
 			for(Player all : Bukkit.getOnlinePlayers()) {
 				if(Main.getInstance().actionbar) {
 					if(all.hasPermission(Main.getPermissionNotice("Permissions.Report.Notify")) || all.hasPermission(Main.getPermissionNotice("Permissions.Everything"))) {
-						ActionBarAPI.sendActionBar(all, Main.getPrefix() + Main.getMSG("Messages.Report-System.Notify.Team.Reported").replace("%player%", p).replace("%target%", string2) + " §8» §e" + reason, 60);
+						ActionBarAPI.sendActionBar(all, Main.getPrefix() + Main.getMSG("Messages.Report-System.Notify.Team.Reported").replace("%player%", p).replace("%target%", string2) + ChatColor.DARK_GRAY +  " » " + ChatColor.YELLOW + reason, 60);
 						if(Main.getInstance().getConfig().getBoolean("General.Include-MatrixAntiCheat")) {
 							String matrixalert;
 							
@@ -226,9 +227,9 @@ public class ReportManager {
 							YamlConfiguration cfg = YamlConfiguration.loadConfiguration(file);
 							if(Main.getInstance().matrix_hacktypes.contains(reason.toUpperCase())) {
 								if(api.isEnable(HackType.valueOf(reason.toUpperCase()))) {
-									matrixalert = "§7VL §8» §e"+ cfg.getInt("Log." + SystemManager.getUUIDByName(string2) + "." + HackType.valueOf(reason.toUpperCase()).toString().toUpperCase() + ".VL");
+									matrixalert = ChatColor.GRAY + "VL " + ChatColor.DARK_GRAY + "» " + ChatColor.YELLOW + cfg.getInt("Log." + SystemManager.getUUIDByName(string2) + "." + HackType.valueOf(reason.toUpperCase()).toString().toUpperCase() + ".VL");
 								} else {
-									matrixalert = "§cMatrix was unable to find any Violations!";
+									matrixalert = ChatColor.RED + "Matrix was unable to find any Violations!";
 								}
 								ActionBarAPI.sendActionBar(all, Main.getPrefix() + matrixalert, 120);
 							}
@@ -251,7 +252,7 @@ public class ReportManager {
 					if(all.hasPermission(Main.getPermissionNotice("Permissions.Report.Notify")) || all.hasPermission(Main.getPermissionNotice("Permissions.Everything"))) {
 						all.sendMessage("");
 						all.sendMessage(Main.getPrefix() + Main.getMSG("Messages.Report-System.Notify.Team.Reported").replace("%player%", p).replace("%target%", string2));
-						all.sendMessage(Main.getPrefix() + "§e" + reason);
+						all.sendMessage(Main.getPrefix() + ChatColor.YELLOW + reason);
 						if(Main.getInstance().getConfig().getBoolean("General.Include-MatrixAntiCheat")) {
 							String matrixalert;
 							
@@ -260,9 +261,9 @@ public class ReportManager {
 							YamlConfiguration cfg = YamlConfiguration.loadConfiguration(file);
 							if(Main.getInstance().matrix_hacktypes.contains(reason.toUpperCase())) {
 								if(api.isEnable(HackType.valueOf(reason.toUpperCase()))) {
-									matrixalert = "§7VL §8» §e"+ cfg.getInt("Log." + SystemManager.getUUIDByName(string2) + "." + HackType.valueOf(reason.toUpperCase()).toString().toUpperCase() + ".VL");
+									matrixalert = ChatColor.GRAY + "VL " + ChatColor.DARK_GRAY + "» " + ChatColor.YELLOW + cfg.getInt("Log." + SystemManager.getUUIDByName(string2) + "." + HackType.valueOf(reason.toUpperCase()).toString().toUpperCase() + ".VL");
 								} else {
-									matrixalert = "§cMatrix was unable to find any Violations!";
+									matrixalert = ChatColor.RED + "Matrix was unable to find any Violations!";
 								}
 								all.sendMessage(Main.getPrefix() + matrixalert);
 							}
@@ -287,11 +288,11 @@ public class ReportManager {
 			for(Player all : Bukkit.getOnlinePlayers()) {
 				if(all.hasPermission(Main.getPermissionNotice("Permissions.Ban.Notify")) || all.hasPermission(Main.getPermissionNotice("Permissions.Everything"))) {
 					if(Main.getInstance().actionbar) {
-						ActionBarAPI.sendActionBar(all, Main.getPrefix() + Main.getMSG("Messages.Ban-System.Notify.Team.Banned").replace("%player%", p).replace("%target%", string2) + " §8» §e" + reason);
+						ActionBarAPI.sendActionBar(all, Main.getPrefix() + Main.getMSG("Messages.Ban-System.Notify.Team.Banned").replace("%player%", p).replace("%target%", string2) + ChatColor.DARK_GRAY + " » " + ChatColor.YELLOW + reason);
 					} else {
 						all.sendMessage("");
 						all.sendMessage(Main.getPrefix() + Main.getMSG("Messages.Ban-System.Notify.Team.Banned").replace("%player%", p).replace("%target%", string2));
-						all.sendMessage(Main.getPrefix() + "§e" + reason);
+						all.sendMessage(Main.getPrefix() + ChatColor.YELLOW + reason);
 						all.sendMessage("");
 					}
 				}
@@ -300,11 +301,11 @@ public class ReportManager {
 			for(Player all : Bukkit.getOnlinePlayers()) {
 				if(all.hasPermission(Main.getPermissionNotice("Permissions.Mute.Notify")) || all.hasPermission(Main.getPermissionNotice("Permissions.Everything"))) {
 					if(Main.getInstance().actionbar) {
-						ActionBarAPI.sendActionBar(all, Main.getPrefix() + Main.getMSG("Messages.Mute-System.Notify.Team.Muted").replace("%player%", p).replace("%target%", string2) + " §8» §e" + reason);
+						ActionBarAPI.sendActionBar(all, Main.getPrefix() + Main.getMSG("Messages.Mute-System.Notify.Team.Muted").replace("%player%", p).replace("%target%", string2) + ChatColor.DARK_GRAY + " » " + ChatColor.YELLOW + reason);
 					} else {
 						all.sendMessage("");
 						all.sendMessage(Main.getPrefix() + Main.getMSG("Messages.Mute-System.Notify.Team.Muted").replace("%player%", p).replace("%target%", string2));
-						all.sendMessage(Main.getPrefix() + "§e" + reason);
+						all.sendMessage(Main.getPrefix() + ChatColor.YELLOW + reason);
 						all.sendMessage("");
 					}
 				}
@@ -325,11 +326,11 @@ public class ReportManager {
 			for(Player all : Bukkit.getOnlinePlayers()) {
 				if(all.hasPermission(Main.getPermissionNotice("Permissions.Warn.Notify")) || all.hasPermission(Main.getPermissionNotice("Permissions.Everything"))) {
 					if(Main.getInstance().actionbar) {
-						ActionBarAPI.sendActionBar(all, Main.getPrefix() + Main.getMSG("Messages.Warn-System.Warn.Notify").replace("%player%", p).replace("%target%", string2) + " §8» §e" + reason);
+						ActionBarAPI.sendActionBar(all, Main.getPrefix() + Main.getMSG("Messages.Warn-System.Warn.Notify").replace("%player%", p).replace("%target%", string2) + ChatColor.DARK_GRAY + " » " + ChatColor.YELLOW + reason);
 					} else {
 						all.sendMessage("");
 						all.sendMessage(Main.getPrefix() + Main.getMSG("Messages.Warn-System.Warn.Notify").replace("%player%", p).replace("%target%", string2));
-						all.sendMessage(Main.getPrefix() + "§e" + reason);
+						all.sendMessage(Main.getPrefix() + ChatColor.YELLOW + reason);
 						all.sendMessage("");
 					}
 				}

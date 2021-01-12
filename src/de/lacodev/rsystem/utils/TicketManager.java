@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -71,7 +72,7 @@ public class TicketManager {
 			inv.setItem(i, Data.buildPlace());
 		}
 		
-		inv.setItem(4, Data.buildItem(XMaterial.BARRIER, "§cLoading..."));
+		inv.setItem(4, Data.buildItem(XMaterial.BARRIER, ChatColor.RED + "Loading..."));
 		
 		for(int i = 45; i < 54; i++) {
 			inv.setItem(i, Data.buildPlace());
@@ -88,7 +89,7 @@ public class TicketManager {
 				try {
 					while(rs.next()) {
 						
-						items.add(Data.buildItemStackLore(XMaterial.PAPER, "§cTicket §8(§7#"+ rs.getInt("id") +"§8)", Main.getMSG("Messages.Ticket-System.List.Lore-1"), 
+						items.add(Data.buildItemStackLore(XMaterial.PAPER, ChatColor.RED + "Ticket " + ChatColor.DARK_GRAY + "(" + ChatColor.GRAY + "#"+ rs.getInt("id") + ChatColor.DARK_GRAY + ")", Main.getMSG("Messages.Ticket-System.List.Lore-1"),
 								Main.getMSG("Messages.Ticket-System.List.Lore-2").replace("%team%", SystemManager.getUsernameByUUID(rs.getString("TEAM_UUID"))), 
 								Main.getMSG("Messages.Ticket-System.List.Lore-3").replace("%created%", rs.getString("reg_date").substring(0, rs.getString("reg_date").length() - 2))));
 						

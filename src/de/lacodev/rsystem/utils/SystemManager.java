@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
 
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -48,13 +49,13 @@ public class SystemManager {
 				    byte dataBuffer[] = new byte[1024];
 				    int bytesRead;
 				    
-				    sender.sendMessage(Main.getPrefix() + "§7Downloading... §8(§aStaffCore v" + getLatestVersion() + "§8)");
+				    sender.sendMessage(Main.getPrefix() + ChatColor.GRAY + "Downloading... " + ChatColor.DARK_GRAY + "(" + ChatColor.GREEN + "StaffCore v" + getLatestVersion() + ChatColor.DARK_GRAY + ")");
 				    while ((bytesRead = in.read(dataBuffer, 0, 1024)) != -1) {
 				        fileOutputStream.write(dataBuffer, 0, bytesRead);
 				    }
-				    sender.sendMessage(Main.getPrefix() + "§7Download §asuccessful");
+				    sender.sendMessage(Main.getPrefix() + ChatColor.GRAY + "Download " + ChatColor.GREEN + "successful");
 				} catch (IOException e) {
-					sender.sendMessage(Main.getPrefix() + "§cNot available");
+					sender.sendMessage(Main.getPrefix() + ChatColor.RED + "Not available");
 				}
 	}
 	
@@ -114,13 +115,13 @@ public class SystemManager {
 				    byte dataBuffer[] = new byte[1024];
 				    int bytesRead;
 				    
-				    sender.sendMessage(Main.getPrefix() + "§7Downloading... §8(§aStaffCore v" + getExperimentalVersion() + "§8)");
+				    sender.sendMessage(Main.getPrefix() + ChatColor.GRAY + "Downloading... " + ChatColor.DARK_GRAY + "(" + ChatColor.GREEN + "StaffCore v" + getExperimentalVersion() + ChatColor.DARK_GRAY + ")");
 				    while ((bytesRead = in.read(dataBuffer, 0, 1024)) != -1) {
 				        fileOutputStream.write(dataBuffer, 0, bytesRead);
 				    }
-				    sender.sendMessage(Main.getPrefix() + "§7Download §asuccessful");
+				    sender.sendMessage(Main.getPrefix() + ChatColor.GRAY + "Download " + ChatColor.GREEN + "successful");
 				} catch (IOException e) {
-					sender.sendMessage(Main.getPrefix() + "§cNot available");
+					sender.sendMessage(Main.getPrefix() + ChatColor.RED + "Not available");
 				}
 	}
 	
@@ -353,7 +354,7 @@ public class SystemManager {
 				}
 			}
 		}
-		return "§cUNKNOWN";
+		return ChatColor.RED + "UNKNOWN";
 	}
 
 	public static String getLastOnline(String uuidByName) {
@@ -374,7 +375,7 @@ public class SystemManager {
 				}
 			}
 		}
-		return "§cUNKNOWN";
+		return ChatColor.RED + "UNKNOWN";
 	}
 	
 }

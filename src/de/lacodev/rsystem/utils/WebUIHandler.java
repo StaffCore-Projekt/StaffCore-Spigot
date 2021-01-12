@@ -1,5 +1,6 @@
 package de.lacodev.rsystem.utils;
 
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import de.lacodev.rsystem.Main;
@@ -9,9 +10,9 @@ public class WebUIHandler {
 	
 	public static void setupStaffCoreUI(Player player) {
 		
-		player.sendMessage(Main.getPrefix() + "§7Please make sure you §c§lnever performed §7this actions before!");
-		player.sendMessage(Main.getPrefix() + "§7There may occur some lags while setting up the WebUI");
-		player.sendMessage(Main.getPrefix() + "§7Creating MySQL-Tables...");
+		player.sendMessage(Main.getPrefix() + ChatColor.GRAY + "Please make sure you " + ChatColor.RED + ChatColor.BOLD + "never performed " + ChatColor.GRAY + "this actions before!");
+		player.sendMessage(Main.getPrefix() + ChatColor.GRAY + "There may occur some lags while setting up the WebUI");
+		player.sendMessage(Main.getPrefix() + ChatColor.GRAY + "Creating MySQL-Tables...");
 		
 		// StaffCoreUI Accounts Table
 		MySQL.update("CREATE TABLE IF NOT EXISTS staffcoreui_accounts(id INT(6) AUTO_INCREMENT UNIQUE, EMAIL VARCHAR(255), "
@@ -59,13 +60,13 @@ public class WebUIHandler {
 		MySQL.update("CREATE TABLE IF NOT EXISTS staffcoreui_sync(id INT(6) AUTO_INCREMENT UNIQUE, SYNC_TYPE VARCHAR(255), "
 				+ "TARGET_UUID VARCHAR(255), DESCRIPTION VARCHAR(255), EXECUTOR_UUID VARCHAR(255))");
 		
-		player.sendMessage(Main.getPrefix() + "§7MySQL-Tables were §asuccessfully §7created");
-		player.sendMessage(Main.getPrefix() + "§7Inserting Standard-Values...");
+		player.sendMessage(Main.getPrefix() + ChatColor.GRAY + "MySQL-Tables were " + ChatColor.GREEN + "successfully " + ChatColor.GRAY + "created");
+		player.sendMessage(Main.getPrefix() + ChatColor.GRAY + "Inserting Standard-Values...");
 		
 		MySQL.update("INSERT INTO staffcoreui_ranks(id,RANK_NAME,RANK_VALUE,IS_STANDARD) VALUES ('1','MEMBER','1','1')");
 		MySQL.update("INSERT INTO staffcoreui_ranks(id,RANK_NAME,RANK_VALUE,IS_STANDARD) VALUES ('2','ADMIN','999999','0')");
 		
-		player.sendMessage(Main.getPrefix() + "§7Standard-Values were §asuccessfully §7inserted");		
+		player.sendMessage(Main.getPrefix() + ChatColor.GRAY + "Standard-Values were " + ChatColor.GREEN + "successfully " + ChatColor.GRAY + "inserted");
 	}
 
 }

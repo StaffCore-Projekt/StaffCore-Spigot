@@ -35,7 +35,6 @@ public class PanelManager {
 	public static Inventory settings;
 	
 	public void openMainMenu(Player player) {
-		//mainmenu = player.getServer().createInventory(null, 27, "§cStaffCore §8- §7MainMenu");
 		mainmenu = player.getServer().createInventory(null, 27, ChatColor.RED + "Staffcore" + ChatColor.DARK_GRAY + " - " + ChatColor.GRAY + "MainMenu");
 
 		for(int i = 0; i < mainmenu.getSize(); i++) {
@@ -223,7 +222,7 @@ public class PanelManager {
 		
 		ItemStack menu = Data.getHead("arrow");
 		ItemMeta meta = menu.getItemMeta();
-		meta.setDisplayName("§c◄ Go back");
+		meta.setDisplayName(ChatColor.RED + "◄ Go back");
 		menu.setItemMeta(meta);
 		
 		playermenu.setItem(0, menu);
