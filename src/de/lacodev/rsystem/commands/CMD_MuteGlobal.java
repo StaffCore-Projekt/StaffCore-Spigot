@@ -33,9 +33,9 @@ public class CMD_MuteGlobal implements CommandExecutor {
                         }
                     } else if (args[0].equalsIgnoreCase("info")) {
                         if (BanManager.isGMute()) {
-                            p.sendMessage(Main.getPrefix() + Main.getMSG("Messages.Global-Mute-System.IsEnabled"));
-                        } else {
                             p.sendMessage(Main.getPrefix() + Main.getMSG("Messages.Global-Mute-System.IsDisabled"));
+                        } else {
+                            p.sendMessage(Main.getPrefix() + Main.getMSG("Messages.Global-Mute-System.IsEnabled"));
                         }
                     } else {
                         p.sendMessage(Main.getPrefix() + Main.getMSG("Messages.Global-Mute-System.Usage"));
