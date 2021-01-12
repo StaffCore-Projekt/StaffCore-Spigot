@@ -25,29 +25,6 @@ public class Listener_Chat implements Listener {
 	@EventHandler
 	public void onChat(AsyncPlayerChatEvent e) {
 		Player p = e.getPlayer();
-		/*String[] args = e.getMessage().split(" ");
-
-		if (args[0].equalsIgnoreCase("@staff")) {
-
-			if(p.hasPermission(Main.getPermissionNotice("Permissions.StaffChat.Chat")) || p.hasPermission(Main.getPermissionNotice("Permissions.Everything"))) {
-
-				//AB hier ist es offen
-
-				for (Player staffs : Bukkit.getServer().getOnlinePlayers()){
-					if(staffs.hasPermission(Main.getPermissionNotice("Permissions.StaffChat.Chat")) || staffs.hasPermission(Main.getPermissionNotice("Permissions.Everything"))) {
-						staffs.sendMessage("§8[§4StaffChat§8]§b " + p.getName() + " §7: " + e.getMessage().replace(args[0], ""));
-					}
-				}
-
-
-			} else {
-				p.sendMessage(Main.getPrefix() + Main.getMSG("Messages.System.No-Permission")
-						.replace("%permission%", Main.getPermissionNotice("Permissions.StaffChat.Chat")));
-
-			}
-
-			e.setCancelled(true);
-		}else {*/
 		if (BanManager.isGMute()){
 			if(!(p.hasPermission(Main.getPermissionNotice("Permissions.Everything")) || p.hasPermission(Main.getPermissionNotice("Permissions.Mute.Global.Write")) )) {
 				p.sendMessage(Main.getPrefix() + Main.getMSG("Messages.Global-Mute-System.Message-when-a-player-writes-on-GlobalMute"));

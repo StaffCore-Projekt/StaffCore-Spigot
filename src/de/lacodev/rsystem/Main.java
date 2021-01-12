@@ -596,6 +596,8 @@ public class Main extends JavaPlugin{
 
 		//GlobalMute Command
 		getCommand("globalmute").setExecutor(new CMD_MuteGlobal());
+
+		getCommand("staffchat").setExecutor(new CMD_StaffChat());
 	}
 
 	public void onDisable() {
@@ -710,7 +712,8 @@ public class Main extends JavaPlugin{
 		getConfig().addDefault("Permissions.ChatLogs.Use", "rsystem.chatlogs.use");
 		getConfig().addDefault("Permissions.Chat.Clear", "rsystem.chat.cleat");
 		getConfig().addDefault("Permissions.BroadCast.Send", "rsystem.broadcast.send");
-		//getConfig().addDefault("Permissions.StaffChat.Chat", "rsystem.staffchat.chat");
+		getConfig().addDefault("Permissions.StaffChat.Read", "rsystem.staffchat.read");
+		getConfig().addDefault("Permissions.StaffChat.Write", "rsystem.staffchat.write");
 		
 		getConfig().addDefault("Chatfilter.ReporterName", "ChatController");
 		getConfig().addDefault("Chatfilter.Cursed-Words.Match-for-action-in-Percentage", 50);
