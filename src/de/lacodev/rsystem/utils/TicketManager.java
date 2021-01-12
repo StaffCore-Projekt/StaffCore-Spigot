@@ -23,22 +23,27 @@ public class TicketManager {
 	// TicketManager for WebUI
 	
 	public static void createTicket(Player player) {
-		
-		if(SystemManager.isVerified(player.getUniqueId().toString())) {
-			
-			MySQL.update("INSERT INTO ReportSystem_ticketdb(CREATOR_UUID) VALUES ('"+ player.getUniqueId().toString() +"')");
-			
-			player.sendMessage(Main.getPrefix() + Main.getMSG("Messages.Ticket-System.Create.Success"));
-			
-			Listener_Chat.spam.put(player, System.currentTimeMillis() + Main.getInstance().getConfig().getInt("TicketSystem.Cooldown-In-Seconds") * 1000);
-			
-			//Bukkit.getServer().getPluginManager().callEvent(new TicketCreateEvent(player));
-		} else {
-			
-			player.sendMessage(Main.getPrefix() + Main.getMSG("Messages.Ticket-System.Create.Error"));
-			
+		if(SystemManager.existsWebDatabases()) {
+
+			if (SystemManager.isVerified(player.getUniqueId().toString())) {
+
+				MySQL.update("INSERT INTO ReportSystem_ticketdb(CREATOR_UUID) VALUES ('" + player.getUniqueId().toString() + "')");
+
+				player.sendMessage(Main.getPrefix() + Main.getMSG("Messages.Ticket-System.Create.Success"));
+
+				Listener_Chat.spam.put(player, System.currentTimeMillis() + Main.getInstance().getConfig().getInt("TicketSystem.Cooldown-In-Seconds") * 1000);
+
+				//Bukkit.getServer().getPluginManager().callEvent(new TicketCreateEvent(player));
+			} else {
+
+				player.sendMessage(Main.getPrefix() + Main.getMSG("Messages.Ticket-System.Create.Error"));
+
+			}
+		}else{
+			// DATENBANKEN EXESTIEREN NICHT
+			//
+			player.sendMessage(Main.getPrefix() + Main.getMSG("Messages.System.NoWebUITables"));
 		}
-		
 	}
 	
 	public static boolean hasTicket(Player player) {

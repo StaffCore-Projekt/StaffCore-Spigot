@@ -14,10 +14,12 @@ public class CMD_StaffChat implements CommandExecutor {
         if (sender instanceof Player){
             Player p = (Player) sender;
             if( p.hasPermission(Main.getPermissionNotice("Permissions.StaffChat.Write")) || p.hasPermission(Main.getPermissionNotice("Permissions.Everything")) ) {
-                StringBuilder message = new StringBuilder();
+                String message = "";
                 for(String s : args){
-                    message.append(" ").append(s);
+                    message = message + " " + s;
                 }
+
+                message = ChatColor.translateAlternateColorCodes('&', "" + message);
 
                 for(Player all : Bukkit.getOnlinePlayers()){
                     if(all.hasPermission(Main.getPermissionNotice("Permissions.StaffChat.Read")) || all.hasPermission(Main.getPermissionNotice("Permissions.Everything")) ) {

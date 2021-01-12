@@ -75,7 +75,24 @@ public class SystemManager {
 		}
 		return null;
 	}
-	
+
+	public static boolean existsWebDatabases(){
+		if (MySQL.isConnected()){
+			ResultSet rs = MySQL.getResult("SELECT UUID FROM staffcoreui_accounts");
+			try{
+				if (rs != null){
+					if (rs.next()){
+						return true;
+					}
+				}
+			}catch (SQLException ignored){
+				return false;
+			}
+		}
+		return false;
+	}
+
+
 	public static boolean isVerified(String uuid) {
 		if(MySQL.isConnected()) {
 			ResultSet rs = MySQL.getResult("SELECT UUID FROM staffcoreui_accounts WHERE UUID = '"+ uuid +"'");
