@@ -22,34 +22,24 @@ public class CMD_BanHistory implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		if(sender instanceof Player) {
-			
 			Player p = (Player)sender;
-			
 			if(p.hasPermission(Main.getPermissionNotice("Permissions.Everything")) || p.hasPermission(Main.getPermissionNotice("Permissions.BanHistory.See"))) {
 				if(MySQL.isConnected()) {
-					
 					if(args.length == 1) {
-						
 						if(SystemManager.existsPlayerData(SystemManager.getUUIDByName(args[0]))) {
-							
 							new BukkitRunnable() {
 
 								@Override
 								public void run() {
-									
 									ResultSet rs = MySQL.getResult("SELECT * FROM ReportSystem_banhistory WHERE BANNED_UUID = '"+ SystemManager.getUUIDByName(args[0]) +"'");
-									
 									try {
 										if(rs.next()) {
-											
 											p.sendMessage("");
 											p.sendMessage(Main.getPrefix() + Main.getMSG("Messages.Ban-System.History.Title") + args[0]);
 											p.sendMessage("");
-											
 											if(rs.getFetchSize() > 10) {
 												p.sendMessage(Main.getPrefix() + Main.getMSG("Messages.Ban-System.History.History-too-long"));
 											}
-											
 											rs.setFetchSize(10);
 											while(rs.next()) {
 												p.sendMessage(Main.getPrefix() + Main.getMSG("Messages.Ban-System.History.Prefix.BanID") + rs.getInt("id"));
@@ -58,7 +48,6 @@ public class CMD_BanHistory implements CommandExecutor {
 												p.sendMessage(Main.getPrefix() + Main.getMSG("Messages.Ban-System.History.Prefix.BannedSince") + new Date(rs.getLong("BAN_START")) + " " + checkForExpiration(rs.getString("BANNED_UUID"), rs.getString("REASON"), rs.getLong("BAN_END")));
 												p.sendMessage("");
 											}
-													
 										} else {
 											p.sendMessage(Main.getPrefix() + Main.getMSG("Messages.Ban-System.History.No-History-Available"));
 										}
@@ -70,17 +59,12 @@ public class CMD_BanHistory implements CommandExecutor {
 									}
 								}					
 							}.runTaskAsynchronously(Main.getInstance());
-							
 						} else {
 							p.sendMessage(Main.getPrefix() + Main.getMSG("Messages.Ban-System.History.Target-Never-Joined"));
 						}
-						
 					} else if(args.length == 2) {
-						
 						if(SystemManager.existsPlayerData(SystemManager.getUUIDByName(args[0]))) {
-							
 							if(args[1].toLowerCase().equalsIgnoreCase("clear")) {
-								
 								new BukkitRunnable() {
 
 									@Override
@@ -89,51 +73,37 @@ public class CMD_BanHistory implements CommandExecutor {
 									}
 									
 								}.runTaskAsynchronously(Main.getInstance());
-								
 								p.sendMessage(Main.getPrefix() + Main.getMSG("Messages.Ban-System.History.Cleared"));
-								
 							}
-							
 						} else {
 							p.sendMessage(Main.getPrefix() + Main.getMSG("Messages.Ban-System.History.Target-Never-Joined"));
 						}
-						
 					} else {
 						p.sendMessage(Main.getPrefix() + Main.getMSG("Messages.Ban-System.History.Usage"));
 					}
-					
 				} else {
 					p.sendMessage(Main.getPrefix() + Main.getMSG("Messages.System.No-Connection.Notify"));
 				}
 			} else {
-                p.sendMessage(Main.getPrefix() + Main.getMSG("Messages.System.No-Permission").replace("%permission%", Main.getPermissionNotice("Permissions.BanHistory.See")));
-            }
-			
+				p.sendMessage(Main.getPrefix() + Main.getMSG("Messages.System.No-Permission").replace("%permission%", Main.getPermissionNotice("Permissions.BanHistory.See")));
+			}
 		} else {
 			if(MySQL.isConnected()) {
-				
 				if(args.length == 1) {
-					
 					if(SystemManager.existsPlayerData(SystemManager.getUUIDByName(args[0]))) {
-						
 						new BukkitRunnable() {
 
 							@Override
 							public void run() {
-								
 								ResultSet rs = MySQL.getResult("SELECT * FROM ReportSystem_banhistory WHERE BANNED_UUID = '"+ SystemManager.getUUIDByName(args[0]) +"'");
-								
 								try {
 									if(rs.next()) {
-										
 										sender.sendMessage("");
 										sender.sendMessage(Main.getPrefix() + Main.getMSG("Messages.Ban-System.History.Title") + args[0]);
 										sender.sendMessage("");
-										
 										if(rs.getFetchSize() > 10) {
 											sender.sendMessage(Main.getPrefix() + Main.getMSG("Messages.Ban-System.History.History-too-long"));
 										}
-										
 										rs.setFetchSize(10);
 										while(rs.next()) {
 											sender.sendMessage(Main.getPrefix() + Main.getMSG("Messages.Ban-System.History.Prefix.BanID") + rs.getInt("id"));
@@ -142,7 +112,6 @@ public class CMD_BanHistory implements CommandExecutor {
 											sender.sendMessage(Main.getPrefix() + Main.getMSG("Messages.Ban-System.History.Prefix.BannedSince") + new Date(rs.getLong("BAN_START")) + " " + checkForExpiration(rs.getString("BANNED_UUID"), rs.getString("REASON"), rs.getLong("BAN_END")));
 											sender.sendMessage("");
 										}
-												
 									} else {
 										sender.sendMessage(Main.getPrefix() + Main.getMSG("Messages.Ban-System.History.No-History-Available"));
 									}
@@ -154,17 +123,12 @@ public class CMD_BanHistory implements CommandExecutor {
 								}
 							}					
 						}.runTaskAsynchronously(Main.getInstance());
-						
 					} else {
 						sender.sendMessage(Main.getPrefix() + Main.getMSG("Messages.Ban-System.History.Target-Never-Joined"));
 					}
-					
 				} else if(args.length == 2) {
-					
 					if(SystemManager.existsPlayerData(SystemManager.getUUIDByName(args[0]))) {
-						
 						if(args[1].toLowerCase().equalsIgnoreCase("clear")) {
-							
 							new BukkitRunnable() {
 
 								@Override
@@ -173,24 +137,18 @@ public class CMD_BanHistory implements CommandExecutor {
 								}
 								
 							}.runTaskAsynchronously(Main.getInstance());
-							
 							sender.sendMessage(Main.getPrefix() + Main.getMSG("Messages.Ban-System.History.Cleared"));
-							
 						}
-						
 					} else {
 						sender.sendMessage(Main.getPrefix() + Main.getMSG("Messages.Ban-System.History.Target-Never-Joined"));
 					}
-					
 				} else {
 					sender.sendMessage(Main.getPrefix() + Main.getMSG("Messages.Ban-System.History.Usage"));
 				}
-				
 			} else {
 				sender.sendMessage(Main.getPrefix() + Main.getMSG("Messages.System.No-Connection.Notify"));
 			}
 		}
-		
 		return false;
 	}
 
@@ -213,5 +171,4 @@ public class CMD_BanHistory implements CommandExecutor {
 			}
 		}
 	}
-
 }

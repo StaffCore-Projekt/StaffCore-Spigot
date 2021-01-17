@@ -3,7 +3,12 @@ package de.lacodev.rsystem.listeners;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.security.cert.CertPathValidatorException;
 
+import de.lacodev.rsystem.objects.BanManagerPlayerInput;
+import de.lacodev.rsystem.objects.ReasonEDuration;
+import de.lacodev.rsystem.objects.ReasonRename;
+import de.lacodev.rsystem.utils.*;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -13,10 +18,6 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 
 import de.lacodev.rsystem.Main;
 import de.lacodev.rsystem.mysql.MySQL;
-import de.lacodev.rsystem.utils.PageManager;
-import de.lacodev.rsystem.utils.PanelManager;
-import de.lacodev.rsystem.utils.SystemManager;
-import de.lacodev.rsystem.utils.WebUIHandler;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ClickEvent.Action;
 import net.md_5.bungee.api.chat.ComponentBuilder;
@@ -362,6 +363,163 @@ public class Listener_PanelManager implements Listener {
 				}
 			}
 		}
+
+		if (e.getView().getTitle().equalsIgnoreCase(ChatColor.RED + "StaffCore" + ChatColor.DARK_GRAY + " - " + ChatColor.GRAY + "BanManager")){
+			e.setCancelled(true);
+
+			if (e.getCurrentItem() != null){
+				if (e.getCurrentItem().hasItemMeta()){
+					if (e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.GRAY + "Add New Ban Reason")){
+						p.sendMessage(Main.getPrefix() + ChatColor.GRAY + "Please Type now the name in the Chat!");
+						BanManagerPlayerInput bmpi = new BanManagerPlayerInput(p, null, -1, null, "BAN");
+						Main.banManagerPlayerInputs.add(bmpi);
+						p.closeInventory();
+					}
+
+					if (e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.GRAY + "Add New Mute Reason")){
+						p.sendMessage(Main.getPrefix() + ChatColor.GRAY + "Please Type now the name in the Chat!");
+						BanManagerPlayerInput bmpi = new BanManagerPlayerInput(p, null, -1, null, "MUTE");
+						Main.banManagerPlayerInputs.add(bmpi);
+						p.closeInventory();
+					}
+
+					if (e.getCurrentItem().getItemMeta().getDisplayName().startsWith("§7Ban Reason: ")){
+						p.closeInventory();
+						manager.openBanReasonUtils(p, e.getCurrentItem().getItemMeta().getDisplayName().replace("Ban Reason: ", ""));
+					}
+
+					if (e.getCurrentItem().getItemMeta().getDisplayName().startsWith("§7Mute Reason: ")){
+						p.closeInventory();
+						manager.openMuteReasonUtils(p, e.getCurrentItem().getItemMeta().getDisplayName().replace("§7Mute Reason: ", ""));
+					}
+				}
+			}
+		}
+
+		if (e.getView().getTitle().startsWith(ChatColor.RED + "Ban Reason: ")){
+			e.setCancelled(true);
+			if (e.getCurrentItem() != null){
+				if (e.getCurrentItem().hasItemMeta()){
+					if (e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.RED + "◄ Go back")){
+						manager.openBanManagerManu(p);
+					}
+
+					if (e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.RED + "DELETE")){
+
+						String reason = ChatColor.stripColor(e.getView().getTitle().replace("Ban Reason: ", ""));
+						if (BanManager.existsBanReason(reason)) {
+							BanManager.deleteBanReason(reason);
+							p.sendMessage(Main.getPrefix() + ChatColor.GRAY + "Reason " + ChatColor.RED + "DELETED");
+							p.closeInventory();
+						}else{
+							p.sendMessage(Main.getPrefix() + ChatColor.RED + " Something went wrong");
+							p.closeInventory();
+						}
+					}
+
+					if (e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.GRAY + "Edit")){
+						p.closeInventory();
+
+
+						manager.openBanReasonEdit(p, ChatColor.stripColor(e.getView().getTitle().replace("Ban Reason: ", "")));
+
+					}
+				}
+			}
+		}
+
+		if (e.getView().getTitle().startsWith(ChatColor.RED + "Mute Reason: ")){
+			e.setCancelled(true);
+			if (e.getCurrentItem() != null){
+				if (e.getCurrentItem().hasItemMeta()){
+
+					String reason = ChatColor.stripColor(e.getView().getTitle().replace("Mute Reason: ", ""));
+					if (e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.RED + "◄ Go back")){
+						manager.openBanManagerManu(p);
+					}
+
+					if (e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.RED + "DELETE")){
+						p.closeInventory();
+						BanManager.deleteMuteReason(reason);
+						p.sendMessage(Main.getPrefix() + ChatColor.GRAY + "Reason " + ChatColor.RED + "DELETED");
+					}
+
+					if (e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.GRAY + "Edit")){
+						manager.openMuteReasonEdit(p, reason);
+					}
+				}
+			}
+		}
+
+		if (e.getView().getTitle().startsWith(ChatColor.RED + "Mute Edit: ")){
+			e.setCancelled(true);
+			if (e.getCurrentItem() != null){
+				if (e.getCurrentItem().hasItemMeta()){
+					e.setCancelled(true);
+					String reason = ChatColor.stripColor(e.getView().getTitle().replace("Mute Edit: ", ""));
+					if (e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.RED +"◄ Go back")){
+						manager.openMuteReasonUtils(p, reason);
+					}
+
+					if (e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.GRAY + "Rename Reason")){
+						ReasonRename rr = new ReasonRename();
+						rr.setP(p);
+						rr.setOldName(reason);
+						rr.setId(BanManager.getIDFromMuteReason(reason));
+						Main.reasonRename.add(rr);
+
+						p.sendMessage(Main.getPrefix() + ChatColor.GRAY + "Please Type now the new Name in the Chat, to Rename: " + rr.getOldName() + "!");
+						p.closeInventory();
+					}
+
+					if (e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.GRAY + "Edit Duration")){
+						ReasonEDuration red = new ReasonEDuration();
+						red.setP(p);
+						red.setId(BanManager.getIDFromMuteReason(reason));
+						Main.reasonEDurations.add(red);
+						p.sendMessage(Main.getPrefix() + ChatColor.GRAY + "Please Type now the new Duration, [time] [perma | d | m | h ]");
+						p.closeInventory();
+					}
+				}
+			}
+		}
+
+		if (e.getView().getTitle().startsWith(ChatColor.RED + "Ban Edit: ")){
+			e.setCancelled(true);
+			if (e.getCurrentItem() != null) {
+				if (e.getCurrentItem().hasItemMeta()) {
+
+					String reason = ChatColor.stripColor(e.getView().getTitle().replace("Ban Edit: ", ""));
+
+					if (e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.RED + "◄ Go back")){
+						manager.openBanReasonUtils(p, reason);
+					}
+
+					if (e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.GRAY + "Rename Reason")){
+						ReasonRename rr = new ReasonRename();
+						rr.setP(p);
+						rr.setOldName(reason);
+						rr.setId(BanManager.getIDFromBanReason(reason));
+						Main.reasonRename.add(rr);
+
+						p.sendMessage(Main.getPrefix() + ChatColor.GRAY + "Please Type now the new Name in the Chat, to Rename: " + rr.getOldName() + "!");
+						p.closeInventory();
+					}
+
+					if (e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.GRAY + "Edit Duration")){
+						ReasonEDuration red = new ReasonEDuration();
+						red.setP(p);
+						red.setId(BanManager.getIDFromBanReason(reason));
+
+						p.sendMessage(Main.getPrefix() + ChatColor.GRAY + "Please Type now the new Duration, [time] [perma | d | m | h ]");
+						p.closeInventory();
+						Main.reasonEDurations.add(red);
+					}
+				}
+			}
+		}
+
+		//if (e.getView().getTitle().startsWith("")){}
 	}
 
 }

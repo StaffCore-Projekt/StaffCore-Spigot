@@ -14,9 +14,7 @@ public class CMD_BanIP implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		if(sender instanceof Player) {
-			
 			Player p = (Player)sender;
-			
 			if(p.hasPermission(Main.getPermissionNotice("Permissions.Everything")) || p.hasPermission(Main.getPermissionNotice("Permissions.IpBan.Use"))) {
 				if(args.length == 1) {
 					Player target = Bukkit.getPlayer(args[0]);
@@ -33,9 +31,8 @@ public class CMD_BanIP implements CommandExecutor {
 					p.sendMessage(Main.getPrefix() + Main.getMSG("Messages.Ban-System.IP-Ban.Usage"));
 				}
 			} else {
-                p.sendMessage(Main.getPrefix() + Main.getMSG("Messages.System.No-Permission").replace("%permission%", Main.getPermissionNotice("Permissions.IpBan.Use")));
-            }
-			
+				p.sendMessage(Main.getPrefix() + Main.getMSG("Messages.System.No-Permission").replace("%permission%", Main.getPermissionNotice("Permissions.IpBan.Use")));
+			}
 		}
 		return true;
 	}

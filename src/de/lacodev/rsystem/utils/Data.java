@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.UUID;
 
+import com.mojang.authlib.properties.PropertyMap;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -17,9 +18,10 @@ import de.lacodev.rsystem.enums.Heads;
 import de.lacodev.rsystem.enums.XMaterial;
 
 public class Data {
-	
+
+
 	public static ItemStack getHead(String name) {
-		for(Heads head : Heads.values()) {
+			for(Heads head : Heads.values()) {
 			if(head.getName().equals(name)) {
 				return head.getItemStack();
 			}

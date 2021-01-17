@@ -73,39 +73,38 @@ public class CMD_Check implements CommandExecutor {
 			}
 		} else {
 			if(MySQL.isConnected()) {
-					
-					if( args.length == 1 ) {
-						
-						if( SystemManager.existsPlayerData(SystemManager.getUUIDByName(args[0])) ) {
-							
-							new BukkitRunnable() {
+				if( args.length == 1 ) {
 
-								@Override
-								public void run() {
-									sender.sendMessage("");
-									sender.sendMessage(Main.getPrefix() + Main.getMSG("Messages.Player-Check.Title"));
-									sender.sendMessage("");
-									sender.sendMessage(Main.getPrefix() + Main.getMSG("Messages.Player-Check.Prefix.Name") + args[0]);
-									sender.sendMessage(Main.getPrefix() + Main.getMSG("Messages.Player-Check.Prefix.Last-IP") + SystemManager.getLastKnownIP(SystemManager.getUUIDByName(args[0])));
-									sender.sendMessage("");
-									sender.sendMessage(Main.getPrefix() + Main.getMSG("Messages.Player-Check.Prefix.Reports") + ReportManager.getReports(SystemManager.getUUIDByName(args[0])));
-									sender.sendMessage(Main.getPrefix() + Main.getMSG("Messages.Player-Check.Prefix.Bans") + BanManager.getBans(SystemManager.getUUIDByName(args[0])));
-									sender.sendMessage(Main.getPrefix() + Main.getMSG("Messages.Player-Check.Prefix.Mutes") + BanManager.getMutes(SystemManager.getUUIDByName(args[0])));
-									sender.sendMessage(Main.getPrefix() + Main.getMSG("Messages.Player-Check.Prefix.Warns") + BanManager.getWarns(SystemManager.getUUIDByName(args[0])));
-									sender.sendMessage("");
-									sender.sendMessage(Main.getPrefix() + Main.getMSG("Messages.Player-Check.Prefix.Banned") + getBanningState(SystemManager.getUUIDByName(args[0])));
-									sender.sendMessage(Main.getPrefix() + Main.getMSG("Messages.Player-Check.Prefix.Muted") + getMutingState(SystemManager.getUUIDByName(args[0])));
-									sender.sendMessage("");
-								}	
-							}.runTaskAsynchronously(Main.getInstance());
-							
-						} else {
-							sender.sendMessage(Main.getPrefix() + Main.getMSG("Messages.Player-Check.No-Player-Found"));
-						}
-						
+					if( SystemManager.existsPlayerData(SystemManager.getUUIDByName(args[0])) ) {
+
+						new BukkitRunnable() {
+
+							@Override
+							public void run() {
+								sender.sendMessage("");
+								sender.sendMessage(Main.getPrefix() + Main.getMSG("Messages.Player-Check.Title"));
+								sender.sendMessage("");
+								sender.sendMessage(Main.getPrefix() + Main.getMSG("Messages.Player-Check.Prefix.Name") + args[0]);
+								sender.sendMessage(Main.getPrefix() + Main.getMSG("Messages.Player-Check.Prefix.Last-IP") + SystemManager.getLastKnownIP(SystemManager.getUUIDByName(args[0])));
+								sender.sendMessage("");
+								sender.sendMessage(Main.getPrefix() + Main.getMSG("Messages.Player-Check.Prefix.Reports") + ReportManager.getReports(SystemManager.getUUIDByName(args[0])));
+								sender.sendMessage(Main.getPrefix() + Main.getMSG("Messages.Player-Check.Prefix.Bans") + BanManager.getBans(SystemManager.getUUIDByName(args[0])));
+								sender.sendMessage(Main.getPrefix() + Main.getMSG("Messages.Player-Check.Prefix.Mutes") + BanManager.getMutes(SystemManager.getUUIDByName(args[0])));
+								sender.sendMessage(Main.getPrefix() + Main.getMSG("Messages.Player-Check.Prefix.Warns") + BanManager.getWarns(SystemManager.getUUIDByName(args[0])));
+								sender.sendMessage("");
+								sender.sendMessage(Main.getPrefix() + Main.getMSG("Messages.Player-Check.Prefix.Banned") + getBanningState(SystemManager.getUUIDByName(args[0])));
+								sender.sendMessage(Main.getPrefix() + Main.getMSG("Messages.Player-Check.Prefix.Muted") + getMutingState(SystemManager.getUUIDByName(args[0])));
+								sender.sendMessage("");
+							}
+						}.runTaskAsynchronously(Main.getInstance());
+
 					} else {
-						sender.sendMessage(Main.getPrefix() + Main.getMSG("Messages.Player-Check.Usage"));
+						sender.sendMessage(Main.getPrefix() + Main.getMSG("Messages.Player-Check.No-Player-Found"));
 					}
+
+				} else {
+					sender.sendMessage(Main.getPrefix() + Main.getMSG("Messages.Player-Check.Usage"));
+				}
 			} else {
 				sender.sendMessage(Main.getPrefix() + Main.getMSG("Messages.System.No-Connection.Notify"));
 			}

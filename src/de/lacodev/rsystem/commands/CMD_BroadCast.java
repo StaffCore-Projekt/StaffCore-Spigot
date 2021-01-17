@@ -2,6 +2,7 @@ package de.lacodev.rsystem.commands;
 
 import de.lacodev.rsystem.Main;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -19,7 +20,7 @@ public class CMD_BroadCast implements CommandExecutor {
                 }
 
 
-                Bukkit.broadcastMessage(Main.getPrefix() + "§7" + msg);
+                Bukkit.broadcastMessage(Main.getPrefix() + ChatColor.GRAY + msg);
 
             }else{
                 p.sendMessage(Main.getPrefix() + Main.getMSG("Messages.System.No-Permission").replace("%permission%", Main.getPermissionNotice("Permissions.BroadCast.Send")));

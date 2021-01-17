@@ -37,7 +37,7 @@ public class AntiMCLeaksHandler {
 		}
 		
 		Bukkit.getConsoleSender().sendMessage("");
-		Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» " + ChatColor.GREEN + "Successfully " + ChatColor.DARK_GRAY + "cached " + ChatColor.GREEN + totalAccounts + " Accounts");
+		Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "Â» " + ChatColor.GREEN + "Successfully " + ChatColor.DARK_GRAY + "cached " + ChatColor.GREEN + totalAccounts + " Accounts");
 		Bukkit.getConsoleSender().sendMessage("");
 		
 	}

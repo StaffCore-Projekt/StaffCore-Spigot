@@ -3,8 +3,10 @@ package de.lacodev.rsystem.utils;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
-import net.milkbowl.vault.chat.Chat;
+import de.lacodev.rsystem.objects.BanReasons;
+import de.lacodev.rsystem.objects.MuteReasons;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -31,7 +33,193 @@ public class PanelManager {
 	private Inventory onlineplayermenu;
 	private Inventory protect;
 	private Inventory playermenu;
-	
+
+	public void openMuteReasonUtils(Player p, String reason) {
+		Inventory muteReasonUtils = p.getServer().createInventory(null, 9, ChatColor.RED + "Mute Reason: " + ChatColor.YELLOW + reason);
+		for (int i = 0; i < 9; i++){
+			muteReasonUtils.setItem(i, Data.buildPlace());
+		}
+
+		ItemStack menu = Data.getHead("arrow");
+		ItemMeta meta = menu.getItemMeta();
+		meta.setDisplayName(ChatColor.RED + "◄ Go back");
+		menu.setItemMeta(meta);
+
+		muteReasonUtils.setItem(0, menu);
+
+		ItemStack edit = Data.getHead("graye");
+		ItemMeta editM = edit.getItemMeta();
+
+		editM.setDisplayName(ChatColor.GRAY + "Edit");
+
+		edit.setItemMeta(editM);
+
+		muteReasonUtils.setItem(4, edit); //EDIT
+
+		ItemStack delete = Data.getHead("redd");
+		ItemMeta deleteM = delete.getItemMeta();
+		deleteM.setDisplayName(ChatColor.RED + "DELETE");
+		delete.setItemMeta(deleteM);
+
+		muteReasonUtils.setItem(6, delete); //DELETE
+
+		p.openInventory(muteReasonUtils);
+	}
+
+	public void openMuteReasonEdit(Player p, String reason){
+		Inventory muteReasonEdit = p.getServer().createInventory(null, 9, ChatColor.RED + "Mute Edit: " + ChatColor.YELLOW + reason);
+		for (int i = 0; i < 9; i++ ) {
+			muteReasonEdit.setItem(i, Data.buildPlace());
+		}
+
+		ItemStack menu = Data.getHead("arrow");
+		ItemMeta meta = menu.getItemMeta();
+		meta.setDisplayName(ChatColor.RED + "◄ Go back");
+		menu.setItemMeta(meta);
+
+		muteReasonEdit.setItem(0, menu);
+
+		ItemStack editN = Data.getHead("grayn");
+		ItemMeta editNM = editN.getItemMeta();
+		editNM.setDisplayName(ChatColor.GRAY + "Rename Reason");
+		editN.setItemMeta(editNM);
+
+		muteReasonEdit.setItem(4, editN);
+
+		ItemStack editD = Data.getHead("grayd");
+		ItemMeta editDM = editD.getItemMeta();
+		editDM.setDisplayName(ChatColor.GRAY + "Edit Duration");
+		editD.setItemMeta(editDM);
+
+		muteReasonEdit.setItem(6, editD);
+
+		p.openInventory(muteReasonEdit);
+	}
+
+	public void openBanReasonEdit(Player player, String reason){
+		Inventory banReasonEdit = player.getServer().createInventory(null, 9, ChatColor.RED + "Ban Edit: " + ChatColor.YELLOW + ChatColor.stripColor(reason));
+
+		for (int i = 0; i < 9; i++){
+			banReasonEdit.setItem(i, Data.buildPlace());
+		}
+
+		ItemStack menu = Data.getHead("arrow");
+		ItemMeta meta = menu.getItemMeta();
+		meta.setDisplayName(ChatColor.RED + "◄ Go back");
+		menu.setItemMeta(meta);
+
+		banReasonEdit.setItem(0, menu);
+
+		ItemStack editN = Data.getHead("grayn");
+		ItemMeta editNM = editN.getItemMeta();
+		editNM.setDisplayName(ChatColor.GRAY + "Rename Reason");
+		editN.setItemMeta(editNM);
+		banReasonEdit.setItem(4, editN);
+
+		ItemStack editD = Data.getHead("grayd");
+		ItemMeta editDM = editD.getItemMeta();
+		editDM.setDisplayName(ChatColor.GRAY + "Edit Duration");
+		editD.setItemMeta(editDM);
+		banReasonEdit.setItem(6, editD);
+
+		player.openInventory(banReasonEdit);
+	}
+
+	public void openBanReasonUtils(Player player, String reason){
+		Inventory banReasonGui = player.getServer().createInventory(null, 9, "§cBan Reason: " + ChatColor.YELLOW + reason);
+		for (int i = 0; i < 9; i++){
+			banReasonGui.setItem(i, Data.buildPlace());
+		}
+
+		ItemStack menu = Data.getHead("arrow");
+		ItemMeta meta = menu.getItemMeta();
+		meta.setDisplayName(ChatColor.RED + "◄ Go back");
+		menu.setItemMeta(meta);
+
+		banReasonGui.setItem(0, menu);
+
+
+		ItemStack edit = Data.getHead("graye");
+		ItemMeta editM = edit.getItemMeta();
+
+		editM.setDisplayName(ChatColor.GRAY + "Edit");
+
+		edit.setItemMeta(editM);
+
+		banReasonGui.setItem(4, edit); //EDIT
+
+		ItemStack delete = Data.getHead("redd");
+		ItemMeta deleteM = delete.getItemMeta();
+		deleteM.setDisplayName(ChatColor.RED + "DELETE");
+		delete.setItemMeta(deleteM);
+
+		banReasonGui.setItem(6, delete); //DELETE
+
+		player.openInventory(banReasonGui);
+	}
+
+	public void openBanManagerManu(Player player){
+		Inventory banManagerGui = player.getServer().createInventory(null, 6 * 9, ChatColor.RED + "StaffCore" + ChatColor.DARK_GRAY + " - " + ChatColor.GRAY + "BanManager");
+		for (int i = 0; i < 9; i++){
+			banManagerGui.setItem(i, Data.buildPlace());
+		}
+
+		for (int i = 45; i < 54; i++){
+			banManagerGui.setItem(i, Data.buildPlace());
+		}
+
+		ItemStack b = Data.getHead("grayb");
+		ItemMeta bmeta = b.getItemMeta();
+		bmeta.setDisplayName(ChatColor.GRAY + "Add New Ban Reason");
+		b.setItemMeta(bmeta);
+
+		banManagerGui.setItem(48, b);
+
+		ItemStack m = Data.getHead("graym");
+		ItemMeta mmeta = m.getItemMeta();
+		mmeta.setDisplayName(ChatColor.GRAY + "Add New Mute Reason");
+		m.setItemMeta(mmeta);
+
+		banManagerGui.setItem(50, m);
+
+
+		ArrayList<BanReasons> breasons = BanManager.getBanReasons();
+
+		for (int i = 0; i < breasons.size() ; i++){
+			BanReasons breason = breasons.get(i);
+			List<String> blore = new ArrayList<>();
+			if (BanManager.getBanLength(breason.getLength()).equalsIgnoreCase(Main.getMSG("Messages.Layouts.Ban.Length-Values.Permanently"))){
+				blore.add(ChatColor.GRAY + "Length: " + ChatColor.RED + ChatColor.BOLD + ChatColor.stripColor(BanManager.getBanLength(breason.getLength())));
+			}else{
+				blore.add(ChatColor.GRAY + "Length: " + ChatColor.YELLOW + BanManager.getBanLength(breason.getLength()));
+			}
+
+			ItemStack redbb = Data.getHead("redb");
+			ItemMeta redbbItemMeta = redbb.getItemMeta();
+			redbbItemMeta.setDisplayName("§7Ban Reason: " + ChatColor.YELLOW + breason.getName());
+			redbbItemMeta.setLore(blore);
+			redbb.setItemMeta(redbbItemMeta);
+			banManagerGui.setItem(i+9, redbb);
+		}
+
+		ArrayList<MuteReasons> mReasons = BanManager.getMuteReasons();
+
+		for (int i = 0; i < mReasons.size(); i++){
+			MuteReasons mReason = mReasons.get(i);
+			List<String> mlore = new ArrayList<>();
+			mlore.add(ChatColor.GRAY + "Length: " + ChatColor.YELLOW + BanManager.getBanLength(mReason.getLength()));
+
+			ItemStack redm = Data.getHead("redm");
+			ItemMeta mRedM = redm.getItemMeta();
+			mRedM.setDisplayName(ChatColor.GRAY + "Mute Reason: " + ChatColor.YELLOW + mReason.getName());
+			mRedM.setLore(mlore);
+			redm.setItemMeta(mRedM);
+			banManagerGui.setItem((i+9+ breasons.size()), redm);
+		}
+
+		player.openInventory(banManagerGui);
+	}
+
 	public static Inventory settings;
 	
 	public void openMainMenu(Player player) {
@@ -280,5 +468,6 @@ public class PanelManager {
 	public Inventory getPlayerMenu() {
 		return playermenu;
 	}
+
 
 }

@@ -56,7 +56,7 @@ public class TranslationHandler {
 		}
 		
 		Bukkit.getConsoleSender().sendMessage("");
-		Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "\u00BB " + ChatColor.GREEN + "Successfully " + ChatColor.DARK_GRAY + "cached " + ChatColor.GREEN + fallback.size() + " Fallback-Translations" + ChatColor.DARK_GRAY + "(" + ChatColor.GRAY + "US" + ChatColor.DARK_GRAY + ")");
+		Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» " + ChatColor.GREEN + "Successfully " + ChatColor.DARK_GRAY + "cached " + ChatColor.GREEN + fallback.size() + " Fallback-Translations" + ChatColor.DARK_GRAY + "(" + ChatColor.GRAY + "US" + ChatColor.DARK_GRAY + ")");
 		Bukkit.getConsoleSender().sendMessage("");
 		
 	}

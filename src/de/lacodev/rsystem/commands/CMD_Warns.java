@@ -29,48 +29,64 @@ public class CMD_Warns implements CommandExecutor {
 			
 			Player p = (Player)sender;
 			
-			if(p.hasPermission(Main.getPermissionNotice("Permissions.Everything")) || p.hasPermission(Main.getPermissionNotice("Permissions.Warns.See"))) {
-				
-				if(args.length == 1) {
-					
-					if(SystemManager.existsPlayerData(SystemManager.getUUIDByName(args[0]))) {
-						
+
+
+			if(args.length == 1) {
+				if(p.hasPermission(Main.getPermissionNotice("Permissions.Everything")) || p.hasPermission(Main.getPermissionNotice("Permissions.Warns.See"))) {
+					if (SystemManager.existsPlayerData(SystemManager.getUUIDByName(args[0]))) {
+
 						String target = args[0];
-						
+
 						TextComponent w = new TextComponent();
 						w.setText(Main.getPrefix() + Main.getMSG("Messages.Warn-System.Warns.Player-Info").replace("%target%", target).replace("%warns%", "" + BanManager.getWarns(SystemManager.getUUIDByName(target))));
-						
+
 						String listString = "\n";
-						for(String s : getWarnReasonsFromPlayer(SystemManager.getUUIDByName(target))) {
+						for (String s : getWarnReasonsFromPlayer(SystemManager.getUUIDByName(target))) {
 							listString += ChatColor.DARK_GRAY + "- " + ChatColor.RED + s + "\n";
 						}
-						
+
 						w.setHoverEvent(new HoverEvent(net.md_5.bungee.api.chat.HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(listString).create()));
-						
+
 						p.spigot().sendMessage(w);
-						
+
 						TextComponent tc = new TextComponent();
 						tc.setText(" " + Main.getMSG("Messages.Warn-System.Warns.Action-Ban-Button"));
 						tc.setClickEvent(new ClickEvent(Action.RUN_COMMAND, "/ban " + target));
-						
+
 						TextComponent tc1 = new TextComponent();
 						tc1.setText(Main.getPrefix() + Main.getMSG("Messages.Warn-System.Warns.Action-Mute-Button"));
 						tc1.setClickEvent(new ClickEvent(Action.RUN_COMMAND, "/mute " + target));
 						tc1.addExtra(tc);
-						
+
 						p.spigot().sendMessage(tc1);
-						
+
 					} else {
 						p.sendMessage(Main.getPrefix() + Main.getMSG("Messages.Warn-System.Warns.Never-Joined"));
 					}
-					
 				} else {
-					p.sendMessage(Main.getPrefix() + Main.getMSG("Messages.Warn-System.Warns.Usage"));
+					p.sendMessage(Main.getPrefix() + Main.getMSG("Messages.System.No-Permission").replace("%permission%", Main.getPermissionNotice("Permissions.Warns.See")));
 				}
-				
-			} else {
-                p.sendMessage(Main.getPrefix() + Main.getMSG("Messages.System.No-Permission").replace("%permission%", Main.getPermissionNotice("Permissions.Warns.See")));
-            }
+			} else if ((args.length == 2) && args[1].equalsIgnoreCase("clear")){
+
+				if(p.hasPermission(Main.getPermissionNotice("Permissions.Everything")) || p.hasPermission(Main.getPermissionNotice("Permissions.Warns.Clear"))) {
+					if (SystemManager.existsPlayerData(SystemManager.getUUIDByName(args[0]))) {
+
+						BanManager.clearWans(SystemManager.getUUIDByName(args[0]));
+
+						//PREFIX + "You Cleared the "
+						p.sendMessage(Main.getPrefix() + Main.getMSG("Messages.Warn-System.Warn.Clear").replace("%player%", args[0]));
+
+					} else {
+						p.sendMessage(Main.getPrefix() + Main.getMSG("Messages.Warn-System.Warns.Never-Joined"));
+					}
+				} else {
+					p.sendMessage(Main.getPrefix() + Main.getMSG("Messages.System.No-Permission").replace("%permission%", Main.getPermissionNotice("Permissions.Warns.Clear")));
+				}
+			}else{
+				p.sendMessage(Main.getPrefix() + Main.getMSG("Messages.Warn-System.Warns.Usage"));
+			}
+
+
 			
 		} else {
 			if(args.length == 1) {

@@ -6,12 +6,16 @@ import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.nio.file.Path;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 import de.lacodev.rsystem.commands.*;
 import de.lacodev.rsystem.completer.*;
+import de.lacodev.rsystem.objects.BanManagerPlayerInput;
+import de.lacodev.rsystem.objects.ReasonEDuration;
+import de.lacodev.rsystem.objects.ReasonRename;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -75,6 +79,10 @@ public class Main extends JavaPlugin{
 	public API api = null;
 	
 	public ArrayList<String> matrix_hacktypes = new ArrayList<>();
+	public static ArrayList<BanManagerPlayerInput> banManagerPlayerInputs = new ArrayList<>();
+	public static ArrayList<ReasonRename> reasonRename = new ArrayList<>();
+	public static ArrayList<ReasonEDuration> reasonEDurations = new ArrayList<>();
+
 	
 	public void onEnable() {
 		instance = this;
@@ -465,22 +473,22 @@ public class Main extends JavaPlugin{
 
 	private void deactivateBanningSystem() {
 		bansystem = false;
-			
+
 		Bukkit.getConsoleSender().sendMessage("");
 		Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» StaffCore BanSystem " + ChatColor.DARK_GRAY + "(" + ChatColor.RED + "DEACTIVATED" + ChatColor.DARK_GRAY + ")");
 	}
 
 	public boolean setupMatrix() {
-        if (getServer().getPluginManager().getPlugin("Matrix") == null) {
-            return false;
-        } else {
-        	
-        	for(me.rerere.matrix.api.HackType matrix : me.rerere.matrix.api.HackType.values()) {
-        		matrix_hacktypes.add(matrix.name().toUpperCase());
-        	}
-        	
-        	return true;
-        }
+		if (getServer().getPluginManager().getPlugin("Matrix") == null) {
+			return false;
+		} else {
+
+			for(me.rerere.matrix.api.HackType matrix : me.rerere.matrix.api.HackType.values()) {
+				matrix_hacktypes.add(matrix.name().toUpperCase());
+			}
+
+			return true;
+		}
 	}
 
 	public boolean setupActionBar() {

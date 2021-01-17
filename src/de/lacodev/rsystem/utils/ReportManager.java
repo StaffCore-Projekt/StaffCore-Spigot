@@ -341,22 +341,22 @@ public class ReportManager {
 	public static void createReportReason(String name, ItemStack item, String senderName) {
 		if(MySQL.isConnected()) {
 			Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), () -> {
-			if(!existsReportReason(name)) {
-				try {
-					PreparedStatement st = MySQL.getCon().prepareStatement("INSERT INTO ReportSystem_reasonsdb(TYPE,NAME,REPORT_ITEM) VALUES ('REPORT','"+ name +"','"+ item.getType().toString() +"')");
-					st.executeUpdate();
+				if(!existsReportReason(name)) {
+					try {
+						PreparedStatement st = MySQL.getCon().prepareStatement("INSERT INTO ReportSystem_reasonsdb(TYPE,NAME,REPORT_ITEM) VALUES ('REPORT','"+ name +"','"+ item.getType().toString() +"')");
+						st.executeUpdate();
 
-					new BukkitRunnable(){
-						@Override
-						public void run() {
-							Bukkit.getServer().getPluginManager().callEvent(new ReportReasonCreateEvent(name, item));
-						}
-					}.runTask(Main.getInstance());
+						new BukkitRunnable(){
+							@Override
+							public void run() {
+								Bukkit.getServer().getPluginManager().callEvent(new ReportReasonCreateEvent(name, item));
+							}
+						}.runTask(Main.getInstance());
 
-				} catch (SQLException e) {
-					e.printStackTrace();
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
 				}
-			}
 			});
 		}
 	}
