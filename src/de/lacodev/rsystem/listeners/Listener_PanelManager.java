@@ -1,14 +1,16 @@
 package de.lacodev.rsystem.listeners;
 
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.security.cert.CertPathValidatorException;
-
+import de.lacodev.rsystem.Main;
+import de.lacodev.rsystem.mysql.MySQL;
 import de.lacodev.rsystem.objects.BanManagerPlayerInput;
 import de.lacodev.rsystem.objects.ReasonEDuration;
 import de.lacodev.rsystem.objects.ReasonRename;
 import de.lacodev.rsystem.utils.*;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.ClickEvent.Action;
+import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -16,13 +18,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
-import de.lacodev.rsystem.Main;
-import de.lacodev.rsystem.mysql.MySQL;
-import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.ClickEvent.Action;
-import net.md_5.bungee.api.chat.ComponentBuilder;
-import net.md_5.bungee.api.chat.HoverEvent;
-import net.md_5.bungee.api.chat.TextComponent;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.net.URL;
 
 public class Listener_PanelManager implements Listener {
 	
@@ -519,7 +517,7 @@ public class Listener_PanelManager implements Listener {
 			}
 		}
 
-		//if (e.getView().getTitle().startsWith("")){}
+
 	}
 
 }

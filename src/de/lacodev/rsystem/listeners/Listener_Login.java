@@ -1,5 +1,6 @@
 package de.lacodev.rsystem.listeners;
 
+import de.lacodev.rsystem.utils.SettingsManager;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -11,10 +12,19 @@ import de.lacodev.rsystem.Main;
 import de.lacodev.rsystem.utils.BanManager;
 
 public class Listener_Login implements Listener {
-
+	private SettingsManager settings = new SettingsManager();
 	@EventHandler
 	public void onLogin(PlayerLoginEvent e) {
 		Player p = e.getPlayer();
+		if (settings.isKey("maintenance")){
+			if (settings.getBoolean("maintenance")){
+				if (!(p.hasPermission(Main.getPermissionNotice("Permissions.Maintenance.Join")) || p.hasPermission(Main.getPermissionNotice("Permissions.Everything")))){
+					// TODO: 18.01.2021 Insert Translator 
+					e.disallow(Result.KICK_FULL, "Sorry but we are currently in Maintenance!");
+					return;
+				}
+			}
+		}
 		
 		if(BanManager.isBanned(p.getUniqueId().toString())) {
 			

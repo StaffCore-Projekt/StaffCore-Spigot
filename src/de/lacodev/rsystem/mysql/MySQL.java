@@ -16,8 +16,7 @@ import de.lacodev.rsystem.Main;
 import de.lacodev.rsystem.utils.SystemManager;
 
 public class MySQL {
-	
-	   
+
     // Defines Login credentials for MySQL Database
     private static String host = Main.getInstance().host;
     private static String port = Main.getInstance().port;
@@ -73,9 +72,9 @@ public class MySQL {
 		if(sqlState.matches("08S01")) {
 			return "\n - Cant get hostname for your address! \n - Bad handshake \n - Unknown command \n - Server shutdown in progress "
 					+ "\n - Cant create IP socket \n - Aborted connection to db: " + database + " \n - Got a packet bigger than 'max_allowed_packet' bytes "
-							+ "\n - Got a read error from connection pipe \n - Got packets out of order \n - Couldnt uncompress communication packet "
-							+ "\n - Got an error reading communication packets \n - Got timeout reading communication packets "
-							+ "\n - Got an error writing communication packets \n - Got timeout writing communication packets";
+					+ "\n - Got a read error from connection pipe \n - Got packets out of order \n - Couldnt uncompress communication packet "
+					+ "\n - Got an error reading communication packets \n - Got timeout reading communication packets "
+					+ "\n - Got an error writing communication packets \n - Got timeout writing communication packets";
 		}
 		if(sqlState.matches("HY000")) {
 			return "\n - Server couldnt process an action by the user";
@@ -96,66 +95,67 @@ public class MySQL {
 	}
 
 	// Returns boolean if MySQL isConnected
-    public static boolean isConnected() {
+	public static boolean isConnected() {
         return (getCon() == null ? false : true);
     }
-    
-    public static void disconnect() {
-        if(isConnected()) {
-            Bukkit.getConsoleSender().sendMessage(mysql + ChatColor.GRAY + "Detaching from " + ChatColor.RED + "Database Services" + ChatColor.GRAY + "...");
-            try {
-                getCon().close();
-                Bukkit.getConsoleSender().sendMessage(mysql + ChatColor.GREEN + "Successfully " + ChatColor.GRAY + "detached from " + ChatColor.GREEN + "Database " + database);
-            } catch (SQLException e) {
-                Bukkit.getConsoleSender().sendMessage(mysql + ChatColor.RED + "Failed " + ChatColor.GRAY + "to detach from " + ChatColor.GREEN + "Database Services");
-                Bukkit.getConsoleSender().sendMessage(mysql + ChatColor.GRAY + "May the service is not connected...");
-                Bukkit.getConsoleSender().sendMessage(mysql + ChatColor.GRAY + "Please check your database host!");
-            }
-        }
-    }
-    
-    // Creates MySQL Table
-    public static void createTable() {
-        if(isConnected()) {
-        	try {
-            	PreparedStatement st1 = getCon().prepareStatement("CREATE TABLE IF NOT EXISTS ReportSystem_playerdb(id INT(6) AUTO_INCREMENT UNIQUE, UUID VARCHAR(255), PLAYERNAME VARCHAR(255), BANS INT(6), MUTES INT(6), REPORTS INT(6), WARNS INT(6), LAST_KNOWN_IP VARCHAR(255), LAST_ONLINE LONG)");
-            	st1.executeUpdate();
-            	PreparedStatement st2 = getCon().prepareStatement("CREATE TABLE IF NOT EXISTS ReportSystem_reportsdb(id INT(6) AUTO_INCREMENT UNIQUE, REPORTER_UUID VARCHAR(255), REPORTED_UUID VARCHAR(255), REASON VARCHAR(255), TEAM_UUID VARCHAR(255), STATUS INT(6), reg_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP)");
-            	st2.executeUpdate();
-            	PreparedStatement st3 = getCon().prepareStatement("CREATE TABLE IF NOT EXISTS ReportSystem_bansdb(id INT(6) AUTO_INCREMENT UNIQUE, BANNED_UUID VARCHAR(255), TEAM_UUID VARCHAR(255), REASON VARCHAR(255), BAN_END LONG)");
-            	st3.executeUpdate();
-            	PreparedStatement st4 = getCon().prepareStatement("CREATE TABLE IF NOT EXISTS ReportSystem_mutesdb(id INT(6) AUTO_INCREMENT UNIQUE, MUTED_UUID VARCHAR(255), TEAM_UUID VARCHAR(255), REASON VARCHAR(255), MUTE_END LONG)");
-            	st4.executeUpdate();
-                PreparedStatement st5 = getCon().prepareStatement("CREATE TABLE IF NOT EXISTS ReportSystem_actionsdb(id INT(6) AUTO_INCREMENT UNIQUE, ACTION VARCHAR(255), EXECUTOR_UUID VARCHAR(255), DESCRIPTION VARCHAR(255))");
-                st5.executeUpdate();
-            	PreparedStatement st6 = getCon().prepareStatement("CREATE TABLE IF NOT EXISTS ReportSystem_reasonsdb(id INT(6) AUTO_INCREMENT UNIQUE, TYPE VARCHAR(255), NAME VARCHAR(255), BAN_LENGTH LONG, REPORT_ITEM VARCHAR(255))");
-            	st6.executeUpdate();
-            	PreparedStatement st7 = getCon().prepareStatement("CREATE TABLE IF NOT EXISTS ReportSystem_materialsdb(id INT(6) AUTO_INCREMENT UNIQUE, TYPE VARCHAR(255) UNIQUE)");
-            	st7.executeUpdate();
-            	PreparedStatement st9 = getCon().prepareStatement("CREATE TABLE IF NOT EXISTS ReportSystem_messages(id INT(6) AUTO_INCREMENT UNIQUE, SENDER_UUID VARCHAR(255), MESSAGE VARCHAR(256), reg_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP)");
-            	st9.executeUpdate();
-            	PreparedStatement st10 = getCon().prepareStatement("CREATE TABLE IF NOT EXISTS ReportSystem_ipbans(id INT(6) AUTO_INCREMENT UNIQUE, IP_ADDRESS VARCHAR(255), END LONG)");
-            	st10.executeUpdate();
-            	PreparedStatement st11 = getCon().prepareStatement("CREATE TABLE IF NOT EXISTS ReportSystem_banhistory(id INT(6) AUTO_INCREMENT UNIQUE, BANNED_UUID VARCHAR(255), TEAM_UUID VARCHAR(255), REASON VARCHAR(255), BAN_START LONG, BAN_END LONG)");
-            	st11.executeUpdate();
-            	PreparedStatement st12 = getCon().prepareStatement("CREATE TABLE IF NOT EXISTS ReportSystem_warnsdb(id INT(6) AUTO_INCREMENT UNIQUE, UUID VARCHAR(255), TEAM_UUID VARCHAR(255), REASON VARCHAR(255))");
-            	st12.executeUpdate();
-            	PreparedStatement st13 = getCon().prepareStatement("CREATE TABLE IF NOT EXISTS ReportSystem_ticketdb(id INT(6) AUTO_INCREMENT UNIQUE, CREATOR_UUID VARCHAR(255), TEAM_UUID VARCHAR(255), reg_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP)");
-            	st13.executeUpdate();
-            	PreparedStatement st14 = getCon().prepareStatement("CREATE TABLE IF NOT EXISTS ReportSystem_ticketdb_messages(id INT(6) AUTO_INCREMENT UNIQUE, TICKET_ID INT(6), COMMENT TEXT, AUTHOR VARCHAR(255), POSTED VARCHAR(255))");
-            	st14.executeUpdate();
-                Bukkit.getConsoleSender().sendMessage(mysql + ChatColor.GREEN + "Successfully " + ChatColor.GRAY + "created/loaded " + ChatColor.GREEN + "MySQL-Table");
-            } catch (SQLException e) {
-            	if(Main.getInstance().getConfig().getBoolean("General.MySQL.Debug")) {
-            		getDebug(e);
-            	} else {
-            		Bukkit.getConsoleSender().sendMessage(mysql + ChatColor.RED + "ERROR while creating/loading MySQL-Table!");
-            	}
-               
-            }
-        	
-        	MySQL.updateTable("ALTER TABLE ReportSystem_playerdb ADD LAST_ONLINE LONG");
-        	MySQL.updateTable("ALTER TABLE ReportSystem_playerdb ADD WARNS INT(6)");
+
+	public static void disconnect() {
+		if(isConnected()) {
+			Bukkit.getConsoleSender().sendMessage(mysql + ChatColor.GRAY + "Detaching from " + ChatColor.RED + "Database Services" + ChatColor.GRAY + "...");
+			try {
+				getCon().close();
+				Bukkit.getConsoleSender().sendMessage(mysql + ChatColor.GREEN + "Successfully " + ChatColor.GRAY + "detached from " + ChatColor.GREEN + "Database " + database);
+			} catch (SQLException e) {
+				Bukkit.getConsoleSender().sendMessage(mysql + ChatColor.RED + "Failed " + ChatColor.GRAY + "to detach from " + ChatColor.GREEN + "Database Services");
+				Bukkit.getConsoleSender().sendMessage(mysql + ChatColor.GRAY + "May the service is not connected...");
+				Bukkit.getConsoleSender().sendMessage(mysql + ChatColor.GRAY + "Please check your database host!");
+			}
+		}
+	}
+
+	// Creates MySQL Table
+	public static void createTable() {
+		if(isConnected()) {
+			try {
+				PreparedStatement st1 = getCon().prepareStatement("CREATE TABLE IF NOT EXISTS ReportSystem_playerdb(id INT(6) AUTO_INCREMENT UNIQUE, UUID VARCHAR(255), PLAYERNAME VARCHAR(255), BANS INT(6), MUTES INT(6), REPORTS INT(6), WARNS INT(6), LAST_KNOWN_IP VARCHAR(255), LAST_ONLINE LONG)");
+				st1.executeUpdate();
+				PreparedStatement st2 = getCon().prepareStatement("CREATE TABLE IF NOT EXISTS ReportSystem_reportsdb(id INT(6) AUTO_INCREMENT UNIQUE, REPORTER_UUID VARCHAR(255), REPORTED_UUID VARCHAR(255), REASON VARCHAR(255), TEAM_UUID VARCHAR(255), STATUS INT(6), reg_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP)");
+				st2.executeUpdate();
+				PreparedStatement st3 = getCon().prepareStatement("CREATE TABLE IF NOT EXISTS ReportSystem_bansdb(id INT(6) AUTO_INCREMENT UNIQUE, BANNED_UUID VARCHAR(255), TEAM_UUID VARCHAR(255), REASON VARCHAR(255), BAN_END LONG)");
+				st3.executeUpdate();
+				PreparedStatement st4 = getCon().prepareStatement("CREATE TABLE IF NOT EXISTS ReportSystem_mutesdb(id INT(6) AUTO_INCREMENT UNIQUE, MUTED_UUID VARCHAR(255), TEAM_UUID VARCHAR(255), REASON VARCHAR(255), MUTE_END LONG)");
+				st4.executeUpdate();
+				PreparedStatement st5 = getCon().prepareStatement("CREATE TABLE IF NOT EXISTS ReportSystem_actionsdb(id INT(6) AUTO_INCREMENT UNIQUE, ACTION VARCHAR(255), EXECUTOR_UUID VARCHAR(255), DESCRIPTION VARCHAR(255))");
+				st5.executeUpdate();
+				PreparedStatement st6 = getCon().prepareStatement("CREATE TABLE IF NOT EXISTS ReportSystem_reasonsdb(id INT(6) AUTO_INCREMENT UNIQUE, TYPE VARCHAR(255), NAME VARCHAR(255), BAN_LENGTH LONG, REPORT_ITEM VARCHAR(255))");
+				st6.executeUpdate();
+				PreparedStatement st7 = getCon().prepareStatement("CREATE TABLE IF NOT EXISTS ReportSystem_materialsdb(id INT(6) AUTO_INCREMENT UNIQUE, TYPE VARCHAR(255) UNIQUE)");
+				st7.executeUpdate();
+				PreparedStatement st9 = getCon().prepareStatement("CREATE TABLE IF NOT EXISTS ReportSystem_messages(id INT(6) AUTO_INCREMENT UNIQUE, SENDER_UUID VARCHAR(255), MESSAGE VARCHAR(256), reg_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP)");
+				st9.executeUpdate();
+				PreparedStatement st10 = getCon().prepareStatement("CREATE TABLE IF NOT EXISTS ReportSystem_ipbans(id INT(6) AUTO_INCREMENT UNIQUE, IP_ADDRESS VARCHAR(255), END LONG)");
+				st10.executeUpdate();
+				PreparedStatement st11 = getCon().prepareStatement("CREATE TABLE IF NOT EXISTS ReportSystem_banhistory(id INT(6) AUTO_INCREMENT UNIQUE, BANNED_UUID VARCHAR(255), TEAM_UUID VARCHAR(255), REASON VARCHAR(255), BAN_START LONG, BAN_END LONG)");
+				st11.executeUpdate();
+				PreparedStatement st12 = getCon().prepareStatement("CREATE TABLE IF NOT EXISTS ReportSystem_warnsdb(id INT(6) AUTO_INCREMENT UNIQUE, UUID VARCHAR(255), TEAM_UUID VARCHAR(255), REASON VARCHAR(255))");
+				st12.executeUpdate();
+				PreparedStatement st13 = getCon().prepareStatement("CREATE TABLE IF NOT EXISTS ReportSystem_ticketdb(id INT(6) AUTO_INCREMENT UNIQUE, CREATOR_UUID VARCHAR(255), TEAM_UUID VARCHAR(255), reg_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP)");
+				st13.executeUpdate();
+				PreparedStatement st14 = getCon().prepareStatement("CREATE TABLE IF NOT EXISTS ReportSystem_ticketdb_messages(id INT(6) AUTO_INCREMENT UNIQUE, TICKET_ID INT(6), COMMENT TEXT, AUTHOR VARCHAR(255), POSTED VARCHAR(255))");
+				st14.executeUpdate();
+				PreparedStatement st15 = getCon().prepareStatement("CREATE TABLE IF NOT EXISTS ReportSystem_settings( `id` INT(6) AUTO_INCREMENT UNIQUE , `KEY` VARCHAR(255) , `VALUE` VARCHAR(255) )");
+				st15.executeUpdate();
+				Bukkit.getConsoleSender().sendMessage(mysql + ChatColor.GREEN + "Successfully " + ChatColor.GRAY + "created/loaded " + ChatColor.GREEN + "MySQL-Table");
+			} catch (SQLException e) {
+				if(Main.getInstance().getConfig().getBoolean("General.MySQL.Debug")) {
+					getDebug(e);
+				} else {
+					Bukkit.getConsoleSender().sendMessage(mysql + ChatColor.RED + "ERROR while creating/loading MySQL-Table!");
+				}
+			}
+
+			MySQL.updateTable("ALTER TABLE ReportSystem_playerdb ADD LAST_ONLINE LONG");
+			MySQL.updateTable("ALTER TABLE ReportSystem_playerdb ADD WARNS INT(6)");
         	MySQL.updateTable("ALTER TABLE ReportSystem_playerdb ADD PROTECTED INT(6)");
         	MySQL.updateTable("ALTER TABLE ReportSystem_ipbans ADD PLAYERNAME VARCHAR(255)");
         	MySQL.updateTable("ALTER TABLE ReportSystem_reportsdb ADD reg_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP");

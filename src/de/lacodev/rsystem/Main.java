@@ -609,6 +609,8 @@ public class Main extends JavaPlugin{
 
 
 		getCommand("staffchat").setExecutor(new CMD_StaffChat());
+
+		getCommand("maintenance").setExecutor(new CMD_Maintenance());
 	}
 
 	public void onDisable() {
@@ -702,6 +704,7 @@ public class Main extends JavaPlugin{
 		getConfig().addDefault("Permissions.Check.Use", "rsystem.check.use");
 		getConfig().addDefault("Permissions.BanManager.addreason", "rsystem.banmanager.addreason");
 		getConfig().addDefault("Permissions.BanManager.removereason", "rsystem.banmanager.removereason");
+		getConfig().addDefault("Permissions.BanManager.editreason", "rsystem.banmanager.editreason");
 		getConfig().addDefault("Permissions.Ban.Use", "rsystem.ban.use");
 		getConfig().addDefault("Permissions.Ban.Notify", "rsystem.ban.notify");
 		getConfig().addDefault("Permissions.Ban.List", "rsystem.ban.list");
@@ -725,7 +728,9 @@ public class Main extends JavaPlugin{
 		getConfig().addDefault("Permissions.BroadCast.Send", "rsystem.broadcast.send");
 		getConfig().addDefault("Permissions.StaffChat.Read", "rsystem.staffchat.read");
 		getConfig().addDefault("Permissions.StaffChat.Write", "rsystem.staffchat.write");
-		
+		getConfig().addDefault("Permissions.Maintenance.Change", "rsystem.maintenance.change");
+		getConfig().addDefault("Permissions.Maintenance.Join", "rsystem.maintenance.join");
+
 		getConfig().addDefault("Chatfilter.ReporterName", "ChatController");
 		getConfig().addDefault("Chatfilter.Cursed-Words.Match-for-action-in-Percentage", 50);
 		getConfig().addDefault("Chatfilter.Cursed-Words.AutoReport.Enable", true);
