@@ -12,7 +12,7 @@ import de.lacodev.rsystem.Main;
 import de.lacodev.rsystem.utils.BanManager;
 
 public class Listener_Login implements Listener {
-	private SettingsManager settings = new SettingsManager();
+	private final SettingsManager settings = new SettingsManager();
 	@EventHandler
 	public void onLogin(PlayerLoginEvent e) {
 		Player p = e.getPlayer();

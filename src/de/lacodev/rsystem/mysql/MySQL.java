@@ -96,7 +96,7 @@ public class MySQL {
 
 	// Returns boolean if MySQL isConnected
 	public static boolean isConnected() {
-        return (getCon() == null ? false : true);
+        return (getCon() != null);
     }
 
 	public static void disconnect() {

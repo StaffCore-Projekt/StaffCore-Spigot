@@ -33,9 +33,15 @@ public class PanelManager {
 	private Inventory onlineplayermenu;
 	private Inventory protect;
 	private Inventory playermenu;
+
 	//TRANSLATE START
-	public void openMuteReasonUtils(Player p, String reason) {
-		Inventory muteReasonUtils = p.getServer().createInventory(null, 9, ChatColor.RED + "Mute Reason: " + ChatColor.YELLOW + reason);
+	public void openMuteReasonUtils(Player p, int reasonId) {
+		String title = Main.getMSG("Messages.BanManager.Mute-Reason-Title").replace("%reason%", ""+ reasonId);
+		if(title.length() > 32) {
+			System.out.println("Sorry, but you have to many Reasons Created!");
+		}
+
+		Inventory muteReasonUtils = p.getServer().createInventory(null, 9, title);
 		for (int i = 0; i < 9; i++){
 			muteReasonUtils.setItem(i, Data.buildPlace());
 		}
@@ -79,8 +85,14 @@ public class PanelManager {
 		p.openInventory(muteReasonUtils);
 	}
 
-	public void openMuteReasonEdit(Player p, String reason){
-		Inventory muteReasonEdit = p.getServer().createInventory(null, 9, ChatColor.RED + "Mute Edit: " + ChatColor.YELLOW + reason);
+	public void openMuteReasonEdit(Player p, int reasonId){
+		String title = Main.getMSG("Messages.BanManager.Mute-Edit-Title").replace("%reason%", "" + reasonId);
+		if(title.length() > 32) {
+			System.out.println("Sorry, but you have to many Reasons Created!");
+		}
+
+
+		Inventory muteReasonEdit = p.getServer().createInventory(null, 9, title);
 		for (int i = 0; i < 9; i++ ) {
 			muteReasonEdit.setItem(i, Data.buildPlace());
 		}
@@ -115,8 +127,14 @@ public class PanelManager {
 		p.openInventory(muteReasonEdit);
 	}
 
-	public void openBanReasonEdit(Player player, String reason){
-		Inventory banReasonEdit = player.getServer().createInventory(null, 9, ChatColor.RED + "Ban Edit: " + ChatColor.YELLOW + ChatColor.stripColor(reason));
+	public void openBanReasonEdit(Player player, int reasonId){
+		String title = Main.getMSG("Messages.BanManager.Ban-Edit-Title").replace("%reason%", "" + reasonId);
+		if(title.length() > 32) {
+			System.out.println("Sorry, but you have to many Reasons Created!");
+		}
+
+
+		Inventory banReasonEdit = player.getServer().createInventory(null, 9, title);
 
 		for (int i = 0; i < 9; i++){
 			banReasonEdit.setItem(i, Data.buildPlace());
@@ -150,8 +168,13 @@ public class PanelManager {
 		player.openInventory(banReasonEdit);
 	}
 
-	public void openBanReasonUtils(Player player, String reason){
-		Inventory banReasonGui = player.getServer().createInventory(null, 9, "§cBan Reason: " + ChatColor.YELLOW + reason);
+	public void openBanReasonUtils(Player player, int reasonid){
+		String title = Main.getMSG("Messages.BanManager.Ban-Reason-Title").replace("%reason%", "" + reasonid);
+		if(title.length() > 32) {
+			System.out.println("Sorry, but you have to many Reasons Created!");
+		}
+
+		Inventory banReasonGui = player.getServer().createInventory(null, 9, title);
 		for (int i = 0; i < 9; i++){
 			banReasonGui.setItem(i, Data.buildPlace());
 		}
@@ -194,7 +217,7 @@ public class PanelManager {
 	}
 
 	public void openBanManagerManu(Player player){
-		Inventory banManagerGui = player.getServer().createInventory(null, 6 * 9, ChatColor.RED + "StaffCore" + ChatColor.DARK_GRAY + " - " + ChatColor.GRAY + "BanManager");
+		Inventory banManagerGui = player.getServer().createInventory(null, 6 * 9, Main.getMSG("Messages.BanManager.Main-Gui-Title"));
 		for (int i = 0; i < 9; i++){
 			banManagerGui.setItem(i, Data.buildPlace());
 		}
@@ -209,7 +232,7 @@ public class PanelManager {
 			assert b != null;
 			ItemMeta bmeta = b.getItemMeta();
 			assert bmeta != null;
-			bmeta.setDisplayName(ChatColor.GRAY + "Add New Ban Reason");
+			bmeta.setDisplayName(Main.getMSG("Messages.BanManager.Add-Reason"));
 			b.setItemMeta(bmeta);
 
 			banManagerGui.setItem(48, b);
@@ -218,7 +241,7 @@ public class PanelManager {
 			assert m != null;
 			ItemMeta mmeta = m.getItemMeta();
 			assert mmeta != null;
-			mmeta.setDisplayName(ChatColor.GRAY + "Add New Mute Reason");
+			mmeta.setDisplayName(Main.getMSG("Messages.BanManager.Add-Reason-Mute"));
 			m.setItemMeta(mmeta);
 
 			banManagerGui.setItem(50, m);
@@ -240,7 +263,8 @@ public class PanelManager {
 			assert redbb != null;
 			ItemMeta redbbItemMeta = redbb.getItemMeta();
 			assert redbbItemMeta != null;
-			redbbItemMeta.setDisplayName("§7Ban Reason: " + ChatColor.YELLOW + breason.getName());
+			redbbItemMeta.setDisplayName(Main.getMSG("Messages.BanManager.Ban-Reason-Button-Title").replace("%reason%", breason.getName()));
+			//redbbItemMeta.setDisplayName("§7Ban Reason: " + ChatColor.YELLOW + breason.getName());
 			redbbItemMeta.setLore(blore);
 			redbb.setItemMeta(redbbItemMeta);
 			banManagerGui.setItem(i+9, redbb);
@@ -257,7 +281,8 @@ public class PanelManager {
 			assert redm != null;
 			ItemMeta mRedM = redm.getItemMeta();
 			assert mRedM != null;
-			mRedM.setDisplayName(ChatColor.GRAY + "Mute Reason: " + ChatColor.YELLOW + mReason.getName());
+			mRedM.setDisplayName(Main.getMSG("Messages.BanManager.Mute-Reason-Button-Title").replace("%reason%", mReason.getName()));
+			//mRedM.setDisplayName(ChatColor.GRAY + "Mute Reason: " + ChatColor.YELLOW + mReason.getName());
 			mRedM.setLore(mlore);
 			redm.setItemMeta(mRedM);
 			banManagerGui.setItem((i+9+ breasons.size()), redm);

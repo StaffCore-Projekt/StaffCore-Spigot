@@ -283,7 +283,7 @@ public class Listener_Inventories implements Listener {
 								meta.setDisplayName(ChatColor.GRAY + playername + ChatColor.DARK_GRAY + " | " + ChatColor.RED + "Unprotected");
 							}
 							player.setItemMeta(meta);
-								
+
 							e.getClickedInventory().setItem(e.getSlot(), player);
 							
 						} else if(e.getCurrentItem().getItemMeta().getDisplayName().endsWith(ChatColor.DARK_GRAY + " | " + ChatColor.GREEN + "Protected")) {

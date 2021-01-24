@@ -29,30 +29,34 @@ public class TranslationHandler {
 	public void init() {
 		
 		fallback.clear();
-		
-		JSONObject message_keys = readJsonFromUrl("https://translate.lacodev.de/api/v1/keys");
-		int totalKeys = message_keys.size();
-		
-		for(int i = 1; i <= totalKeys; i++) {
-			
-			JSONObject data = (JSONObject) message_keys.get(String.valueOf(i));
-			
-			keys.add(data.get("key").toString());
-		}
-		
-		JSONObject translation = readJsonFromUrl("https://translate.lacodev.de/api/v1/all/lang/us");
-		
-		for(String key : keys) {
-			
-			try {
-				
-				JSONObject msg = (JSONObject) translation.get(key);
-				
-				fallback.put(key, msg.get("translation").toString());
-				
-			} catch (NullPointerException e) {
-				
+		try{
+			JSONObject message_keys = readJsonFromUrl("https://translate.lacodev.de/api/v1/keys");
+			int totalKeys = message_keys.size();
+
+			for(int i = 1; i <= totalKeys; i++) {
+
+				JSONObject data = (JSONObject) message_keys.get(String.valueOf(i));
+
+				keys.add(data.get("key").toString());
 			}
+
+			JSONObject translation = readJsonFromUrl("https://translate.lacodev.de/api/v1/all/lang/us");
+
+			for(String key : keys) {
+
+				try {
+
+					JSONObject msg = (JSONObject) translation.get(key);
+
+					fallback.put(key, msg.get("translation").toString());
+
+				} catch (NullPointerException e) {
+
+				}
+			}
+		}catch (NullPointerException ignored){
+			Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» " + ChatColor.RED + "The Translations can not be loaded, our Developers will work on this!");
+
 		}
 		
 		Bukkit.getConsoleSender().sendMessage("");

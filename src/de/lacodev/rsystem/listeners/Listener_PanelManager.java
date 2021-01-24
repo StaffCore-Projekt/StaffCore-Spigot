@@ -362,51 +362,57 @@ public class Listener_PanelManager implements Listener {
 			}
 		}
 
-		if (e.getView().getTitle().equalsIgnoreCase(ChatColor.RED + "StaffCore" + ChatColor.DARK_GRAY + " - " + ChatColor.GRAY + "BanManager")){
+
+		if (e.getView().getTitle().equalsIgnoreCase(Main.getMSG("Messages.BanManager.Main-Gui-Title"))){
 			e.setCancelled(true);
 
 			if (e.getCurrentItem() != null){
 				if (e.getCurrentItem().hasItemMeta()){
-					if (e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.GRAY + "Add New Ban Reason")){
-						p.sendMessage(Main.getPrefix() + ChatColor.GRAY + "Please Type now the name in the Chat!");
+					if (e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(Main.getMSG("Messages.BanManager.Add-Reason"))){
+						p.sendMessage(Main.getPrefix() + Main.getMSG("Messages.BanManager.Name-Reason"));
 						BanManagerPlayerInput bmpi = new BanManagerPlayerInput(p, null, -1, null, "BAN");
 						Main.banManagerPlayerInputs.add(bmpi);
 						p.closeInventory();
 					}
 
-					if (e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.GRAY + "Add New Mute Reason")){
-						p.sendMessage(Main.getPrefix() + ChatColor.GRAY + "Please Type now the name in the Chat!");
+					if (e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(Main.getMSG("Messages.BanManager.Add-Reason-Mute"))){
+						p.sendMessage(Main.getPrefix() + Main.getMSG("Messages.BanManager.Name-Reason"));
 						BanManagerPlayerInput bmpi = new BanManagerPlayerInput(p, null, -1, null, "MUTE");
 						Main.banManagerPlayerInputs.add(bmpi);
 						p.closeInventory();
 					}
 
-					if (e.getCurrentItem().getItemMeta().getDisplayName().startsWith("§7Ban Reason: ")){
+					if (e.getCurrentItem().getItemMeta().getDisplayName().startsWith(Main.getMSG("Messages.BanManager.Ban-Reason-Button-Title").replace("%reason%", ""))){
 						p.closeInventory();
-						manager.openBanReasonUtils(p, e.getCurrentItem().getItemMeta().getDisplayName().replace("Ban Reason: ", ""));
+						Integer id = BanManager.getIDFromBanReason(e.getCurrentItem().getItemMeta().getDisplayName().replace(Main.getMSG("Messages.BanManager.Ban-Reason-Button-Title").replace("%reason%",""),""));
+						assert id != null;
+						manager.openBanReasonUtils(p, id);
 					}
 
-					if (e.getCurrentItem().getItemMeta().getDisplayName().startsWith("§7Mute Reason: ")){
+					if (e.getCurrentItem().getItemMeta().getDisplayName().startsWith(Main.getMSG("Messages.BanManager.Mute-Reason-Button-Title").replace("%reason%", ""))){
 						p.closeInventory();
-						manager.openMuteReasonUtils(p, e.getCurrentItem().getItemMeta().getDisplayName().replace("§7Mute Reason: ", ""));
+						Integer id = BanManager.getIDFromMuteReason(ChatColor.stripColor(e.getCurrentItem().getItemMeta().getDisplayName().replace(Main.getMSG("Messages.BanManager.Mute-Reason-Button-Title").replace("%reason%",""),"")));
+						assert id != null;
+						manager.openMuteReasonUtils(p, id);
 					}
 				}
 			}
 		}
 
-		if (e.getView().getTitle().startsWith(ChatColor.RED + "Ban Reason: ")){
+		if (e.getView().getTitle().startsWith(Main.getMSG("Messages.BanManager.Ban-Reason-Title").replace("%reason%", ""))){
 			e.setCancelled(true);
 			if (e.getCurrentItem() != null){
 				if (e.getCurrentItem().hasItemMeta()){
 					if (e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.RED + "◄ Go back")){
 						manager.openBanManagerManu(p);
 					}
-
+					Integer reason = Integer.parseInt(ChatColor.stripColor(e.getView().getTitle().replace(Main.getMSG("Messages.BanManager.Ban-Reason-Title").replace("%reason%", ""), "")));
 					if (e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.RED + "DELETE")){
 
-						String reason = ChatColor.stripColor(e.getView().getTitle().replace("Ban Reason: ", ""));
-						if (BanManager.existsBanReason(reason)) {
-							BanManager.deleteBanReason(reason);
+
+
+						if (BanManager.existsBanReason(BanManager.getBanReasonFromID(reason))) {
+							BanManager.deleteBanReason(BanManager.getBanReasonFromID(reason));
 							p.sendMessage(Main.getPrefix() + ChatColor.GRAY + "Reason " + ChatColor.RED + "DELETED");
 							p.closeInventory();
 						}else{
@@ -419,26 +425,27 @@ public class Listener_PanelManager implements Listener {
 						p.closeInventory();
 
 
-						manager.openBanReasonEdit(p, ChatColor.stripColor(e.getView().getTitle().replace("Ban Reason: ", "")));
+						manager.openBanReasonEdit(p, reason);
 
 					}
 				}
 			}
 		}
 
-		if (e.getView().getTitle().startsWith(ChatColor.RED + "Mute Reason: ")){
+		if (e.getView().getTitle().startsWith(Main.getMSG("Messages.BanManager.Mute-Reason-Title").replace("%reason%", ""))){
 			e.setCancelled(true);
 			if (e.getCurrentItem() != null){
 				if (e.getCurrentItem().hasItemMeta()){
 
-					String reason = ChatColor.stripColor(e.getView().getTitle().replace("Mute Reason: ", ""));
+					Integer reason = Integer.parseInt(ChatColor.stripColor(e.getView().getTitle().replace("Mute Reason: ", "")));
+
 					if (e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.RED + "◄ Go back")){
 						manager.openBanManagerManu(p);
 					}
 
 					if (e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.RED + "DELETE")){
 						p.closeInventory();
-						BanManager.deleteMuteReason(reason);
+						BanManager.deleteMuteReason(BanManager.getMuteReasonFromID(reason));
 						p.sendMessage(Main.getPrefix() + ChatColor.GRAY + "Reason " + ChatColor.RED + "DELETED");
 					}
 
@@ -449,12 +456,12 @@ public class Listener_PanelManager implements Listener {
 			}
 		}
 
-		if (e.getView().getTitle().startsWith(ChatColor.RED + "Mute Edit: ")){
+		if (e.getView().getTitle().startsWith(Main.getMSG("Messages.BanManager.Mute-Edit-Title").replace("%reason%", ""))){
 			e.setCancelled(true);
 			if (e.getCurrentItem() != null){
 				if (e.getCurrentItem().hasItemMeta()){
 					e.setCancelled(true);
-					String reason = ChatColor.stripColor(e.getView().getTitle().replace("Mute Edit: ", ""));
+					Integer reason = Integer.parseInt(ChatColor.stripColor(e.getView().getTitle().replace("Mute Edit: ", "")));
 					if (e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.RED +"◄ Go back")){
 						manager.openMuteReasonUtils(p, reason);
 					}
@@ -462,8 +469,8 @@ public class Listener_PanelManager implements Listener {
 					if (e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.GRAY + "Rename Reason")){
 						ReasonRename rr = new ReasonRename();
 						rr.setP(p);
-						rr.setOldName(reason);
-						rr.setId(BanManager.getIDFromMuteReason(reason));
+						rr.setOldName(BanManager.getBanReasonFromID(reason));
+						rr.setId(reason);
 						Main.reasonRename.add(rr);
 
 						p.sendMessage(Main.getPrefix() + ChatColor.GRAY + "Please Type now the new Name in the Chat, to Rename: " + rr.getOldName() + "!");
@@ -473,7 +480,7 @@ public class Listener_PanelManager implements Listener {
 					if (e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.GRAY + "Edit Duration")){
 						ReasonEDuration red = new ReasonEDuration();
 						red.setP(p);
-						red.setId(BanManager.getIDFromMuteReason(reason));
+						red.setId(reason);
 						Main.reasonEDurations.add(red);
 						p.sendMessage(Main.getPrefix() + ChatColor.GRAY + "Please Type now the new Duration, [time] [perma | d | m | h ]");
 						p.closeInventory();
@@ -482,12 +489,12 @@ public class Listener_PanelManager implements Listener {
 			}
 		}
 
-		if (e.getView().getTitle().startsWith(ChatColor.RED + "Ban Edit: ")){
+		if (e.getView().getTitle().startsWith(Main.getMSG("Messages.BanManager.Ban-Edit-Title").replace("%reason%", ""))){
 			e.setCancelled(true);
 			if (e.getCurrentItem() != null) {
 				if (e.getCurrentItem().hasItemMeta()) {
 
-					String reason = ChatColor.stripColor(e.getView().getTitle().replace("Ban Edit: ", ""));
+					Integer reason = Integer.parseInt(ChatColor.stripColor(e.getView().getTitle().replace("Ban Edit: ", "")));
 
 					if (e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.RED + "◄ Go back")){
 						manager.openBanReasonUtils(p, reason);
@@ -496,8 +503,8 @@ public class Listener_PanelManager implements Listener {
 					if (e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.GRAY + "Rename Reason")){
 						ReasonRename rr = new ReasonRename();
 						rr.setP(p);
-						rr.setOldName(reason);
-						rr.setId(BanManager.getIDFromBanReason(reason));
+						rr.setOldName(BanManager.getBanReasonFromID(reason));
+						rr.setId(reason);
 						Main.reasonRename.add(rr);
 
 						p.sendMessage(Main.getPrefix() + ChatColor.GRAY + "Please Type now the new Name in the Chat, to Rename: " + rr.getOldName() + "!");
@@ -507,7 +514,7 @@ public class Listener_PanelManager implements Listener {
 					if (e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.GRAY + "Edit Duration")){
 						ReasonEDuration red = new ReasonEDuration();
 						red.setP(p);
-						red.setId(BanManager.getIDFromBanReason(reason));
+						red.setId(reason);
 
 						p.sendMessage(Main.getPrefix() + ChatColor.GRAY + "Please Type now the new Duration, [time] [perma | d | m | h ]");
 						p.closeInventory();
