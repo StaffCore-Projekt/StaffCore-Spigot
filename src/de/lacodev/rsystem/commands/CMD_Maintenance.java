@@ -65,7 +65,7 @@ public class CMD_Maintenance implements CommandExecutor {
 
                             break;
                         default:
-                            p.sendMessage(Main.getPrefix() + "TRY: ....");
+                            p.sendMessage(Main.getPrefix() + "TRY: /maintenance [ on | off | info ]");
                             break;
                     }
 

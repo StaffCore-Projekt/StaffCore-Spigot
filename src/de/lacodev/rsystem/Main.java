@@ -611,6 +611,7 @@ public class Main extends JavaPlugin{
 		getCommand("staffchat").setExecutor(new CMD_StaffChat());
 
 		getCommand("maintenance").setExecutor(new CMD_Maintenance());
+		getCommand("maintenance").setTabCompleter(new Completer_Maintenance());
 	}
 
 	public void onDisable() {
