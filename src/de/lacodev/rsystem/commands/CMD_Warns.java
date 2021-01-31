@@ -28,9 +28,6 @@ public class CMD_Warns implements CommandExecutor {
 		if(sender instanceof Player) {
 			
 			Player p = (Player)sender;
-			
-
-
 			if(args.length == 1) {
 				if(p.hasPermission(Main.getPermissionNotice("Permissions.Everything")) || p.hasPermission(Main.getPermissionNotice("Permissions.Warns.See"))) {
 					if (SystemManager.existsPlayerData(SystemManager.getUUIDByName(args[0]))) {

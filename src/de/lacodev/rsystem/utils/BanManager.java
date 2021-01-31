@@ -677,16 +677,16 @@ public class BanManager {
 				if(stunden != 0) {
 					if(minuten != 0) {
 						if(sekunden != 0) {
-							return ChatColor.GREEN + "" + tage + " " + ChatColor.GRAY + ""+ Main.getMSG("Messages.Layouts.Ban.Remaining.Days") + ChatColor.GREEN + stunden + " " + ChatColor.GRAY + Main.getMSG("Messages.Layouts.Ban.Remaining.Hours") +" §a" + minuten + " " + ChatColor.GRAY + "" + Main.getMSG("Messages.Layouts.Ban.Remaining.Minutes");
+							return ChatColor.GREEN + "" + tage + " " + ChatColor.GRAY + ""+ Main.getMSG("Messages.Layouts.Ban.Remaining.Days") + ChatColor.GREEN + stunden + " " + ChatColor.GRAY + Main.getMSG("Messages.Layouts.Ban.Remaining.Hours") +" Â§a" + minuten + " " + ChatColor.GRAY + "" + Main.getMSG("Messages.Layouts.Ban.Remaining.Minutes");
 						} else {
-							return ChatColor.GREEN + "" + tage + " " + ChatColor.GRAY + ""+ Main.getMSG("Messages.Layouts.Ban.Remaining.Days") + ChatColor.GREEN + stunden + " " + ChatColor.GRAY + Main.getMSG("Messages.Layouts.Ban.Remaining.Hours") +" §a" + minuten + " " + ChatColor.GRAY + "" + Main.getMSG("Messages.Layouts.Ban.Remaining.Minutes");
+							return ChatColor.GREEN + "" + tage + " " + ChatColor.GRAY + ""+ Main.getMSG("Messages.Layouts.Ban.Remaining.Days") + ChatColor.GREEN + stunden + " " + ChatColor.GRAY + Main.getMSG("Messages.Layouts.Ban.Remaining.Hours") +" Â§a" + minuten + " " + ChatColor.GRAY + "" + Main.getMSG("Messages.Layouts.Ban.Remaining.Minutes");
 						}
 					} else {
 						return ChatColor.GREEN + "" + tage + " " + ChatColor.GRAY + ""+ Main.getMSG("Messages.Layouts.Ban.Remaining.Days") + ChatColor.GREEN + stunden + " " + ChatColor.GRAY + Main.getMSG("Messages.Layouts.Ban.Remaining.Hours");
 					}
 				} else {
 					if(minuten != 0) {
-						return ChatColor.GREEN + "" + tage + " " + ChatColor.GRAY + ""+ Main.getMSG("Messages.Layouts.Ban.Remaining.Days") + ChatColor.GREEN + stunden + " " + ChatColor.GRAY + Main.getMSG("Messages.Layouts.Ban.Remaining.Hours") +" §a" + minuten + " " + ChatColor.GRAY + "" + Main.getMSG("Messages.Layouts.Ban.Remaining.Minutes");
+						return ChatColor.GREEN + "" + tage + " " + ChatColor.GRAY + ""+ Main.getMSG("Messages.Layouts.Ban.Remaining.Days") + ChatColor.GREEN + stunden + " " + ChatColor.GRAY + Main.getMSG("Messages.Layouts.Ban.Remaining.Hours") +" Â§a" + minuten + " " + ChatColor.GRAY + "" + Main.getMSG("Messages.Layouts.Ban.Remaining.Minutes");
 					} else {
 						return ChatColor.GREEN + "" + tage + " " + ChatColor.GRAY + ""+ Main.getMSG("Messages.Layouts.Ban.Remaining.Days");
 					}
@@ -695,9 +695,9 @@ public class BanManager {
 				if(stunden != 0) {
 					if(minuten != 0) {
 						if(sekunden != 0) {
-							return ChatColor.GREEN + "" + stunden + " " + ChatColor.GRAY + ""+ Main.getMSG("Messages.Layouts.Ban.Remaining.Hours") +" §a" + minuten + " " + ChatColor.GRAY + "" + Main.getMSG("Messages.Layouts.Ban.Remaining.Minutes") +" §a" + sekunden + " " + ChatColor.GRAY + ""+ Main.getMSG("Messages.Layouts.Ban.Remaining.Seconds");
+							return ChatColor.GREEN + "" + stunden + " " + ChatColor.GRAY + ""+ Main.getMSG("Messages.Layouts.Ban.Remaining.Hours") +" Â§a" + minuten + " " + ChatColor.GRAY + "" + Main.getMSG("Messages.Layouts.Ban.Remaining.Minutes") +" Â§a" + sekunden + " " + ChatColor.GRAY + ""+ Main.getMSG("Messages.Layouts.Ban.Remaining.Seconds");
 						} else {
-							return ChatColor.GREEN + "" + stunden + " " + ChatColor.GRAY + ""+ Main.getMSG("Messages.Layouts.Ban.Remaining.Hours") +" §a" + minuten + " " + ChatColor.GRAY + "" + Main.getMSG("Messages.Layouts.Ban.Remaining.Minutes");
+							return ChatColor.GREEN + "" + stunden + " " + ChatColor.GRAY + ""+ Main.getMSG("Messages.Layouts.Ban.Remaining.Hours") +" Â§a" + minuten + " " + ChatColor.GRAY + "" + Main.getMSG("Messages.Layouts.Ban.Remaining.Minutes");
 						}
 					} else {
 						return ChatColor.GREEN + "" + stunden + " " + ChatColor.GRAY + ""+ Main.getMSG("Messages.Layouts.Ban.Remaining.Hours");
@@ -705,7 +705,7 @@ public class BanManager {
 				} else {
 					if(minuten != 0) {
 						if(sekunden != 0) {
-							return ChatColor.GREEN + "" + minuten + " " + ChatColor.GRAY + "" + Main.getMSG("Messages.Layouts.Ban.Remaining.Minutes") +" §a" + sekunden + " " + ChatColor.GRAY + ""+ Main.getMSG("Messages.Layouts.Ban.Remaining.Seconds");
+							return ChatColor.GREEN + "" + minuten + " " + ChatColor.GRAY + "" + Main.getMSG("Messages.Layouts.Ban.Remaining.Minutes") +" Â§a" + sekunden + " " + ChatColor.GRAY + ""+ Main.getMSG("Messages.Layouts.Ban.Remaining.Seconds");
 						} else {
 							return ChatColor.GREEN + "" + minuten + " " + ChatColor.GRAY + "" + Main.getMSG("Messages.Layouts.Ban.Remaining.Minutes");
 						}
@@ -833,12 +833,12 @@ public class BanManager {
 							}
 						} else {
 							Bukkit.getConsoleSender().sendMessage("");
-							Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» " + ChatColor.RED + ChatColor.BOLD + "FAILED " + ChatColor.DARK_GRAY + "(" + ChatColor.GRAY + "Reason does not exist" + ChatColor.DARK_GRAY + ")");
+							Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "Â» " + ChatColor.RED + ChatColor.BOLD + "FAILED " + ChatColor.DARK_GRAY + "(" + ChatColor.GRAY + "Reason does not exist" + ChatColor.DARK_GRAY + ")");
 							Bukkit.getConsoleSender().sendMessage("");
 						}
 					} else {
 						Bukkit.getConsoleSender().sendMessage("");
-						Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» " + ChatColor.RED + ChatColor.BOLD + "FAILED " + ChatColor.DARK_GRAY + "(" + ChatColor.GRAY + "MySQL Connection" + ChatColor.DARK_GRAY + ")");
+						Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "System " + ChatColor.DARK_GRAY + "Â» " + ChatColor.RED + ChatColor.BOLD + "FAILED " + ChatColor.DARK_GRAY + "(" + ChatColor.GRAY + "MySQL Connection" + ChatColor.DARK_GRAY + ")");
 						Bukkit.getConsoleSender().sendMessage("");
 					}
 				}
@@ -960,7 +960,7 @@ public class BanManager {
 			Zombie z = (Zombie) en;
 
 			z.setTarget(null);
-			z.setCustomName(ChatColor.RED + "Ban " + ChatColor.DARK_GRAY + "» " + ChatColor.GRAY + "" + t.getName());
+			z.setCustomName(ChatColor.RED + "Ban " + ChatColor.DARK_GRAY + "Â» " + ChatColor.GRAY + "" + t.getName());
 			z.setCustomNameVisible(false);
 			z.setFireTicks(0);
 
