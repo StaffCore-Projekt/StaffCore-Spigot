@@ -437,7 +437,7 @@ public class Listener_PanelManager implements Listener {
 			if (e.getCurrentItem() != null){
 				if (e.getCurrentItem().hasItemMeta()){
 
-					Integer reason = Integer.parseInt(ChatColor.stripColor(e.getView().getTitle().replace("Mute Reason: ", "")));
+					Integer reason = Integer.parseInt(ChatColor.stripColor(e.getView().getTitle().replace(Main.getMSG("Messages.BanManager.Mute-Reason-Title").replace("%reason%", ""), "")));
 
 					if (e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.RED + "◄ Go back")){
 						manager.openBanManagerManu(p);
@@ -461,7 +461,7 @@ public class Listener_PanelManager implements Listener {
 			if (e.getCurrentItem() != null){
 				if (e.getCurrentItem().hasItemMeta()){
 					e.setCancelled(true);
-					Integer reason = Integer.parseInt(ChatColor.stripColor(e.getView().getTitle().replace("Mute Edit: ", "")));
+					Integer reason = Integer.parseInt(ChatColor.stripColor(e.getView().getTitle().replace(Main.getMSG("Messages.BanManager.Mute-Edit-Title").replace("%reason%",""), "")));
 					if (e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.RED +"◄ Go back")){
 						manager.openMuteReasonUtils(p, reason);
 					}
