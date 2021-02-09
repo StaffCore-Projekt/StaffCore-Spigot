@@ -1450,8 +1450,13 @@ public class BanManager {
 							} else {
 								ReportManager.sendNotify("MUTE", "Console", SystemManager.getUsernameByUUID(targetuuid), reason);
 							}
+							new BukkitRunnable(){
 
-							Bukkit.getServer().getPluginManager().callEvent(new PlayerMuteEvent(targetuuid, reason, team));
+								@Override
+								public void run() {
+									Bukkit.getServer().getPluginManager().callEvent(new PlayerMuteEvent(targetuuid, reason, team));
+								}
+							}.runTask(Main.getInstance());
 
 
 							return true;

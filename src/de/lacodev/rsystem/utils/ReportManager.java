@@ -183,8 +183,13 @@ public class ReportManager {
 				}
 			});
 
+			new BukkitRunnable(){
 
-			Bukkit.getServer().getPluginManager().callEvent(new ReportCreateEvent(p, target, reason));
+				@Override
+				public void run() {
+					Bukkit.getServer().getPluginManager().callEvent(new ReportCreateEvent(p, target, reason));
+				}
+			}.runTask(Main.getInstance());
 
 			addReport(target.getUniqueId().toString());
 		}

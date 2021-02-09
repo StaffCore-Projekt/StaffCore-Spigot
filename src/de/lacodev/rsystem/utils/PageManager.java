@@ -26,17 +26,11 @@ public class PageManager {
         List<Reasons> reasons = new ArrayList<>();
 
         for (int i = lowerBound; i < upperBound; i++) {
-
-                try {
-
-                    reasons.add(new Reasons(items.get(i).getItem(), items.get(i).getName()));
-
-                } catch(IndexOutOfBoundsException e) {
-
-                    continue;
-
-                }
-
+            try {
+                reasons.add(new Reasons(items.get(i).getItem(), items.get(i).getName()));
+            } catch(IndexOutOfBoundsException e) {
+                continue;
+            }
         }
 
         return reasons;
@@ -65,27 +59,16 @@ public class PageManager {
     }
     
     public static List<ItemStack> getPageProtect(List<ItemStack> items, int page, int spaces) {
-
-
         int upperBound = page * spaces;
-
         int lowerBound = upperBound - spaces;
 
-
         List<ItemStack> reasons = new ArrayList<>();
-
         for (int i = lowerBound; i < upperBound; i++) {
-
-                try {
-
-                    reasons.add(items.get(i));
-
-                } catch(IndexOutOfBoundsException e) {
-
-                    continue;
-
-                }
-
+            try {
+                reasons.add(items.get(i));
+            } catch(IndexOutOfBoundsException e) {
+                continue;
+            }
         }
 
         return reasons;
