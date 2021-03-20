@@ -612,6 +612,8 @@ public class Main extends JavaPlugin{
 
 		getCommand("maintenance").setExecutor(new CMD_Maintenance());
 		getCommand("maintenance").setTabCompleter(new Completer_Maintenance());
+
+		getCommand("bug").setExecutor(new CMD_Bug());
 	}
 
 	public void onDisable() {
@@ -725,7 +727,11 @@ public class Main extends JavaPlugin{
 		getConfig().addDefault("Permissions.Warn.Notify", "rsystem.warn.notify");
 		getConfig().addDefault("Permissions.Warns.See", "rsystem.warns.see");
 		getConfig().addDefault("Permissions.ChatLogs.Use", "rsystem.chatlogs.use");
-		getConfig().addDefault("Permissions.Chat.Clear", "rsystem.chat.cleat");
+		getConfig().addDefault("Permissions.Chat.Clear", "rsystem.chatclear.clear");
+		getConfig().addDefault("Permissions.Chat.Bypass", "rsystem.chatclear.bypass");
+		getConfig().addDefault("Permissions.Bugs.Notify", "rsystem.bugs.notify");
+		getConfig().addDefault("Permissions.Bugs.See", "rsystem.bugs.see");
+
 		getConfig().addDefault("Permissions.BroadCast.Send", "rsystem.broadcast.send");
 		getConfig().addDefault("Permissions.StaffChat.Read", "rsystem.staffchat.read");
 		getConfig().addDefault("Permissions.StaffChat.Write", "rsystem.staffchat.write");

@@ -2,6 +2,7 @@ package de.lacodev.rsystem.commands;
 
 import de.lacodev.rsystem.Main;
 import de.lacodev.rsystem.utils.SettingsManager;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -40,6 +41,11 @@ public class CMD_Maintenance implements CommandExecutor {
                         case "on":
                             if (setState(true)){
                                 p.sendMessage(Main.getPrefix() + "The Maintenance Mode is now Enabled!");
+                                for (Player target : Bukkit.getOnlinePlayers()){
+                                    if (!(target.hasPermission(Main.getPermissionNotice("Permissions.Maintenance.Join")) || target.hasPermission(Main.getPermissionNotice("Permissions.Everything")))){
+                                        target.kickPlayer(ChatColor.RED + "This Server is switched to Maintenance Mode!");
+                                    }
+                                }
                             }else{
                                 p.sendMessage(Main.getPrefix() + "The Maintenance Mode is already Enabled!");
                             }

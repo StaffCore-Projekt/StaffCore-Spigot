@@ -145,6 +145,8 @@ public class MySQL {
 				st14.executeUpdate();
 				PreparedStatement st15 = getCon().prepareStatement("CREATE TABLE IF NOT EXISTS ReportSystem_settings( `id` INT(6) AUTO_INCREMENT UNIQUE , `KEY` VARCHAR(255) , `VALUE` VARCHAR(255) )");
 				st15.executeUpdate();
+				PreparedStatement st16 = getCon().prepareStatement("CREATE TABLE IF NOT EXISTS ReportSystem_bugs( id INT(6) AUTO_INCREMENT UNIQUE, CREATOR_NAME VARCHAR(255), CREATOR_UUID VARCHAR(255), MESSAGE VARCHAR(255))");
+				st16.executeUpdate();
 				Bukkit.getConsoleSender().sendMessage(mysql + ChatColor.GREEN + "Successfully " + ChatColor.GRAY + "created/loaded " + ChatColor.GREEN + "MySQL-Table");
 			} catch (SQLException e) {
 				if(Main.getInstance().getConfig().getBoolean("General.MySQL.Debug")) {

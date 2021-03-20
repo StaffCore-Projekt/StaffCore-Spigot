@@ -1345,7 +1345,8 @@ public class BanManager {
 			try {
 				PreparedStatement st = MySQL.getCon().prepareStatement("DELETE FROM ReportSystem_mutesdb WHERE MUTED_UUID = '"+ uuid +"'");
 				if(st.executeUpdate() > 0) {
-					Bukkit.getPluginManager().callEvent(new PlayerUnMuteEvent(uuid));
+					Bukkit.getScheduler().runTask(Main.getInstance(), () -> Bukkit.getPluginManager().callEvent(new PlayerUnMuteEvent(uuid)));
+
 					return true;
 				}
 			} catch (SQLException e) {

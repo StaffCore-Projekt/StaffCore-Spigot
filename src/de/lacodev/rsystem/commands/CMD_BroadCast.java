@@ -14,13 +14,14 @@ public class CMD_BroadCast implements CommandExecutor {
         if (sender instanceof Player){
             Player p = (Player) sender;
             if( p.hasPermission(Main.getPermissionNotice("Permissions.Everything")) || p.hasPermission(Main.getPermissionNotice("Permissions.BroadCast.Send")) ) {
-                StringBuilder msg = new StringBuilder();
-                for (String m : args){
-                    msg.append(" ").append(m);
+                String message = "";
+                for(String s : args){
+                    message = message + " " + s;
                 }
 
+                message = ChatColor.translateAlternateColorCodes('&', "" + message);
 
-                Bukkit.broadcastMessage(Main.getPrefix() + ChatColor.GRAY + msg);
+                Bukkit.broadcastMessage(Main.getPrefix() + ChatColor.GRAY + message);
 
             }else{
                 p.sendMessage(Main.getPrefix() + Main.getMSG("Messages.System.No-Permission").replace("%permission%", Main.getPermissionNotice("Permissions.BroadCast.Send")));
