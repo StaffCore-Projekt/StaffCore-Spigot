@@ -614,6 +614,7 @@ public class Main extends JavaPlugin{
 		getCommand("maintenance").setTabCompleter(new Completer_Maintenance());
 
 		getCommand("bug").setExecutor(new CMD_Bug());
+		getCommand("bug").setTabCompleter(new Completer_Bug());
 	}
 
 	public void onDisable() {
