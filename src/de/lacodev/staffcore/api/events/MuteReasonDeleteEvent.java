@@ -4,23 +4,24 @@ import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
 public class MuteReasonDeleteEvent extends Event {
-    private static final HandlerList HANDLERS = new HandlerList();
 
-    private String name;
+  private static final HandlerList HANDLERS = new HandlerList();
 
-    public HandlerList getHandlers() {
-        return HANDLERS;
-    }
+  private String name;
 
-    public static HandlerList getHandlerList() {
-        return HANDLERS;
-    }
+  public MuteReasonDeleteEvent(String name) {
+    this.name = name;
+  }
 
-    public MuteReasonDeleteEvent(String name) {
-        this.name = name;
-    }
+  public static HandlerList getHandlerList() {
+    return HANDLERS;
+  }
 
-    public String getName() {
-        return this.name;
-    }
+  public HandlerList getHandlers() {
+    return HANDLERS;
+  }
+
+  public String getName() {
+    return this.name;
+  }
 }

@@ -1,58 +1,52 @@
 package de.lacodev.rsystem.completer;
 
+import de.lacodev.rsystem.mysql.MySQL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 
-import de.lacodev.rsystem.mysql.MySQL;
-
 public class Completer_Mute implements TabCompleter {
 
-	@Override
-	public List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args) {
-		
-		
+  @Override
+  public List<String> onTabComplete(CommandSender sender, Command cmd, String label,
+      String[] args) {
 
-		if(args.length == 2) {
+    if (args.length == 2) {
 
-			ArrayList<String> reasons = new ArrayList<>();
+      ArrayList<String> reasons = new ArrayList<>();
 
+      ResultSet rs = MySQL.getResult("SELECT * FROM ReportSystem_reasonsdb WHERE TYPE = 'MUTE'");
 
+      try {
 
-			ResultSet rs = MySQL.getResult("SELECT * FROM ReportSystem_reasonsdb WHERE TYPE = 'MUTE'");
+        while (rs.next()) {
 
+          reasons.add(rs.getString("NAME").toLowerCase());
 
+        }
 
-			try {
+        return reasons.stream().filter(a -> a.startsWith(args[args.length - 1].toLowerCase()))
+            .collect(Collectors.toList());
 
-				while(rs.next()) {
+      } catch (SQLException e) {
 
-					reasons.add(rs.getString("NAME").toLowerCase());
+        e.printStackTrace();
 
-				}
+      }
 
-				return reasons.stream().filter(a -> a.startsWith(args[args.length-1].toLowerCase())).collect(Collectors.toList());
+    } else {
 
-			} catch (SQLException e) {
+      return null;
 
-				e.printStackTrace();
+    }
 
-			}
+    return null;
 
-		} else {
-
-			return null;
-
-		}
-
-		return null;
-		
-	}
+  }
 
 }

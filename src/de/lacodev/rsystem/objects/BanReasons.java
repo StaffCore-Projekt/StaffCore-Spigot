@@ -3,42 +3,41 @@ package de.lacodev.rsystem.objects;
 public class BanReasons {
 
 
-    public String name;
+  public String name;
 
-    public Integer id;
+  public Integer id;
 
-    public long length;
-
-
-    public BanReasons(String name, Integer id, long length) {
-
-        this.name = name;
-
-        this.id = id;
-        
-        this.length = length;
-
-    }
+  public long length;
 
 
-    public long getLength() {
+  public BanReasons(String name, Integer id, long length) {
 
-        return this.length;
+    this.name = name;
 
-    }
-    
-    public String getName() {
+    this.id = id;
 
-        return this.name;
+    this.length = length;
 
-    }
+  }
 
 
+  public long getLength() {
 
-    public Integer getID() {
+    return this.length;
 
-        return this.id;
+  }
 
-    }
-	
+  public String getName() {
+
+    return this.name;
+
+  }
+
+
+  public Integer getID() {
+
+    return this.id;
+
+  }
+
 }

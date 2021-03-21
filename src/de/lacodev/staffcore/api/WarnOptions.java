@@ -5,11 +5,11 @@ import org.bukkit.entity.Player;
 
 public class WarnOptions {
 
-    public int getWarns(String uuid) {
-        return BanManager.getWarns(uuid);
-    }
+  public int getWarns(String uuid) {
+    return BanManager.getWarns(uuid);
+  }
 
-    public void warnPlayer(Player t, String teamUuid, String reason) {
-        BanManager.warnPlayer(t, teamUuid, reason);
-    }
+  public void warnPlayer(Player t, String teamUuid, String reason) {
+    BanManager.warnPlayer(t, teamUuid, reason);
+  }
 }

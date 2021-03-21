@@ -5,37 +5,38 @@ import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
 public class PlayerWarnEvent extends Event {
-    private static final HandlerList HANDLERS = new HandlerList();
 
-    private Player target;
+  private static final HandlerList HANDLERS = new HandlerList();
 
-    private String warner;
+  private Player target;
 
-    private String reason;
+  private String warner;
 
-    public HandlerList getHandlers() {
-        return HANDLERS;
-    }
+  private String reason;
 
-    public static HandlerList getHandlerList() {
-        return HANDLERS;
-    }
+  public PlayerWarnEvent(Player target, String warner, String reason) {
+    this.target = target;
+    this.warner = warner;
+    this.reason = reason;
+  }
 
-    public PlayerWarnEvent(Player target, String warner, String reason) {
-        this.target = target;
-        this.warner = warner;
-        this.reason = reason;
-    }
+  public static HandlerList getHandlerList() {
+    return HANDLERS;
+  }
 
-    public Player getTarget() {
-        return this.target;
-    }
+  public HandlerList getHandlers() {
+    return HANDLERS;
+  }
 
-    public String getWarner() {
-        return this.warner;
-    }
+  public Player getTarget() {
+    return this.target;
+  }
 
-    public String getReason() {
-        return this.reason;
-    }
+  public String getWarner() {
+    return this.warner;
+  }
+
+  public String getReason() {
+    return this.reason;
+  }
 }

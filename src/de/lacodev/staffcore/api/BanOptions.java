@@ -5,120 +5,124 @@ import de.lacodev.rsystem.utils.BanManager;
 import de.lacodev.staffcore.api.utils.BanUnit;
 import de.lacodev.staffcore.errors.ReasonIDNotExistsExeption;
 import de.lacodev.staffcore.errors.ReasonNotExistsExeption;
+import java.util.ArrayList;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
-
 public class BanOptions {
-    public void createBanReason(String name, BanUnit unit, int time) {
-        switch (unit) {
-            case d:
-                BanManager.createBanReason(name, "d", time);
-                break;
-            case h:
-                BanManager.createBanReason(name, "h", time);
-                break;
-            case m:
-                BanManager.createBanReason(name, "m", time);
-                break;
-            case perma:
-                BanManager.createBanReason(name, "perma", time);
-                break;
-        }
-    }
 
-    public boolean existsBanID(int id) {
-        return BanManager.existsBanID(id);
+  public void createBanReason(String name, BanUnit unit, int time) {
+    switch (unit) {
+      case d:
+        BanManager.createBanReason(name, "d", time);
+        break;
+      case h:
+        BanManager.createBanReason(name, "h", time);
+        break;
+      case m:
+        BanManager.createBanReason(name, "m", time);
+        break;
+      case perma:
+        BanManager.createBanReason(name, "perma", time);
+        break;
     }
+  }
 
-    public int getIDFromBanReason(String banReason) throws ReasonNotExistsExeption {
-        if (existsBanReason(banReason))
-            return BanManager.getIDFromBanReason(banReason);
-        throw new ReasonNotExistsExeption(banReason);
-    }
+  public boolean existsBanID(int id) {
+    return BanManager.existsBanID(id);
+  }
 
-    public boolean existsBanReason(String banReason) {
-        return BanManager.existsBanReason(banReason);
-    }
+  public int getIDFromBanReason(String banReason) throws ReasonNotExistsExeption {
+      if (existsBanReason(banReason)) {
+          return BanManager.getIDFromBanReason(banReason);
+      }
+    throw new ReasonNotExistsExeption(banReason);
+  }
 
-    public String getBanReasonFromID(int id) throws ReasonIDNotExistsExeption {
-        if (existsBanID(id))
-            return BanManager.getBanReasonFromID(id);
-        throw new ReasonIDNotExistsExeption(id, "BAN");
-    }
+  public boolean existsBanReason(String banReason) {
+    return BanManager.existsBanReason(banReason);
+  }
 
-    public void deleteBanReason(String reason) throws ReasonNotExistsExeption {
-        if (existsBanReason(reason)) {
-            BanManager.deleteBanReason(reason);
-        } else {
-            throw new ReasonNotExistsExeption(reason);
-        }
-    }
+  public String getBanReasonFromID(int id) throws ReasonIDNotExistsExeption {
+      if (existsBanID(id)) {
+          return BanManager.getBanReasonFromID(id);
+      }
+    throw new ReasonIDNotExistsExeption(id, "BAN");
+  }
 
-    public boolean isBanned(String uuid) {
-        return BanManager.isBanned(uuid);
+  public void deleteBanReason(String reason) throws ReasonNotExistsExeption {
+    if (existsBanReason(reason)) {
+      BanManager.deleteBanReason(reason);
+    } else {
+      throw new ReasonNotExistsExeption(reason);
     }
+  }
 
-    public boolean unban(String uuid) {
-        if (isBanned(uuid)) {
-            BanManager.unban(uuid);
-            return true;
-        }
-        return false;
-    }
+  public boolean isBanned(String uuid) {
+    return BanManager.isBanned(uuid);
+  }
 
-    public String getBanReason(String uuid) {
-        return BanManager.getBanReason(uuid);
+  public boolean unban(String uuid) {
+    if (isBanned(uuid)) {
+      BanManager.unban(uuid);
+      return true;
     }
+    return false;
+  }
 
-    public ArrayList<BanReasons> getBanReasons() {
-        return convertBanReasons(BanManager.getBanReasons());
-    }
+  public String getBanReason(String uuid) {
+    return BanManager.getBanReason(uuid);
+  }
 
-    private ArrayList<BanReasons> convertBanReasons(ArrayList<BanReasons> reasons) {
-        ArrayList<BanReasons> finalReasons = new ArrayList<>();
-        for (BanReasons reasons1 : reasons)
-            finalReasons.add(
-                    new BanReasons(
-                            reasons1.getName(),
-                            reasons1.getID(),
-                            reasons1.getLength()));
-        return finalReasons;
-    }
+  public ArrayList<BanReasons> getBanReasons() {
+    return convertBanReasons(BanManager.getBanReasons());
+  }
 
-    public int getBans(String uuid) {
-        return BanManager.getBans(uuid);
-    }
+  private ArrayList<BanReasons> convertBanReasons(ArrayList<BanReasons> reasons) {
+    ArrayList<BanReasons> finalReasons = new ArrayList<>();
+      for (BanReasons reasons1 : reasons) {
+          finalReasons.add(
+              new BanReasons(
+                  reasons1.getName(),
+                  reasons1.getID(),
+                  reasons1.getLength()));
+      }
+    return finalReasons;
+  }
 
-    public String getEnd(String uuid) {
-        return BanManager.getBanFinalEnd(uuid);
-    }
+  public int getBans(String uuid) {
+    return BanManager.getBans(uuid);
+  }
 
-    public void banPlayer(String targetuuid, String reason, String team) throws ReasonNotExistsExeption {
-        if (existsBanReason(reason)) {
-            BanManager.submitBan(targetuuid, reason, team);
-        } else {
-            throw new ReasonNotExistsExeption(reason);
-        }
-    }
+  public String getEnd(String uuid) {
+    return BanManager.getBanFinalEnd(uuid);
+  }
 
-    public void banIPAdress(String pluginame, Player player) {
-        BanManager.banIPAddress(pluginame, player);
+  public void banPlayer(String targetuuid, String reason, String team)
+      throws ReasonNotExistsExeption {
+    if (existsBanReason(reason)) {
+      BanManager.submitBan(targetuuid, reason, team);
+    } else {
+      throw new ReasonNotExistsExeption(reason);
     }
+  }
 
-    public boolean isIPBanned(String ipAddress) {
-        return BanManager.isIPBanned(ipAddress);
-    }
+  public void banIPAdress(String pluginame, Player player) {
+    BanManager.banIPAddress(pluginame, player);
+  }
 
-    public boolean isIpBanned(String playername) {
-        return BanManager.isIpBanned(playername);
-    }
+  public boolean isIPBanned(String ipAddress) {
+    return BanManager.isIPBanned(ipAddress);
+  }
 
-    public boolean unbanIPAdress(String playername) {
-        if (isIpBanned(playername)) {
-            BanManager.unbanIpAddress(playername);
-            return true;
-        }
-        return false;
+  public boolean isIpBanned(String playername) {
+    return BanManager.isIpBanned(playername);
+  }
+
+  public boolean unbanIPAdress(String playername) {
+    if (isIpBanned(playername)) {
+      BanManager.unbanIpAddress(playername);
+      return true;
     }
+    return false;
+  }
 }

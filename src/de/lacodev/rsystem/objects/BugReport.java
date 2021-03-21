@@ -3,6 +3,7 @@ package de.lacodev.rsystem.objects;
 import java.util.UUID;
 
 public class BugReport {
+
   private int id;
   private String playerName;
   private UUID playerUUID;
@@ -15,36 +16,36 @@ public class BugReport {
     this.bugReport = bugReport;
   }
 
-  public void setId(int id) {
-    this.id = id;
-  }
-
-  public void setPlayerName(String playerName) {
-    this.playerName = playerName;
-  }
-
-  public void setPlayerUUID(UUID playerUUID) {
-    this.playerUUID = playerUUID;
-  }
-
-  public void setBugReport(String bugReport) {
-    this.bugReport = bugReport;
-  }
-
   public int getId() {
     return id;
+  }
+
+  public void setId(int id) {
+    this.id = id;
   }
 
   public String getPlayerName() {
     return playerName;
   }
 
+  public void setPlayerName(String playerName) {
+    this.playerName = playerName;
+  }
+
   public UUID getPlayerUUID() {
     return playerUUID;
   }
 
+  public void setPlayerUUID(UUID playerUUID) {
+    this.playerUUID = playerUUID;
+  }
+
   public String getBugReport() {
     return bugReport;
+  }
+
+  public void setBugReport(String bugReport) {
+    this.bugReport = bugReport;
   }
 
 

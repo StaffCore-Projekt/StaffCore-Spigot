@@ -5,37 +5,38 @@ import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
 public class ReportCreateEvent extends Event {
-    private static final HandlerList HANDLERS = new HandlerList();
 
-    private String reporter;
+  private static final HandlerList HANDLERS = new HandlerList();
 
-    private Player target;
+  private String reporter;
 
-    private String reason;
+  private Player target;
 
-    public HandlerList getHandlers() {
-        return HANDLERS;
-    }
+  private String reason;
 
-    public static HandlerList getHandlerList() {
-        return HANDLERS;
-    }
+  public ReportCreateEvent(String reporter, Player target, String reason) {
+    this.reporter = reporter;
+    this.target = target;
+    this.reason = reason;
+  }
 
-    public ReportCreateEvent(String reporter, Player target, String reason) {
-        this.reporter = reporter;
-        this.target = target;
-        this.reason = reason;
-    }
+  public static HandlerList getHandlerList() {
+    return HANDLERS;
+  }
 
-    public String getReporter() {
-        return this.reporter;
-    }
+  public HandlerList getHandlers() {
+    return HANDLERS;
+  }
 
-    public Player getTarget() {
-        return this.target;
-    }
+  public String getReporter() {
+    return this.reporter;
+  }
 
-    public String getReason() {
-        return this.reason;
-    }
+  public Player getTarget() {
+    return this.target;
+  }
+
+  public String getReason() {
+    return this.reason;
+  }
 }

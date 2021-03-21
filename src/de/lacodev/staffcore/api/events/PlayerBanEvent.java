@@ -4,37 +4,38 @@ import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
 public class PlayerBanEvent extends Event {
-    private static final HandlerList HANDLERS = new HandlerList();
 
-    private String targetuuid;
+  private static final HandlerList HANDLERS = new HandlerList();
 
-    private String reason;
+  private String targetuuid;
 
-    private String teamUuid;
+  private String reason;
 
-    public HandlerList getHandlers() {
-        return HANDLERS;
-    }
+  private String teamUuid;
 
-    public static HandlerList getHandlerList() {
-        return HANDLERS;
-    }
+  public PlayerBanEvent(String targetuuid, String reason, String teamUuid) {
+    this.targetuuid = targetuuid;
+    this.reason = reason;
+    this.teamUuid = teamUuid;
+  }
 
-    public PlayerBanEvent(String targetuuid, String reason, String teamUuid) {
-        this.targetuuid = targetuuid;
-        this.reason = reason;
-        this.teamUuid = teamUuid;
-    }
+  public static HandlerList getHandlerList() {
+    return HANDLERS;
+  }
 
-    public String getTargetuuid() {
-        return this.targetuuid;
-    }
+  public HandlerList getHandlers() {
+    return HANDLERS;
+  }
 
-    public String getReason() {
-        return this.reason;
-    }
+  public String getTargetuuid() {
+    return this.targetuuid;
+  }
 
-    public String getTeamUuid() {
-        return this.teamUuid;
-    }
+  public String getReason() {
+    return this.reason;
+  }
+
+  public String getTeamUuid() {
+    return this.teamUuid;
+  }
 }

@@ -5,30 +5,31 @@ import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
 public class ReportClaimEvent extends Event {
-    private static final HandlerList HANDLERS = new HandlerList();
 
-    private Player teamUuid;
+  private static final HandlerList HANDLERS = new HandlerList();
 
-    private String targetuuid;
+  private Player teamUuid;
 
-    public HandlerList getHandlers() {
-        return HANDLERS;
-    }
+  private String targetuuid;
 
-    public static HandlerList getHandlerList() {
-        return HANDLERS;
-    }
+  public ReportClaimEvent(Player teamUuid, String targetuuid) {
+    this.teamUuid = teamUuid;
+    this.targetuuid = targetuuid;
+  }
 
-    public ReportClaimEvent(Player teamUuid, String targetuuid) {
-        this.teamUuid = teamUuid;
-        this.targetuuid = targetuuid;
-    }
+  public static HandlerList getHandlerList() {
+    return HANDLERS;
+  }
 
-    public Player getTeamUuid() {
-        return this.teamUuid;
-    }
+  public HandlerList getHandlers() {
+    return HANDLERS;
+  }
 
-    public String getTargetuuid() {
-        return this.targetuuid;
-    }
+  public Player getTeamUuid() {
+    return this.teamUuid;
+  }
+
+  public String getTargetuuid() {
+    return this.targetuuid;
+  }
 }

@@ -4,37 +4,38 @@ import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
 public class BanReasonCreateEvent extends Event {
-    private static final HandlerList HANDLERS = new HandlerList();
 
-    private String name;
+  private static final HandlerList HANDLERS = new HandlerList();
 
-    private String unit;
+  private String name;
 
-    private int length;
+  private String unit;
 
-    public HandlerList getHandlers() {
-        return HANDLERS;
-    }
+  private int length;
 
-    public static HandlerList getHandlerList() {
-        return HANDLERS;
-    }
+  public BanReasonCreateEvent(String name, String unit, int length) {
+    this.name = name;
+    this.unit = unit;
+    this.length = length;
+  }
 
-    public BanReasonCreateEvent(String name, String unit, int length) {
-        this.name = name;
-        this.unit = unit;
-        this.length = length;
-    }
+  public static HandlerList getHandlerList() {
+    return HANDLERS;
+  }
 
-    public String getName() {
-        return this.name;
-    }
+  public HandlerList getHandlers() {
+    return HANDLERS;
+  }
 
-    public String getUnit() {
-        return this.unit;
-    }
+  public String getName() {
+    return this.name;
+  }
 
-    public int getLength() {
-        return this.length;
-    }
+  public String getUnit() {
+    return this.unit;
+  }
+
+  public int getLength() {
+    return this.length;
+  }
 }

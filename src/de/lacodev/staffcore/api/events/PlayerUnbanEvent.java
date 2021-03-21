@@ -4,23 +4,24 @@ import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
 public class PlayerUnbanEvent extends Event {
-    private static final HandlerList HANDLERS = new HandlerList();
 
-    private String uuid;
+  private static final HandlerList HANDLERS = new HandlerList();
 
-    public HandlerList getHandlers() {
-        return HANDLERS;
-    }
+  private String uuid;
 
-    public static HandlerList getHandlerList() {
-        return HANDLERS;
-    }
+  public PlayerUnbanEvent(String uuid) {
+    this.uuid = uuid;
+  }
 
-    public PlayerUnbanEvent(String uuid) {
-        this.uuid = uuid;
-    }
+  public static HandlerList getHandlerList() {
+    return HANDLERS;
+  }
 
-    public String getUuid() {
-        return this.uuid;
-    }
+  public HandlerList getHandlers() {
+    return HANDLERS;
+  }
+
+  public String getUuid() {
+    return this.uuid;
+  }
 }
