@@ -88,6 +88,64 @@ public class CMD_Maintenance implements CommandExecutor {
               .replace("%permission%", Main.getPermissionNotice("Permissions.Maintenance.Change")));
         }
       }
+    }else{
+      if (args.length != 1) {
+
+          if (manager.isKey(key)) {
+            if (manager.getBoolean(key)) {
+              sender.sendMessage(Main.getPrefix() + "The Maintenance Mode is Enabled!");
+            } else {
+              sender.sendMessage(Main.getPrefix() + "The Maintenance Mode is Disabled!");
+            }
+          } else {
+            setState(false);
+            sender.sendMessage(Main.getPrefix() + "The Maintenance Mode is Disabled!");
+          }
+
+      } else {
+
+          switch (args[0].toLowerCase()) {
+            case "on":
+              if (setState(true)) {
+                sender.sendMessage(Main.getPrefix() + "The Maintenance Mode is now Enabled!");
+                for (Player target : Bukkit.getOnlinePlayers()) {
+                  if (!(
+                      target.hasPermission(Main.getPermissionNotice("Permissions.Maintenance.Join"))
+                          || target
+                          .hasPermission(Main.getPermissionNotice("Permissions.Everything")))) {
+                    target
+                        .kickPlayer(ChatColor.RED + "This Server is switched to Maintenance Mode!");
+                  }
+                }
+              } else {
+                sender.sendMessage(Main.getPrefix() + "The Maintenance Mode is already Enabled!");
+              }
+              break;
+            case "off":
+              if (setState(false)) {
+                sender.sendMessage(Main.getPrefix() + "The Maintenance Mode is now Disabled!");
+              } else {
+                sender.sendMessage(Main.getPrefix() + "The Maintenance Mode is already Disabled!");
+              }
+              break;
+            case "info":
+              if (manager.isKey(key)) {
+                if (manager.getBoolean(key)) {
+                  sender.sendMessage(Main.getPrefix() + "The Maintenance Mode is Enabled!");
+                } else {
+                  sender.sendMessage(Main.getPrefix() + "The Maintenance Mode is Disabled!");
+                }
+              } else {
+                setState(false);
+                sender.sendMessage(Main.getPrefix() + "The Maintenance Mode is Disabled!");
+              }
+
+              break;
+            default:
+              sender.sendMessage(Main.getPrefix() + "TRY: /maintenance [ on | off | info ]");
+              break;
+          }
+      }
     }
     return false;
   }
