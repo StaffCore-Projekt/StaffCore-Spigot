@@ -758,6 +758,9 @@ public class Main extends JavaPlugin {
 
         getCommand("bug").setExecutor(new CMD_Bug());
         getCommand("bug").setTabCompleter(new Completer_Bug());
+
+        getCommand("kick").setExecutor(new CMD_Kick());
+        getCommand("kick").setTabCompleter(new Completer_Kick());
     }
 
     public void onDisable() {
@@ -898,6 +901,8 @@ public class Main extends JavaPlugin {
         getConfig().addDefault("Permissions.StaffChat.Write", "rsystem.staffchat.write");
         getConfig().addDefault("Permissions.Maintenance.Change", "rsystem.maintenance.change");
         getConfig().addDefault("Permissions.Maintenance.Join", "rsystem.maintenance.join");
+        getConfig().addDefault("Permissions.Kick.Use", "rsystem.kick.use");
+        getConfig().addDefault("Permissions.Kick.Notify", "rsystem.kick.notify");
 
         getConfig().addDefault("Chatfilter.ReporterName", "ChatController");
         getConfig().addDefault("Chatfilter.Cursed-Words.Match-for-action-in-Percentage", 50);
