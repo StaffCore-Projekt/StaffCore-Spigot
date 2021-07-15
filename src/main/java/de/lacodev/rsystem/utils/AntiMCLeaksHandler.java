@@ -1,0 +1,72 @@
+package de.lacodev.rsystem.utils;
+
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+
+public class AntiMCLeaksHandler {
+
+    // Handler for anti-mcleaks.lacodev.de Services
+
+    private final ArrayList<String> cache = new ArrayList<>();
+
+    public AntiMCLeaksHandler() {
+        super();
+    }
+
+    public void cacheAccounts() {
+
+        cache.clear();
+
+        int totalAccounts = Integer.valueOf(
+                readJsonFromUrl("https://anti-mcleaks.lacodev.de/api/v1/total/").get("total").toString());
+
+        JSONObject allAccountsData = readJsonFromUrl(
+                "https://anti-mcleaks.lacodev.de/api/v1/accounts/");
+
+        for (int i = 1; i <= totalAccounts; i++) {
+            JSONObject data = (JSONObject) allAccountsData.get(String.valueOf(i));
+
+            cache.add(data.get("uuid").toString());
+        }
+
+        Bukkit.getConsoleSender().sendMessage("");
+        Bukkit.getConsoleSender().sendMessage(
+                ChatColor.RED + "System " + ChatColor.DARK_GRAY + "» " + ChatColor.GREEN + "Successfully "
+                        + ChatColor.DARK_GRAY + "cached " + ChatColor.GREEN + totalAccounts + " Accounts");
+        Bukkit.getConsoleSender().sendMessage("");
+
+    }
+
+    public boolean isAccountCached(String uuid) {
+        return cache.contains(uuid);
+    }
+
+    public ArrayList<String> getAccountCache() {
+        return cache;
+    }
+
+    private JSONObject readJsonFromUrl(String url) {
+        JSONParser parser = new JSONParser();
+
+        try {
+
+            JSONObject jsonObject = (JSONObject) parser
+                    .parse(new InputStreamReader(new URL(url).openStream(), StandardCharsets.UTF_8));
+
+            return jsonObject;
+        } catch (IOException | ParseException | ClassCastException e) {
+
+        }
+        return null;
+    }
+}
