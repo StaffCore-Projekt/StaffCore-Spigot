@@ -27,7 +27,27 @@ public class CMD_Warns implements CommandExecutor {
         if (sender instanceof Player) {
 
             Player p = (Player) sender;
-            if (args.length == 1) {
+            if (args.length == 0){
+                if (SystemManager.existsPlayerData(p.getUniqueId().toString())){
+                    TextComponent w = new TextComponent();
+                    w.setText(Main.getPrefix() + Main.getMSG("Messages.Warn-System.Warns.Player-Info")
+                            .replace("%target%", p.getName())
+                            .replace("%warns%", "" + BanManager.getWarns(p.getUniqueId().toString())));
+
+                    String listString = "\n";
+                    for (String s : getWarnReasonsFromPlayer(p.getUniqueId().toString())) {
+                        listString += ChatColor.DARK_GRAY + "- " + ChatColor.RED + s + "\n";
+                    }
+
+                    w.setHoverEvent(new HoverEvent(net.md_5.bungee.api.chat.HoverEvent.Action.SHOW_TEXT,
+                            new ComponentBuilder(listString).create()));
+
+                    p.spigot().sendMessage(w);
+                }else{
+                    p.sendMessage(
+                            Main.getPrefix() + Main.getMSG("Messages.Warn-System.Warns.Never-Joined"));
+                }
+            }else if (args.length == 1) {
                 if (p.hasPermission(Main.getPermissionNotice("Permissions.Everything")) || p
                         .hasPermission(Main.getPermissionNotice("Permissions.Warns.See"))) {
                     if (SystemManager.existsPlayerData(SystemManager.getUUIDByName(args[0]))) {
