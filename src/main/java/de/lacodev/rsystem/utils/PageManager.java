@@ -1,20 +1,32 @@
 package de.lacodev.rsystem.utils;
 
+import de.lacodev.rsystem.StaffCore;
 import de.lacodev.rsystem.objects.BanReasons;
 import de.lacodev.rsystem.objects.MuteReasons;
 import de.lacodev.rsystem.objects.Reasons;
+import lombok.AccessLevel;
+import lombok.Getter;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+@Getter
 public class PageManager {
+    @Getter(AccessLevel.NONE)
+    private final StaffCore staffCore;
 
-    public static HashMap<Player, Integer> page = new HashMap<>();
+    public PageManager(StaffCore staffCore) {
+        this.staffCore = staffCore;
+    }
 
-    public static List<Reasons> getPageItems(List<Reasons> items, int page, int spaces) {
+    private Map<Player, Integer> page = new HashMap<>();
+
+    //items.subList((page * spaces) - spaces, page*spaces)
+    public List<Reasons> getPageItems(List<Reasons> items, int page, int spaces) {
 
         int upperBound = page * spaces;
 
@@ -25,8 +37,7 @@ public class PageManager {
         for (int i = lowerBound; i < upperBound; i++) {
             try {
                 reasons.add(new Reasons(items.get(i).getItem(), items.get(i).getName()));
-            } catch (IndexOutOfBoundsException e) {
-                continue;
+            } catch (IndexOutOfBoundsException ignored) {
             }
         }
 
@@ -35,7 +46,7 @@ public class PageManager {
     }
 
 
-    public static boolean isPageValid(List<Reasons> items, int page, int spaces) {
+    public boolean isPageValid(List<?> items, int page, int spaces) {
 
         if (page <= 0) {
 
@@ -51,7 +62,7 @@ public class PageManager {
 
     }
 
-    public static List<ItemStack> getPageProtect(List<ItemStack> items, int page, int spaces) {
+    public List<ItemStack> getPageProtect(List<ItemStack> items, int page, int spaces) {
         int upperBound = page * spaces;
         int lowerBound = upperBound - spaces;
 
@@ -69,7 +80,7 @@ public class PageManager {
     }
 
 
-    public static boolean isProtectValid(List<ItemStack> items, int page, int spaces) {
+    public boolean isProtectValid(List<?> items, int page, int spaces) {
 
         if (page <= 0) {
 
@@ -85,7 +96,7 @@ public class PageManager {
 
     }
 
-    public static List<BanReasons> getPageItems2(List<BanReasons> items, int page, int spaces) {
+    public List<BanReasons> getPageItems2(List<BanReasons> items, int page, int spaces) {
 
         int upperBound = page * spaces;
         int lowerBound = upperBound - spaces;
@@ -94,7 +105,7 @@ public class PageManager {
         for (int i = lowerBound; i < upperBound; i++) {
             try {
                 reasons.add(new BanReasons(items.get(i).getName(), items.get(i).getID(),
-                        BanManager.getRawBanLength(items.get(i).getName())));
+                        staffCore.getStaffCoreLoader().getBanManager().getRawBanLength(items.get(i).getName())));
             } catch (IndexOutOfBoundsException e) {
                 continue;
             }
@@ -102,18 +113,7 @@ public class PageManager {
         return reasons;
     }
 
-    public static boolean isPageValid2(List<BanReasons> items, int page, int spaces) {
-        if (page <= 0) {
-            return false;
-        }
-
-        int upperBound = page * spaces;
-        int lowerBound = upperBound - spaces;
-
-        return items.size() > lowerBound;
-    }
-
-    public static List<MuteReasons> getPageItems3(List<MuteReasons> items, int page, int spaces) {
+    public List<MuteReasons> getPageItems3(List<MuteReasons> items, int page, int spaces) {
 
         int upperBound = page * spaces;
         int lowerBound = upperBound - spaces;
@@ -130,15 +130,5 @@ public class PageManager {
         return reasons;
     }
 
-    public static boolean isPageValid3(List<MuteReasons> items, int page, int spaces) {
-        if (page <= 0) {
-            return false;
-        }
-
-        int upperBound = page * spaces;
-        int lowerBound = upperBound - spaces;
-
-        return items.size() > lowerBound;
-    }
 
 }

@@ -1,5 +1,6 @@
 package de.lacodev.rsystem.completer;
 
+import de.lacodev.rsystem.StaffCore;
 import de.lacodev.rsystem.mysql.MySQL;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -13,6 +14,13 @@ import java.util.stream.Collectors;
 
 public class Completer_Ban implements TabCompleter {
 
+    private final StaffCore staffCore;
+
+    public Completer_Ban(StaffCore staffCore) {
+        this.staffCore = staffCore;
+        this.staffCore.getCommand("ban").setTabCompleter(this);
+    }
+
     @Override
     public List<String> onTabComplete(CommandSender sender, Command cmd, String label,
                                       String[] args) {
@@ -20,7 +28,7 @@ public class Completer_Ban implements TabCompleter {
         if (args.length == 2) {
             ArrayList<String> reasons = new ArrayList<>();
 
-            ResultSet rs = MySQL.getResult("SELECT * FROM ReportSystem_reasonsdb WHERE TYPE = 'BAN'");
+            ResultSet rs = staffCore.getStaffCoreLoader().getMySQL()    .getResult("SELECT * FROM ReportSystem_reasonsdb WHERE TYPE = 'BAN'");
 
             try {
                 while (rs.next()) {

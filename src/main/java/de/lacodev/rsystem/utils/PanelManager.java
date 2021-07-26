@@ -1,6 +1,6 @@
 package de.lacodev.rsystem.utils;
 
-import de.lacodev.rsystem.Main;
+import de.lacodev.rsystem.StaffCore;
 import de.lacodev.rsystem.enums.XMaterial;
 import de.lacodev.rsystem.mysql.MySQL;
 import de.lacodev.rsystem.objects.BanReasons;
@@ -30,14 +30,16 @@ public class PanelManager {
     private Inventory onlineplayermenu;
     private Inventory protect;
     private Inventory playermenu;
+    
+    private final StaffCore staffCore;
 
-    public PanelManager() {
-        super();
+    public PanelManager(StaffCore staffCore) {
+        this.staffCore = staffCore;
     }
 
     //TRANSLATE START
     public void openMuteReasonUtils(Player p, int reasonId) {
-        String title = Main.getMSG("Messages.BanManager.Mute-Reason-Title")
+        String title = staffCore.getStaffCoreLoader().getMessage("Messages.BanManager.Mute-Reason-Title")
                 .replace("%reason%", "" + reasonId);
         if (title.length() > 32) {
             System.out.println("Sorry, but you have to many Reasons Created!");
@@ -57,8 +59,8 @@ public class PanelManager {
 
         muteReasonUtils.setItem(0, menu);
 
-        if (p.hasPermission(Main.getPermissionNotice("Permissions.BanManager.editreason")) || p
-                .hasPermission(Main.getPermissionNotice("Permissions.Everything"))) {
+        if (p.hasPermission(staffCore.getStaffCoreLoader().getPermission("BanManager.editreason")) || p
+                .hasPermission(staffCore.getStaffCoreLoader().getPermission("Everything"))) {
             ItemStack edit = Data.getHead("graye");
             assert edit != null;
             ItemMeta editM = edit.getItemMeta();
@@ -72,8 +74,8 @@ public class PanelManager {
 
         }
 
-        if (p.hasPermission(Main.getPermissionNotice("Permissions.BanManager.removereason")) || p
-                .hasPermission(Main.getPermissionNotice("Permissions.Everything"))) {
+        if (p.hasPermission(staffCore.getStaffCoreLoader().getPermission("BanManager.removereason")) || p
+                .hasPermission(staffCore.getStaffCoreLoader().getPermission("Everything"))) {
             ItemStack delete = Data.getHead("redd");
             assert delete != null;
             ItemMeta deleteM = delete.getItemMeta();
@@ -88,7 +90,7 @@ public class PanelManager {
     }
 
     public void openMuteReasonEdit(Player p, int reasonId) {
-        String title = Main.getMSG("Messages.BanManager.Mute-Edit-Title")
+        String title = staffCore.getStaffCoreLoader().getMessage("Messages.BanManager.Mute-Edit-Title")
                 .replace("%reason%", "" + reasonId);
         if (title.length() > 32) {
             System.out.println("Sorry, but you have to many Reasons Created!");
@@ -130,7 +132,7 @@ public class PanelManager {
     }
 
     public void openBanReasonEdit(Player player, int reasonId) {
-        String title = Main.getMSG("Messages.BanManager.Ban-Edit-Title")
+        String title = staffCore.getStaffCoreLoader().getMessage("Messages.BanManager.Ban-Edit-Title")
                 .replace("%reason%", "" + reasonId);
         if (title.length() > 32) {
             System.out.println("Sorry, but you have to many Reasons Created!");
@@ -171,7 +173,7 @@ public class PanelManager {
     }
 
     public void openBanReasonUtils(Player player, int reasonid) {
-        String title = Main.getMSG("Messages.BanManager.Ban-Reason-Title")
+        String title = staffCore.getStaffCoreLoader().getMessage("Messages.BanManager.Ban-Reason-Title")
                 .replace("%reason%", "" + reasonid);
         if (title.length() > 32) {
             System.out.println("Sorry, but you have to many Reasons Created!");
@@ -191,8 +193,8 @@ public class PanelManager {
 
         banReasonGui.setItem(0, menu);
 
-        if (player.hasPermission(Main.getPermissionNotice("Permissions.BanManager.editreason"))
-                || player.hasPermission(Main.getPermissionNotice("Permissions.Everything"))) {
+        if (player.hasPermission(staffCore.getStaffCoreLoader().getPermission("BanManager.editreason"))
+                || player.hasPermission(staffCore.getStaffCoreLoader().getPermission("Everything"))) {
             ItemStack edit = Data.getHead("graye");
             assert edit != null;
             ItemMeta editM = edit.getItemMeta();
@@ -205,8 +207,8 @@ public class PanelManager {
             banReasonGui.setItem(4, edit); //EDIT
         }
 
-        if (player.hasPermission(Main.getPermissionNotice("Permissions.BanManager.removereason"))
-                || player.hasPermission(Main.getPermissionNotice("Permissions.Everything"))) {
+        if (player.hasPermission(staffCore.getStaffCoreLoader().getPermission("BanManager.removereason"))
+                || player.hasPermission(staffCore.getStaffCoreLoader().getPermission("Everything"))) {
             ItemStack delete = Data.getHead("redd");
             assert delete != null;
             ItemMeta deleteM = delete.getItemMeta();
@@ -223,7 +225,7 @@ public class PanelManager {
 
     public void openBanManagerManu(Player player) {
         Inventory banManagerGui = player.getServer()
-                .createInventory(null, 6 * 9, Main.getMSG("Messages.BanManager.Main-Gui-Title"));
+                .createInventory(null, 6 * 9, staffCore.getStaffCoreLoader().getMessage("Messages.BanManager.Main-Gui-Title"));
         for (int i = 0; i < 9; i++) {
             banManagerGui.setItem(i, Data.buildPlace());
         }
@@ -232,13 +234,13 @@ public class PanelManager {
             banManagerGui.setItem(i, Data.buildPlace());
         }
 
-        if (player.hasPermission(Main.getPermissionNotice("Permissions.BanManager.addreason")) || player
-                .hasPermission(Main.getPermissionNotice("Permissions.Everything"))) {
+        if (player.hasPermission(staffCore.getStaffCoreLoader().getPermission("BanManager.addreason")) || player
+                .hasPermission(staffCore.getStaffCoreLoader().getPermission("Everything"))) {
             ItemStack b = Data.getHead("grayb");
             assert b != null;
             ItemMeta bmeta = b.getItemMeta();
             assert bmeta != null;
-            bmeta.setDisplayName(Main.getMSG("Messages.BanManager.Add-Reason"));
+            bmeta.setDisplayName(staffCore.getStaffCoreLoader().getMessage("Messages.BanManager.Add-Reason"));
             b.setItemMeta(bmeta);
 
             banManagerGui.setItem(48, b);
@@ -247,23 +249,23 @@ public class PanelManager {
             assert m != null;
             ItemMeta mmeta = m.getItemMeta();
             assert mmeta != null;
-            mmeta.setDisplayName(Main.getMSG("Messages.BanManager.Add-Reason-Mute"));
+            mmeta.setDisplayName(staffCore.getStaffCoreLoader().getMessage("Messages.BanManager.Add-Reason-Mute"));
             m.setItemMeta(mmeta);
 
             banManagerGui.setItem(50, m);
         }
 
-        ArrayList<BanReasons> breasons = BanManager.getBanReasons();
+        ArrayList<BanReasons> breasons = staffCore.getStaffCoreLoader().getBanManager().getBanReasons();
 
         for (int i = 0; i < breasons.size(); i++) {
             BanReasons breason = breasons.get(i);
             List<String> blore = new ArrayList<>();
-            if (BanManager.getBanLength(breason.getLength())
-                    .equalsIgnoreCase(Main.getMSG("Messages.Layouts.Ban.Length-Values.Permanently"))) {
+            if (staffCore.getStaffCoreLoader().getBanManager().getBanLength(breason.getLength())
+                    .equalsIgnoreCase(staffCore.getStaffCoreLoader().getMessage("Messages.Layouts.Ban.Length-Values.Permanently"))) {
                 blore.add(ChatColor.GRAY + "Length: " + ChatColor.RED + ChatColor.BOLD + ChatColor
-                        .stripColor(BanManager.getBanLength(breason.getLength())));
+                        .stripColor(staffCore.getStaffCoreLoader().getBanManager().getBanLength(breason.getLength())));
             } else {
-                blore.add(ChatColor.GRAY + "Length: " + ChatColor.YELLOW + BanManager
+                blore.add(ChatColor.GRAY + "Length: " + ChatColor.YELLOW + staffCore.getStaffCoreLoader().getBanManager()
                         .getBanLength(breason.getLength()));
             }
 
@@ -271,7 +273,7 @@ public class PanelManager {
             assert redbb != null;
             ItemMeta redbbItemMeta = redbb.getItemMeta();
             assert redbbItemMeta != null;
-            redbbItemMeta.setDisplayName(Main.getMSG("Messages.BanManager.Ban-Reason-Button-Title")
+            redbbItemMeta.setDisplayName(staffCore.getStaffCoreLoader().getMessage("Messages.BanManager.Ban-Reason-Button-Title")
                     .replace("%reason%", breason.getName()));
             //redbbItemMeta.setDisplayName("§7Ban Reason: " + ChatColor.YELLOW + breason.getName());
             redbbItemMeta.setLore(blore);
@@ -279,19 +281,19 @@ public class PanelManager {
             banManagerGui.setItem(i + 9, redbb);
         }
 
-        ArrayList<MuteReasons> mReasons = BanManager.getMuteReasons();
+        ArrayList<MuteReasons> mReasons = staffCore.getStaffCoreLoader().getBanManager().getMuteReasons();
 
         for (int i = 0; i < mReasons.size(); i++) {
             MuteReasons mReason = mReasons.get(i);
             List<String> mlore = new ArrayList<>();
-            mlore.add(ChatColor.GRAY + "Length: " + ChatColor.YELLOW + BanManager
+            mlore.add(ChatColor.GRAY + "Length: " + ChatColor.YELLOW + staffCore.getStaffCoreLoader().getBanManager()
                     .getBanLength(mReason.getLength()));
 
             ItemStack redm = Data.getHead("redm");
             assert redm != null;
             ItemMeta mRedM = redm.getItemMeta();
             assert mRedM != null;
-            mRedM.setDisplayName(Main.getMSG("Messages.BanManager.Mute-Reason-Button-Title")
+            mRedM.setDisplayName(staffCore.getStaffCoreLoader().getMessage("Messages.BanManager.Mute-Reason-Button-Title")
                     .replace("%reason%", mReason.getName()));
             //mRedM.setDisplayName(ChatColor.GRAY + "Mute Reason: " + ChatColor.YELLOW + mReason.getName());
             mRedM.setLore(mlore);
@@ -367,8 +369,8 @@ public class PanelManager {
             items.add(Data.buildPlayerHead(ChatColor.GRAY + all.getName(), all.getName()));
         }
 
-        PageManager.page.remove(player.getPlayer());
-        PageManager.page.put(player.getPlayer(), page);
+        staffCore.getStaffCoreLoader().getPageManager().getPage().remove(player.getPlayer());
+        staffCore.getStaffCoreLoader().getPageManager().getPage().put(player.getPlayer(), page);
 
         ItemStack forward = Data.getHead("oak_arrow_right");
         ItemMeta fmeta = forward.getItemMeta();
@@ -380,15 +382,15 @@ public class PanelManager {
         bmeta.setDisplayName(ChatColor.GREEN + "◄");
         back.setItemMeta(bmeta);
 
-        if (PageManager.isProtectValid(items, page - 1, 36)) {
+        if (staffCore.getStaffCoreLoader().getPageManager().isProtectValid(items, page - 1, 36)) {
             onlineplayermenu.setItem(46, back);
         }
 
-        if (PageManager.isProtectValid(items, page + 1, 36)) {
+        if (staffCore.getStaffCoreLoader().getPageManager().isProtectValid(items, page + 1, 36)) {
             onlineplayermenu.setItem(52, forward);
         }
 
-        for (ItemStack item : PageManager.getPageProtect(items, page, 36)) {
+        for (ItemStack item : staffCore.getStaffCoreLoader().getPageManager().getPageProtect(items, page, 36)) {
             onlineplayermenu.setItem(onlineplayermenu.firstEmpty(), item);
         }
 
@@ -416,17 +418,17 @@ public class PanelManager {
             @SuppressWarnings("deprecation")
             @Override
             public void run() {
-                if (MySQL.isConnected()) {
+                if (staffCore.getStaffCoreLoader().getMySQL().isConnected()) {
 
                     ArrayList<ItemStack> rows = new ArrayList<>();
-                    ResultSet rs = MySQL.getResult("SELECT * FROM ReportSystem_playerdb");
+                    ResultSet rs = staffCore.getStaffCoreLoader().getMySQL().getResult("SELECT * FROM ReportSystem_playerdb");
                     try {
                         while (rs.next()) {
 
                             ItemStack player = XMaterial.PLAYER_HEAD.parseItem();
                             SkullMeta meta = (SkullMeta) player.getItemMeta();
                             meta.setOwner(rs.getString("PLAYERNAME"));
-                            if (SystemManager.isProtected(rs.getString("UUID"))) {
+                            if (staffCore.getStaffCoreLoader().getSystemManager().isProtected(rs.getString("UUID"))) {
                                 meta.setDisplayName(
                                         ChatColor.GRAY + rs.getString("PLAYERNAME") + ChatColor.DARK_GRAY + " | "
                                                 + ChatColor.GREEN + "Protected");
@@ -450,8 +452,8 @@ public class PanelManager {
                         protect.setItem(i2, Data.buildPlace());
 
                     }
-                    PageManager.page.remove(p.getPlayer());
-                    PageManager.page.put(p.getPlayer(), page);
+                    staffCore.getStaffCoreLoader().getPageManager().getPage().remove(p.getPlayer());
+                    staffCore.getStaffCoreLoader().getPageManager().getPage().put(p.getPlayer(), page);
 
                     for (int i2 = 45; i2 < 54; i2++) {
                         protect.setItem(i2, Data.buildPlace());
@@ -466,15 +468,15 @@ public class PanelManager {
                     bmeta.setDisplayName(ChatColor.GREEN + "◄");
                     back.setItemMeta(bmeta);
 
-                    if (PageManager.isProtectValid(rows, page - 1, 36)) {
+                    if (staffCore.getStaffCoreLoader().getPageManager().isProtectValid(rows, page - 1, 36)) {
                         protect.setItem(46, back);
                     }
 
-                    if (PageManager.isProtectValid(rows, page + 1, 36)) {
+                    if (staffCore.getStaffCoreLoader().getPageManager().isProtectValid(rows, page + 1, 36)) {
                         protect.setItem(52, forward);
                     }
 
-                    for (ItemStack item : PageManager.getPageProtect(rows, page, 36)) {
+                    for (ItemStack item : staffCore.getStaffCoreLoader().getPageManager().getPageProtect(rows, page, 36)) {
                         protect.setItem(protect.firstEmpty(), item);
                     }
                 } else {
@@ -490,7 +492,7 @@ public class PanelManager {
                 protect.setItem(45, menu);
             }
 
-        }.runTaskAsynchronously(Main.getInstance());
+        }.runTaskAsynchronously(staffCore);
 
         p.openInventory(protect);
     }
@@ -556,8 +558,8 @@ public class PanelManager {
     }
 
     public ItemStack getLanguageHead() {
-        return Data.buildHead(Main.getInstance().getConfig().getString("General.Language"),
-                ChatColor.GREEN + Main.getInstance().getConfig().getString("General.Language"));
+        return Data.buildHead(staffCore.getStaffCoreLoader().getConfigProvider().getString("General.Language"),
+                ChatColor.GREEN + staffCore.getStaffCoreLoader().getConfigProvider().getString("General.Language"));
     }
 
     public Inventory getMainMenu() {

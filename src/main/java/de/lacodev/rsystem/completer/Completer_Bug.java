@@ -1,6 +1,6 @@
 package de.lacodev.rsystem.completer;
 
-import de.lacodev.rsystem.Main;
+import de.lacodev.rsystem.StaffCore;
 import de.lacodev.rsystem.objects.BugReport;
 import de.lacodev.rsystem.utils.BugManager;
 import org.bukkit.command.Command;
@@ -14,6 +14,13 @@ import java.util.stream.Collectors;
 
 public class Completer_Bug implements TabCompleter {
 
+    private final StaffCore staffCore;
+
+    public Completer_Bug(StaffCore staffCore) {
+        this.staffCore = staffCore;
+        this.staffCore.getCommand("bug").setTabCompleter(this);
+    }
+
     @Override
     public List<String> onTabComplete(CommandSender sender, Command cmd, String label,
                                       String[] args) {
@@ -21,12 +28,12 @@ public class Completer_Bug implements TabCompleter {
         if (sender instanceof Player) {
             Player p = (Player) sender;
             if (args.length == 1) {
-                if (p.hasPermission(Main.getPermissionNotice("Permissions.Bugs.See")) ||
-                        p.hasPermission(Main.getPermissionNotice("Permissions.Everything"))) {
+                if (p.hasPermission(staffCore.getStaffCoreLoader().getPermission("Bugs.See")) ||
+                        p.hasPermission(staffCore.getStaffCoreLoader().getPermission("Everything"))) {
                     complete.add("list");
                 }
-                if (p.hasPermission(Main.getPermissionNotice("Permissions.Bugs.Remove")) ||
-                        p.hasPermission(Main.getPermissionNotice("Permissions.Everything"))) {
+                if (p.hasPermission(staffCore.getStaffCoreLoader().getPermission("Bugs.Remove")) ||
+                        p.hasPermission(staffCore.getStaffCoreLoader().getPermission("Everything"))) {
                     complete.add("remove");
                 }
                 complete.add("<Your Report>");
@@ -35,7 +42,7 @@ public class Completer_Bug implements TabCompleter {
                     return complete;
                 }
                 if (args[1].equalsIgnoreCase("remove")) {
-                    ArrayList<BugReport> reports = BugManager.getBugs();
+                    ArrayList<BugReport> reports = staffCore.getStaffCoreLoader().getBugManager().getBugs();
                     if (reports == null) {
                         complete.add("No Reports are open!");
                         return complete;
@@ -54,7 +61,7 @@ public class Completer_Bug implements TabCompleter {
                     return complete;
                 }
                 if (args[1].equalsIgnoreCase("remove")) {
-                    ArrayList<BugReport> reports = BugManager.getBugs();
+                    ArrayList<BugReport> reports = staffCore.getStaffCoreLoader().getBugManager().getBugs();
                     if (reports == null) {
                         complete.add("No Reports are open!");
                         return complete;

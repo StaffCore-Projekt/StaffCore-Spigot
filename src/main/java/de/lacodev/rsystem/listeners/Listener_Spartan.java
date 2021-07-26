@@ -1,7 +1,6 @@
 package de.lacodev.rsystem.listeners;
 
-import de.lacodev.rsystem.Main;
-import de.lacodev.rsystem.utils.ReportManager;
+import de.lacodev.rsystem.StaffCore;
 import me.vagdedes.spartan.api.PlayerViolationEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -14,16 +13,21 @@ import java.io.File;
 import java.io.IOException;
 
 public class Listener_Spartan implements Listener {
+    private final StaffCore staffCore;
+
+    public Listener_Spartan(StaffCore staffCore) {
+        this.staffCore = staffCore;
+        Bukkit.getPluginManager().registerEvents(this, staffCore);
+    }
 
     @EventHandler
     public void onVLSpartan(PlayerViolationEvent e) {
         Player p = e.getPlayer();
 
-        File file = new File(
-                "plugins//" + Main.getInstance().getDescription().getName() + "//logs//spartan-log.yml");
+        File file = new File(staffCore.getDataFolder() + File.separator + "logs" + File.separator + "spartan-log.yml");
         YamlConfiguration cfg = YamlConfiguration.loadConfiguration(file);
 
-        if (Main.getInstance().getConfig().getBoolean("SpartanAntiCheat.Autoreport.Enable")) {
+        if (staffCore.getStaffCoreLoader().getConfigProvider().getBoolean("SpartanAntiCheat.Autoreport.Enable")) {
             if (cfg.contains("Log." + p.getUniqueId().toString())) {
                 if (cfg.contains("Log." + p.getUniqueId().toString() + "." + e.getHackType().toString())) {
                     int currentvl = cfg.getInt(
@@ -43,11 +47,11 @@ public class Listener_Spartan implements Listener {
                         Bukkit.getConsoleSender().sendMessage("");
                     }
 
-                    if (newvl >= Main.getInstance().getConfig().getInt(
+                    if (newvl >= staffCore.getStaffCoreLoader().getConfigProvider().getInt(
                             "SpartanAntiCheat.Autoreport." + e.getHackType().toString() + ".Violationslevel")) {
-                        ReportManager
-                                .createReport(Main.getPermissionNotice("SpartanAntiCheat.Autoreport.Name"), p,
-                                        Main.getPermissionNotice(
+                        staffCore.getStaffCoreLoader().getReportManager()
+                                .createReport(staffCore.getStaffCoreLoader().getMessage("SpartanAntiCheat.Autoreport.Name"), p,
+                                        staffCore.getStaffCoreLoader().getMessage(
                                                 "SpartanAntiCheat.Autoreport." + e.getHackType().toString()
                                                         + ".Displayname"));
                     }

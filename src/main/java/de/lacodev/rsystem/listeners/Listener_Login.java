@@ -1,6 +1,6 @@
 package de.lacodev.rsystem.listeners;
 
-import de.lacodev.rsystem.Main;
+import de.lacodev.rsystem.StaffCore;
 import de.lacodev.rsystem.utils.BanManager;
 import de.lacodev.rsystem.utils.SettingsManager;
 import org.bukkit.Bukkit;
@@ -12,15 +12,20 @@ import org.bukkit.event.player.PlayerLoginEvent.Result;
 
 public class Listener_Login implements Listener {
 
-    private final SettingsManager settings = new SettingsManager();
+    private final StaffCore staffCore;
+
+    public Listener_Login(StaffCore staffCore) {
+        this.staffCore = staffCore;
+        Bukkit.getPluginManager().registerEvents(this, staffCore);
+    }
 
     @EventHandler
     public void onLogin(PlayerLoginEvent e) {
         Player p = e.getPlayer();
-        if (settings.isKey("maintenance")) {
-            if (settings.getBoolean("maintenance")) {
-                if (!(p.hasPermission(Main.getPermissionNotice("Permissions.Maintenance.Join")) || p
-                        .hasPermission(Main.getPermissionNotice("Permissions.Everything")))) {
+        if (staffCore.getStaffCoreLoader().getSettingsManager().isKey("maintenance")) {
+            if (staffCore.getStaffCoreLoader().getSettingsManager().getBoolean("maintenance")) {
+                if (!(p.hasPermission(staffCore.getStaffCoreLoader().getPermission("Maintenance.Join")) || p
+                        .hasPermission(staffCore.getStaffCoreLoader().getPermission("Everything")))) {
                     // TODO: 18.01.2021 Insert Translator
                     e.disallow(Result.KICK_FULL, "Sorry but we are currently in Maintenance!");
                     return;
@@ -28,44 +33,44 @@ public class Listener_Login implements Listener {
             }
         }
 
-        if (BanManager.isBanned(p.getUniqueId().toString())) {
+        if (staffCore.getStaffCoreLoader().getBanManager().isBanned(p.getUniqueId().toString())) {
 
-            if (BanManager.getBanEnd(p.getUniqueId().toString()) != -1) {
-                e.disallow(Result.KICK_BANNED, Main.getMSG("Messages.Layouts.Ban")
-                        .replace("%reason%", BanManager.getBanReason(p.getUniqueId().toString()))
-                        .replace("%remaining%", BanManager.getBanFinalEnd(p.getUniqueId().toString()))
+            if (staffCore.getStaffCoreLoader().getBanManager().getBanEnd(p.getUniqueId().toString()) != -1) {
+                e.disallow(Result.KICK_BANNED, staffCore.getStaffCoreLoader().getMessage("Messages.Layouts.Ban")
+                        .replace("%reason%", staffCore.getStaffCoreLoader().getBanManager().getBanReason(p.getUniqueId().toString()))
+                        .replace("%remaining%", staffCore.getStaffCoreLoader().getBanManager().getBanFinalEnd(p.getUniqueId().toString()))
                         .replace("%lengthvalue%",
-                                Main.getMSG("Messages.Layouts.Ban.Length-Values.Temporarly")));
+                                staffCore.getStaffCoreLoader().getMessage("Messages.Layouts.Ban.Length-Values.Temporarly")));
             } else {
-                e.disallow(Result.KICK_BANNED, Main.getMSG("Messages.Layouts.Ban")
-                        .replace("%reason%", BanManager.getBanReason(p.getUniqueId().toString()))
-                        .replace("%remaining%", Main.getMSG("Messages.Layouts.Ban.Length-Values.Permanently"))
+                e.disallow(Result.KICK_BANNED, staffCore.getStaffCoreLoader().getMessage("Messages.Layouts.Ban")
+                        .replace("%reason%", staffCore.getStaffCoreLoader().getBanManager().getBanReason(p.getUniqueId().toString()))
+                        .replace("%remaining%", staffCore.getStaffCoreLoader().getMessage("Messages.Layouts.Ban.Length-Values.Permanently"))
                         .replace("%lengthvalue%",
-                                Main.getMSG("Messages.Layouts.Ban.Length-Values.Permanently")));
+                                staffCore.getStaffCoreLoader().getMessage("Messages.Layouts.Ban.Length-Values.Permanently")));
             }
 
         } else {
-            if (!BanManager.isIPBanned(e.getRealAddress().toString())) {
+            if (!staffCore.getStaffCoreLoader().getBanManager().isIPBanned(e.getRealAddress().toString())) {
                 if (p.isOp()) {
-                    if (!p.hasPermission(Main.getPermissionNotice("Permissions.Allow-OP.Join"))) {
+                    if (!p.hasPermission(staffCore.getStaffCoreLoader().getPermission("Allow-OP.Join"))) {
                         e.disallow(Result.KICK_OTHER,
-                                Main.getMSG("Messages.System.Unpermitted-OP.Kick-Player"));
+                                staffCore.getStaffCoreLoader().getMessage("Messages.System.Unpermitted-OP.Kick-Player"));
                         for (Player all : Bukkit.getOnlinePlayers()) {
-                            if (all.hasPermission(Main.getPermissionNotice("Permissions.Allow-OP.Notify"))) {
+                            if (all.hasPermission(staffCore.getStaffCoreLoader().getPermission("Allow-OP.Notify"))) {
                                 all.sendMessage(
-                                        Main.getPrefix() + Main.getMSG("Messages.System.Unpermitted-OP.Notify")
+                                        staffCore.getStaffCoreLoader().getPrefix() + staffCore.getStaffCoreLoader().getMessage("Messages.System.Unpermitted-OP.Notify")
                                                 .replace("%target%", p.getName()));
                             }
                         }
                     }
                 } else {
-                    if (Main.getAntiMCLeaksHandler().isAccountCached(p.getUniqueId().toString())) {
+                    if (staffCore.getStaffCoreLoader().getAntiMCLeaksHandler().isAccountCached(p.getUniqueId().toString())) {
                         e.disallow(Result.KICK_OTHER,
-                                Main.getMSG("Messages.System.MCLeaks-Blocker.Blocked-Accounts.Kick"));
+                                staffCore.getStaffCoreLoader().getMessage("Messages.System.MCLeaks-Blocker.Blocked-Accounts.Kick"));
                     }
                 }
             } else {
-                e.disallow(Result.KICK_BANNED, Main.getMSG("Messages.Ban-System.IP-Ban.Kick-Screen"));
+                e.disallow(Result.KICK_BANNED, staffCore.getStaffCoreLoader().getMessage("Messages.Ban-System.IP-Ban.Kick-Screen"));
             }
         }
     }

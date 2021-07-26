@@ -1,9 +1,9 @@
 package de.lacodev.rsystem.utils;
 
-import de.lacodev.rsystem.Main;
+import de.lacodev.rsystem.StaffCore;
 import de.lacodev.rsystem.enums.XMaterial;
-import de.lacodev.rsystem.listeners.Listener_Chat;
-import de.lacodev.rsystem.mysql.MySQL;
+import de.lacodev.rsystem.listeners.ChatListener;
+import lombok.RequiredArgsConstructor;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -16,41 +16,44 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+@RequiredArgsConstructor
 public class TicketManager {
+
+    private final StaffCore staffCore;
 
     // TicketManager for WebUI
 
-    public static void createTicket(Player player) {
-        if (SystemManager.existsWebDatabases()) {
+    public void createTicket(Player player) {
+        if (staffCore.getStaffCoreLoader().getSystemManager().existsWebDatabases()) {
 
-            if (SystemManager.isVerified(player.getUniqueId().toString())) {
+            if (staffCore.getStaffCoreLoader().getSystemManager().isVerified(player.getUniqueId().toString())) {
 
-                MySQL.update(
+                staffCore.getStaffCoreLoader().getMySQL().update(
                         "INSERT INTO ReportSystem_ticketdb(CREATOR_UUID) VALUES ('" + player.getUniqueId()
                                 .toString() + "')");
 
-                player.sendMessage(Main.getPrefix() + Main.getMSG("Messages.Ticket-System.Create.Success"));
+                player.sendMessage(staffCore.getStaffCoreLoader().getPrefix() + staffCore.getStaffCoreLoader().getMessage("Messages.Ticket-System.Create.Success"));
 
-                Listener_Chat.spam.put(player, System.currentTimeMillis()
-                        + Main.getInstance().getConfig().getInt("TicketSystem.Cooldown-In-Seconds") * 1000);
+                ChatListener.spam.put(player, System.currentTimeMillis()
+                        + staffCore.getStaffCoreLoader().getConfigProvider().getInt("TicketSystem.Cooldown-In-Seconds") * 1000);
 
                 //Bukkit.getServer().getPluginManager().callEvent(new TicketCreateEvent(player));
             } else {
 
-                player.sendMessage(Main.getPrefix() + Main.getMSG("Messages.Ticket-System.Create.Error"));
+                player.sendMessage(staffCore.getStaffCoreLoader().getPrefix() + staffCore.getStaffCoreLoader().getMessage("Messages.Ticket-System.Create.Error"));
 
             }
         } else {
             // DATENBANKEN EXESTIEREN NICHT
             //
-            player.sendMessage(Main.getPrefix() + Main.getMSG("Messages.System.NoWebUITables"));
+            player.sendMessage(staffCore.getStaffCoreLoader().getPrefix() + staffCore.getStaffCoreLoader().getMessage("Messages.System.NoWebUITables"));
         }
     }
 
-    public static boolean hasTicket(Player player) {
+    public boolean hasTicket(Player player) {
 
-        if (MySQL.isConnected()) {
-            ResultSet rs = MySQL.getResult(
+        if (staffCore.getStaffCoreLoader().getMySQL().isConnected()) {
+            ResultSet rs = staffCore.getStaffCoreLoader().getMySQL().getResult(
                     "SELECT CREATOR_UUID FROM ReportSystem_ticketdb WHERE CREATOR_UUID = '" + player
                             .getUniqueId().toString() + "'");
             try {
@@ -67,9 +70,9 @@ public class TicketManager {
 
     }
 
-    public static void openTicketOverview(Player player, int page) throws SQLException {
+    public void openTicketOverview(Player player, int page) throws SQLException {
 
-        String title = Main.getMSG("Messages.Ticket-System.List.Inventory-Title");
+        String title = staffCore.getStaffCoreLoader().getMessage("Messages.Ticket-System.List.Inventory-Title");
         if (title.length() > 32) {
             title = title.substring(0, 32);
         }
@@ -92,7 +95,7 @@ public class TicketManager {
             public void run() {
                 ArrayList<ItemStack> items = new ArrayList<>();
 
-                ResultSet rs = MySQL.getResult(
+                ResultSet rs = staffCore.getStaffCoreLoader().getMySQL().getResult(
                         "SELECT * FROM ReportSystem_ticketdb WHERE CREATOR_UUID = '" + player.getUniqueId()
                                 .toString() + "' ORDER BY id DESC");
 
@@ -102,42 +105,43 @@ public class TicketManager {
                         items.add(Data.buildItemStackLore(XMaterial.PAPER,
                                 ChatColor.RED + "Ticket " + ChatColor.DARK_GRAY + "(" + ChatColor.GRAY + "#" + rs
                                         .getInt("id") + ChatColor.DARK_GRAY + ")",
-                                Main.getMSG("Messages.Ticket-System.List.Lore-1"),
-                                Main.getMSG("Messages.Ticket-System.List.Lore-2")
-                                        .replace("%team%", SystemManager.getUsernameByUUID(rs.getString("TEAM_UUID"))),
-                                Main.getMSG("Messages.Ticket-System.List.Lore-3").replace("%created%",
+
+                                staffCore.getStaffCoreLoader().getMessage("Messages.Ticket-System.List.Lore-1"),
+                                staffCore.getStaffCoreLoader().getMessage("Messages.Ticket-System.List.Lore-2")
+                                        .replace("%team%", staffCore.getStaffCoreLoader().getSystemManager().getUsernameByUUID(rs.getString("TEAM_UUID"))),
+                                staffCore.getStaffCoreLoader().getMessage("Messages.Ticket-System.List.Lore-3").replace("%created%",
                                         rs.getString("reg_date").substring(0, rs.getString("reg_date").length() - 2))));
 
                     }
                 } catch (SQLException e) {
                     inv.setItem(23, Data.buildItem(XMaterial.BARRIER,
-                            Main.getMSG("Messages.System.No-Connection.Notify")));
+                            staffCore.getStaffCoreLoader().getMessage("Messages.System.No-Connection.Notify")));
                 }
 
-                PageManager.page.remove(player);
+                staffCore.getStaffCoreLoader().getPageManager().getPage().remove(player);
 
-                PageManager.page.put(player, page);
+                staffCore.getStaffCoreLoader().getPageManager().getPage().put(player, page);
 
-                if (PageManager.isProtectValid(items, page + 1, 36)) {
+                if (staffCore.getStaffCoreLoader().getPageManager().isProtectValid(items, page + 1, 36)) {
                     ItemStack stack = new ItemStack(Material.ARROW);
                     ItemMeta meta = stack.getItemMeta();
-                    meta.setDisplayName(Main.getMSG("Messages.Ticket-System.Inventory.NextPage.Available"));
+                    meta.setDisplayName(staffCore.getStaffCoreLoader().getMessage("Messages.Ticket-System.Inventory.NextPage.Available"));
                     stack.setItemMeta(meta);
 
                     inv.setItem(52, stack);
                 }
 
-                if (PageManager.isProtectValid(items, page - 1, 36)) {
+                if (staffCore.getStaffCoreLoader().getPageManager().isProtectValid(items, page - 1, 36)) {
                     ItemStack stack = new ItemStack(Material.ARROW);
                     ItemMeta meta = stack.getItemMeta();
                     meta.setDisplayName(
-                            Main.getMSG("Messages.Ticket-System.Inventory.PreviousPage.Available"));
+                            staffCore.getStaffCoreLoader().getMessage("Messages.Ticket-System.Inventory.PreviousPage.Available"));
                     stack.setItemMeta(meta);
 
                     inv.setItem(46, stack);
                 }
 
-                for (ItemStack s : PageManager.getPageProtect(items, page, 36)) {
+                for (ItemStack s : staffCore.getStaffCoreLoader().getPageManager().getPageProtect(items, page, 36)) {
                     inv.setItem(inv.firstEmpty(), s);
                 }
 
@@ -146,7 +150,7 @@ public class TicketManager {
                 }
             }
 
-        }.runTaskAsynchronously(Main.getInstance());
+        }.runTaskAsynchronously(staffCore);
 
         player.openInventory(inv);
 

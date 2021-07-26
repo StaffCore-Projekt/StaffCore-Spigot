@@ -1,7 +1,6 @@
 package de.lacodev.rsystem.listeners;
 
-import de.lacodev.rsystem.Main;
-import de.lacodev.rsystem.utils.ReportManager;
+import de.lacodev.rsystem.StaffCore;
 import me.rerere.matrix.api.events.PlayerViolationEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -15,15 +14,22 @@ import java.io.IOException;
 
 public class Listener_Matrix implements Listener {
 
+    private final StaffCore staffCore;
+
+    public Listener_Matrix(StaffCore staffCore) {
+        this.staffCore = staffCore;
+        Bukkit.getPluginManager().registerEvents(this, staffCore);
+    }
+
     @EventHandler
     public void onVL(PlayerViolationEvent e) {
         Player p = e.getPlayer();
 
         File file = new File(
-                "plugins//" + Main.getInstance().getDescription().getName() + "//logs//matrix-log.yml");
+                "plugins//" + staffCore.getDescription().getName() + "//logs//matrix-log.yml");
         YamlConfiguration cfg = YamlConfiguration.loadConfiguration(file);
 
-        if (Main.getInstance().getConfig().getBoolean("MatrixAntiCheat.Autoreport.Enable")) {
+        if (staffCore.getStaffCoreLoader().getConfigProvider().getBoolean("MatrixAntiCheat.Autoreport.Enable")) {
             if (cfg.contains("Log." + p.getUniqueId().toString())) {
                 if (cfg.contains("Log." + p.getUniqueId().toString() + "." + e.getHackType().toString())) {
                     int currentvl = cfg.getInt(
@@ -43,11 +49,11 @@ public class Listener_Matrix implements Listener {
                         Bukkit.getConsoleSender().sendMessage("");
                     }
 
-                    if (newvl >= Main.getInstance().getConfig().getInt(
+                    if (newvl >= staffCore.getStaffCoreLoader().getConfigProvider().getInt(
                             "MatrixAntiCheat.Autoreport." + e.getHackType().toString() + ".Violationslevel")) {
-                        ReportManager
-                                .createReport(Main.getPermissionNotice("MatrixAntiCheat.Autoreport.Name"), p,
-                                        Main.getPermissionNotice(
+                        staffCore.getStaffCoreLoader().getReportManager()
+                                .createReport(staffCore.getStaffCoreLoader().getMessage("MatrixAntiCheat.Autoreport.Name"), p,
+                                        staffCore.getStaffCoreLoader().getMessage(
                                                 "MatrixAntiCheat.Autoreport." + e.getHackType().toString()
                                                         + ".Displayname"));
                     }

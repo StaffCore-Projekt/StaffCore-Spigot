@@ -1,14 +1,9 @@
 package de.lacodev.rsystem.utils;
 
 import com.connorlinfoot.actionbarapi.ActionBarAPI;
-import de.lacodev.rsystem.Main;
+import de.lacodev.rsystem.StaffCore;
 import de.lacodev.rsystem.enums.XMaterial;
-import de.lacodev.rsystem.mysql.MySQL;
 import de.lacodev.rsystem.objects.Reasons;
-import de.lacodev.staffcore.api.events.ReportClaimEvent;
-import de.lacodev.staffcore.api.events.ReportCreateEvent;
-import de.lacodev.staffcore.api.events.ReportReasonCreateEvent;
-import de.lacodev.staffcore.api.events.ReportReasonDeleteEvent;
 import me.rerere.matrix.api.HackType;
 import me.rerere.matrix.api.MatrixAPI;
 import me.rerere.matrix.api.MatrixAPIProvider;
@@ -34,11 +29,15 @@ import java.util.ArrayList;
 public class ReportManager {
 
     public static Inventory reportinv;
+    private final StaffCore staffCore;
 
+    public ReportManager(StaffCore staffCore) {
+        this.staffCore = staffCore;
+    }
 
-    public static void openPagedReportInv(Player p, String name, int page) {
+    public void openPagedReportInv(Player p, String name, int page) {
 
-        String title = Main.getMSG("Messages.Report-System.Inventory.Title") + ChatColor.YELLOW + name;
+        String title = staffCore.getStaffCoreLoader().getMessage("Messages.Report-System.Inventory.Title") + ChatColor.YELLOW + name;
 
         if (title.length() > 32) {
 
@@ -48,11 +47,11 @@ public class ReportManager {
 
         reportinv = p.getServer().createInventory(null, 54, title);
 
-        if (MySQL.isConnected()) {
+        if (staffCore.getStaffCoreLoader().getMySQL().isConnected()) {
 
             ArrayList<Reasons> rows = new ArrayList<>();
 
-            ResultSet rs = MySQL.getResult("SELECT * FROM ReportSystem_reasonsdb WHERE TYPE = 'REPORT'");
+            ResultSet rs = staffCore.getStaffCoreLoader().getMySQL().getResult("SELECT * FROM ReportSystem_reasonsdb WHERE TYPE = 'REPORT'");
 
             try {
 
@@ -76,44 +75,44 @@ public class ReportManager {
                 reportinv.setItem(i2, Data.buildPlace());
             }
 
-            PageManager.page.remove(p.getPlayer());
+            staffCore.getStaffCoreLoader().getPageManager().getPage().remove(p.getPlayer());
 
-            PageManager.page.put(p.getPlayer(), page);
+            staffCore.getStaffCoreLoader().getPageManager().getPage().put(p.getPlayer(), page);
 
             for (int i2 = 45; i2 < 54; i2++) {
                 reportinv.setItem(i2, Data.buildPlace());
             }
 
-            if (PageManager.isPageValid(rows, page - 1, 36)) {
+            if (staffCore.getStaffCoreLoader().getPageManager().isPageValid(rows, page - 1, 36)) {
 
                 reportinv.setItem(46, Data.buildItem(XMaterial.LIME_STAINED_GLASS_PANE,
-                        Main.getMSG("Messages.Report-System.Inventory.PreviousPage.Available")));
+                        staffCore.getStaffCoreLoader().getMessage("Messages.Report-System.Inventory.PreviousPage.Available")));
 
             } else {
 
                 reportinv.setItem(46, Data.buildItem(XMaterial.RED_STAINED_GLASS_PANE,
-                        Main.getMSG("Messages.Report-System.Inventory.PreviousPage.NotAvailable")));
+                        staffCore.getStaffCoreLoader().getMessage("Messages.Report-System.Inventory.PreviousPage.NotAvailable")));
 
             }
 
-            if (PageManager.isPageValid(rows, page + 1, 36)) {
+            if (staffCore.getStaffCoreLoader().getPageManager().isPageValid(rows, page + 1, 36)) {
 
                 reportinv.setItem(52, Data.buildItem(XMaterial.LIME_STAINED_GLASS_PANE,
-                        Main.getMSG("Messages.Report-System.Inventory.NextPage.Available")));
+                        staffCore.getStaffCoreLoader().getMessage("Messages.Report-System.Inventory.NextPage.Available")));
 
             } else {
 
                 reportinv.setItem(52, Data.buildItem(XMaterial.RED_STAINED_GLASS_PANE,
-                        Main.getMSG("Messages.Report-System.Inventory.NextPage.NotAvailable")));
+                        staffCore.getStaffCoreLoader().getMessage("Messages.Report-System.Inventory.NextPage.NotAvailable")));
 
             }
-            for (Reasons item : PageManager.getPageItems(rows, page, 36)) {
+            for (Reasons item : staffCore.getStaffCoreLoader().getPageManager().getPageItems(rows, page, 36)) {
 
                 reportinv.setItem(reportinv.firstEmpty(),
                         Data.buildItemStack(item.getItem(), 1, 0, ChatColor.YELLOW + item.getName(),
-                                Main.getMSG("Messages.Report-System.Inventory.ReportItem-Lore.1")
+                                staffCore.getStaffCoreLoader().getMessage("Messages.Report-System.Inventory.ReportItem-Lore.1")
                                         .replace("%target%", name),
-                                Main.getMSG("Messages.Report-System.Inventory.ReportItem-Lore.2")
+                                staffCore.getStaffCoreLoader().getMessage("Messages.Report-System.Inventory.ReportItem-Lore.2")
                                         .replace("%reason%", item.getName())));
 
             }
@@ -128,10 +127,10 @@ public class ReportManager {
 
     }
 
-    public static ArrayList<String> getReportReasons() {
+    public ArrayList<String> getReportReasons() {
         ArrayList<String> reasons = new ArrayList<>();
 
-        ResultSet rs = MySQL.getResult("SELECT * FROM ReportSystem_reasonsdb WHERE TYPE = 'REPORT'");
+        ResultSet rs = staffCore.getStaffCoreLoader().getMySQL().getResult("SELECT * FROM ReportSystem_reasonsdb WHERE TYPE = 'REPORT'");
 
         try {
             if (rs != null) {
@@ -155,25 +154,26 @@ public class ReportManager {
         return reasons;
     }
 
-    public static void createReport(String p, Player target, String reason) {
-        if (!(p.matches(Main.getPermissionNotice("MatrixAntiCheat.Autoreport.Name")) || p
-                .matches(Main.getPermissionNotice("Chatfilter.ReporterName")) || p
-                .matches(Main.getPermissionNotice("SpartanAntiCheat.Autoreport.Name")))) {
-            Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), () -> {
+    public void createReport(String p, Player target, String reason) {
+        if (!(p.matches(staffCore.getStaffCoreLoader().getPermission("MatrixAntiCheat.Autoreport.Name")) || p
+                .matches(staffCore.getStaffCoreLoader().getPermission("Chatfilter.ReporterName")) || p
+                .matches(staffCore.getStaffCoreLoader().getPermission("SpartanAntiCheat.Autoreport.Name")))) {
+            Bukkit.getScheduler().runTaskAsynchronously(staffCore, () -> {
                 try {
-                    PreparedStatement st = MySQL.getCon().prepareStatement(
+                    PreparedStatement st = staffCore.getStaffCoreLoader().getMySQL().getCon().prepareStatement(
                             "INSERT INTO ReportSystem_reportsdb(REPORTER_UUID,REPORTED_UUID,REASON,TEAM_UUID,STATUS) VALUES ('"
-                                    + SystemManager.getUUIDByName(p) + "','" + target.getUniqueId().toString() + "','"
+                                    + staffCore.getStaffCoreLoader().getSystemManager().getUUIDByName(p) + "','" + target.getUniqueId().toString() + "','"
                                     + reason + "','null','0')");
                     st.executeUpdate();
 
                     new BukkitRunnable() {
                         @Override
                         public void run() {
-                            Bukkit.getServer().getPluginManager()
-                                    .callEvent(new ReportCreateEvent(SystemManager.getUUIDByName(p), target, reason));
+                            // TODO: 26.07.2021 EVENT
+                            //Bukkit.getServer().getPluginManager()
+                            //        .callEvent(new ReportCreateEvent(staffCore.getStaffCoreLoader().getSystemManager().getUUIDByName(p), target, reason));
                         }
-                    }.runTask(Main.getInstance());
+                    }.runTask(staffCore);
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
@@ -182,11 +182,11 @@ public class ReportManager {
             addReport(target.getUniqueId().toString());
 
             Bukkit.getPlayer(p).sendMessage(
-                    Main.getPrefix() + Main.getMSG("Messages.Report-System.Notify.User.Report-Created"));
+                    staffCore.getStaffCoreLoader().getPrefix() + staffCore.getStaffCoreLoader().getMessage("Messages.Report-System.Notify.User.Report-Created"));
         } else {
-            Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), () -> {
+            Bukkit.getScheduler().runTaskAsynchronously(staffCore, () -> {
                 try {
-                    PreparedStatement st = MySQL.getCon().prepareStatement(
+                    PreparedStatement st = staffCore.getStaffCoreLoader().getMySQL().getCon().prepareStatement(
                             "INSERT INTO ReportSystem_reportsdb(REPORTER_UUID,REPORTED_UUID,REASON,TEAM_UUID,STATUS) VALUES ('"
                                     + p + "','" + target.getUniqueId().toString() + "','" + reason + "','null','0')");
                     st.executeUpdate();
@@ -199,9 +199,10 @@ public class ReportManager {
 
                 @Override
                 public void run() {
-                    Bukkit.getServer().getPluginManager().callEvent(new ReportCreateEvent(p, target, reason));
+                    // TODO: 26.07.2021 EVENT
+                    //Bukkit.getServer().getPluginManager().callEvent(new ReportCreateEvent(p, target, reason));
                 }
-            }.runTask(Main.getInstance());
+            }.runTask(staffCore);
 
             addReport(target.getUniqueId().toString());
         }
@@ -209,9 +210,9 @@ public class ReportManager {
         sendNotify("REPORT", p, target.getName(), reason);
     }
 
-    private static void addReport(String uuid) {
+    private void addReport(String uuid) {
         try {
-            PreparedStatement st = MySQL.getCon().prepareStatement(
+            PreparedStatement st = staffCore.getStaffCoreLoader().getMySQL().getCon().prepareStatement(
                     "UPDATE ReportSystem_playerdb SET REPORTS = '" + (getReports(uuid) + 1)
                             + "' WHERE UUID = '" + uuid + "'");
             st.executeUpdate();
@@ -220,8 +221,8 @@ public class ReportManager {
         }
     }
 
-    public static int getReports(String uuid) {
-        ResultSet rs = MySQL
+    public int getReports(String uuid) {
+        ResultSet rs = staffCore.getStaffCoreLoader().getMySQL()
                 .getResult("SELECT REPORTS FROM ReportSystem_playerdb WHERE UUID = '" + uuid + "'");
         try {
             if (rs.next()) {
@@ -233,98 +234,97 @@ public class ReportManager {
         return 0;
     }
 
-    public static void sendNotify(String string, String p, String string2, String reason) {
+    public void sendNotify(String string, String p, String string2, String reason) {
         if (string.equalsIgnoreCase("REPORT")) {
             for (Player all : Bukkit.getOnlinePlayers()) {
-                if (Main.getInstance().actionbar) {
-                    if (all.hasPermission(Main.getPermissionNotice("Permissions.Report.Notify")) || all
-                            .hasPermission(Main.getPermissionNotice("Permissions.Everything"))) {
+                if (staffCore.getStaffCoreLoader().getActionBarHook().isEnabled()) {
+                    if (all.hasPermission(staffCore.getStaffCoreLoader().getPermission("Report.Notify")) || all
+                            .hasPermission(staffCore.getStaffCoreLoader().getPermission("Everything"))) {
                         ActionBarAPI.sendActionBar(all,
-                                Main.getPrefix() + Main.getMSG("Messages.Report-System.Notify.Team.Reported")
+                                staffCore.getStaffCoreLoader().getPrefix() + staffCore.getStaffCoreLoader().getMessage("Messages.Report-System.Notify.Team.Reported")
                                         .replace("%player%", p).replace("%target%", string2) + ChatColor.DARK_GRAY
-                                        + " � " + ChatColor.YELLOW + reason, 60);
-                        if (Main.getInstance().getConfig().getBoolean("General.Include-MatrixAntiCheat")) {
+                                        + " \u00BB " + ChatColor.YELLOW + reason, 60);
+                        if (staffCore.getStaffCoreLoader().getConfigProvider().getBoolean("General.Include-MatrixAntiCheat")) {
                             String matrixalert;
 
                             MatrixAPI api = MatrixAPIProvider.getAPI();
-                            File file = new File("plugins//" + Main.getInstance().getDescription().getName()
+                            File file = new File("plugins//" + staffCore.getDescription().getName()
                                     + "//logs//matrixlog.yml");
                             YamlConfiguration cfg = YamlConfiguration.loadConfiguration(file);
-                            if (Main.getInstance().matrix_hacktypes.contains(reason.toUpperCase())) {
+                            if (staffCore.getStaffCoreLoader().getMatrixAntiCheatUtils().getHackTypes().contains(reason.toUpperCase())) {
                                 if (api.isEnable(HackType.valueOf(reason.toUpperCase()))) {
                                     matrixalert =
                                             ChatColor.GRAY + "VL " + ChatColor.DARK_GRAY + "� " + ChatColor.YELLOW + cfg
-                                                    .getInt("Log." + SystemManager.getUUIDByName(string2) + "." + HackType
+                                                    .getInt("Log." + staffCore.getStaffCoreLoader().getSystemManager().getUUIDByName(string2) + "." + HackType
                                                             .valueOf(reason.toUpperCase()).toString().toUpperCase() + ".VL");
                                 } else {
                                     matrixalert = ChatColor.RED + "Matrix was unable to find any Violations!";
                                 }
-                                ActionBarAPI.sendActionBar(all, Main.getPrefix() + matrixalert, 120);
+                                ActionBarAPI.sendActionBar(all, staffCore.getStaffCoreLoader().getPrefix() + matrixalert, 120);
                             }
                         }
-                        if (Main.getInstance().getConfig().getBoolean("General.Include-Worldname")) {
+                        if (staffCore.getStaffCoreLoader().getConfigProvider().getBoolean("General.Include-Worldname")) {
                             ActionBarAPI.sendActionBar(all,
-                                    Main.getPrefix() + Main.getMSG("Messages.Report-System.Notify.Team.Worldname")
+                                    staffCore.getStaffCoreLoader().getPrefix() + staffCore.getStaffCoreLoader().getMessage("Messages.Report-System.Notify.Team.Worldname")
                                             .replace("%worldname%",
                                                     Bukkit.getPlayer(string2).getLocation().getWorld().getName()), 180);
                         }
                     }
-                    if (all.hasPermission(Main.getPermissionNotice("Permissions.Report.Claim")) || all
-                            .hasPermission(Main.getPermissionNotice("Permissions.Everything"))) {
+                    if (all.hasPermission(staffCore.getStaffCoreLoader().getPermission("Report.Claim")) || all
+                            .hasPermission(staffCore.getStaffCoreLoader().getPermission("Everything"))) {
                         TextComponent tc = new TextComponent();
 
-                        tc.setText(Main.getPrefix() + Main
-                                .getMSG("Messages.Report-System.Notify.Team.Teleport-Button"));
+                        tc.setText(staffCore.getStaffCoreLoader().getPrefix() + staffCore.getStaffCoreLoader().getMessage("Messages.Report-System.Notify.Team.Teleport-Button"));
                         tc.setClickEvent(new ClickEvent(Action.RUN_COMMAND,
-                                "/report claim " + SystemManager.getUUIDByName(string2)));
+                                "/report claim " + staffCore.getStaffCoreLoader().getSystemManager().getUUIDByName(string2)));
 
                         all.sendMessage("");
                         all.spigot().sendMessage(tc);
                         all.sendMessage("");
                     }
                 } else {
-                    if (all.hasPermission(Main.getPermissionNotice("Permissions.Report.Notify")) || all
-                            .hasPermission(Main.getPermissionNotice("Permissions.Everything"))) {
+                    if (all.hasPermission(staffCore.getStaffCoreLoader().getPermission("Report.Notify")) || all
+                            .hasPermission(staffCore.getStaffCoreLoader().getPermission("Everything"))) {
                         all.sendMessage("");
                         all.sendMessage(
-                                Main.getPrefix() + Main.getMSG("Messages.Report-System.Notify.Team.Reported")
+                                staffCore.getStaffCoreLoader().getPrefix() + staffCore.getStaffCoreLoader().getMessage("Messages.Report-System.Notify.Team.Reported")
                                         .replace("%player%", p).replace("%target%", string2));
-                        all.sendMessage(Main.getPrefix() + ChatColor.YELLOW + reason);
-                        if (Main.getInstance().getConfig().getBoolean("General.Include-MatrixAntiCheat")) {
+                        all.sendMessage(staffCore.getStaffCoreLoader().getPrefix() + ChatColor.YELLOW + reason);
+                        if (staffCore.getStaffCoreLoader().getConfigProvider().getBoolean("General.Include-MatrixAntiCheat")) {
                             String matrixalert;
 
                             MatrixAPI api = MatrixAPIProvider.getAPI();
-                            File file = new File("plugins//" + Main.getInstance().getDescription().getName()
+                            File file = new File("plugins//" + staffCore.getDescription().getName()
                                     + "//logs//matrixlog.yml");
                             YamlConfiguration cfg = YamlConfiguration.loadConfiguration(file);
-                            if (Main.getInstance().matrix_hacktypes.contains(reason.toUpperCase())) {
+                            if (staffCore.getStaffCoreLoader().getMatrixAntiCheatUtils().getHackTypes().contains(reason.toUpperCase())) {
                                 if (api.isEnable(HackType.valueOf(reason.toUpperCase()))) {
                                     matrixalert =
                                             ChatColor.GRAY + "VL " + ChatColor.DARK_GRAY + "� " + ChatColor.YELLOW + cfg
-                                                    .getInt("Log." + SystemManager.getUUIDByName(string2) + "." + HackType
+                                                    .getInt("Log." + staffCore.getStaffCoreLoader().getSystemManager().getUUIDByName(string2) + "." + HackType
                                                             .valueOf(reason.toUpperCase()).toString().toUpperCase() + ".VL");
                                 } else {
                                     matrixalert = ChatColor.RED + "Matrix was unable to find any Violations!";
                                 }
-                                all.sendMessage(Main.getPrefix() + matrixalert);
+                                all.sendMessage(staffCore.getStaffCoreLoader().getPrefix() + matrixalert);
                             }
                         }
-                        if (Main.getInstance().getConfig().getBoolean("General.Include-Worldname")) {
+                        if (staffCore.getStaffCoreLoader().getConfigProvider().getBoolean("General.Include-Worldname")) {
                             all.sendMessage(
-                                    Main.getPrefix() + Main.getMSG("Messages.Report-System.Notify.Team.Worldname")
+                                    staffCore.getStaffCoreLoader().getPrefix() + staffCore.getStaffCoreLoader().getMessage("Messages.Report-System.Notify.Team.Worldname")
                                             .replace("%worldname%",
                                                     Bukkit.getPlayer(string2).getLocation().getWorld().getName()));
                         }
                         all.sendMessage("");
                     }
-                    if (all.hasPermission(Main.getPermissionNotice("Permissions.Report.Claim")) || all
-                            .hasPermission(Main.getPermissionNotice("Permissions.Everything"))) {
+                    if (all.hasPermission(staffCore.getStaffCoreLoader().getPermission("Report.Claim")) || all
+                            .hasPermission(staffCore.getStaffCoreLoader().getPermission("Everything"))) {
                         TextComponent tc = new TextComponent();
 
-                        tc.setText(Main.getPrefix() + Main
-                                .getMSG("Messages.Report-System.Notify.Team.Teleport-Button"));
+                        tc.setText(staffCore.getStaffCoreLoader().getPrefix() +
+                                staffCore.getStaffCoreLoader().getMessage("Messages.Report-System.Notify.Team.Teleport-Button"));
                         tc.setClickEvent(new ClickEvent(Action.RUN_COMMAND,
-                                "/report claim " + SystemManager.getUUIDByName(string2)));
+                                "/report claim " + staffCore.getStaffCoreLoader().getSystemManager().getUUIDByName(string2)));
 
                         all.spigot().sendMessage(tc);
                         all.sendMessage("");
@@ -333,52 +333,52 @@ public class ReportManager {
             }
         } else if (string.equalsIgnoreCase("BAN")) {
             for (Player all : Bukkit.getOnlinePlayers()) {
-                if (all.hasPermission(Main.getPermissionNotice("Permissions.Ban.Notify")) || all
-                        .hasPermission(Main.getPermissionNotice("Permissions.Everything"))) {
-                    if (Main.getInstance().actionbar) {
+                if (all.hasPermission(staffCore.getStaffCoreLoader().getPermission("Ban.Notify")) || all
+                        .hasPermission(staffCore.getStaffCoreLoader().getPermission("Everything"))) {
+                    if (staffCore.getStaffCoreLoader().getActionBarHook().isEnabled()) {
                         ActionBarAPI.sendActionBar(all,
-                                Main.getPrefix() + Main.getMSG("Messages.Ban-System.Notify.Team.Banned")
+                                staffCore.getStaffCoreLoader().getPrefix() + staffCore.getStaffCoreLoader().getMessage("Messages.Ban-System.Notify.Team.Banned")
                                         .replace("%player%", p).replace("%target%", string2) + ChatColor.DARK_GRAY
                                         + " � " + ChatColor.YELLOW + reason);
                     } else {
                         all.sendMessage("");
-                        all.sendMessage(Main.getPrefix() + Main.getMSG("Messages.Ban-System.Notify.Team.Banned")
+                        all.sendMessage(staffCore.getStaffCoreLoader().getPrefix() + staffCore.getStaffCoreLoader().getMessage("Messages.Ban-System.Notify.Team.Banned")
                                 .replace("%player%", p).replace("%target%", string2));
-                        all.sendMessage(Main.getPrefix() + ChatColor.YELLOW + reason);
+                        all.sendMessage(staffCore.getStaffCoreLoader().getPrefix() + ChatColor.YELLOW + reason);
                         all.sendMessage("");
                     }
                 }
             }
         } else if (string.equalsIgnoreCase("MUTE")) {
             for (Player all : Bukkit.getOnlinePlayers()) {
-                if (all.hasPermission(Main.getPermissionNotice("Permissions.Mute.Notify")) || all
-                        .hasPermission(Main.getPermissionNotice("Permissions.Everything"))) {
-                    if (Main.getInstance().actionbar) {
+                if (all.hasPermission(staffCore.getStaffCoreLoader().getPermission("Mute.Notify")) || all
+                        .hasPermission(staffCore.getStaffCoreLoader().getPermission("Everything"))) {
+                    if (staffCore.getStaffCoreLoader().getActionBarHook().isEnabled()) {
                         ActionBarAPI.sendActionBar(all,
-                                Main.getPrefix() + Main.getMSG("Messages.Mute-System.Notify.Team.Muted")
+                                staffCore.getStaffCoreLoader().getPrefix() + staffCore.getStaffCoreLoader().getMessage("Messages.Mute-System.Notify.Team.Muted")
                                         .replace("%player%", p).replace("%target%", string2) + ChatColor.DARK_GRAY
                                         + " � " + ChatColor.YELLOW + reason);
                     } else {
                         all.sendMessage("");
-                        all.sendMessage(Main.getPrefix() + Main.getMSG("Messages.Mute-System.Notify.Team.Muted")
+                        all.sendMessage(staffCore.getStaffCoreLoader().getPrefix() + staffCore.getStaffCoreLoader().getMessage("Messages.Mute-System.Notify.Team.Muted")
                                 .replace("%player%", p).replace("%target%", string2));
-                        all.sendMessage(Main.getPrefix() + ChatColor.YELLOW + reason);
+                        all.sendMessage(staffCore.getStaffCoreLoader().getPrefix() + ChatColor.YELLOW + reason);
                         all.sendMessage("");
                     }
                 }
             }
         } else if (string.equalsIgnoreCase("UNBAN")) {
             for (Player all : Bukkit.getOnlinePlayers()) {
-                if (all.hasPermission(Main.getPermissionNotice("Permissions.UnBan.Notify")) || all
-                        .hasPermission(Main.getPermissionNotice("Permissions.Everything"))) {
-                    if (Main.getInstance().actionbar) {
+                if (all.hasPermission(staffCore.getStaffCoreLoader().getPermission("UnBan.Notify")) || all
+                        .hasPermission(staffCore.getStaffCoreLoader().getPermission("Everything"))) {
+                    if (staffCore.getStaffCoreLoader().getActionBarHook().isEnabled()) {
                         ActionBarAPI.sendActionBar(all,
-                                Main.getPrefix() + Main.getMSG("Messages.Ban-System.UnBan.Notify.Team.Unban")
+                                staffCore.getStaffCoreLoader().getPrefix() + staffCore.getStaffCoreLoader().getMessage("Messages.Ban-System.UnBan.Notify.Team.Unban")
                                         .replace("%player%", p).replace("%target%", string2));
                     } else {
                         all.sendMessage("");
                         all.sendMessage(
-                                Main.getPrefix() + Main.getMSG("Messages.Ban-System.UnBan.Notify.Team.Unban")
+                                staffCore.getStaffCoreLoader().getPrefix() + staffCore.getStaffCoreLoader().getMessage("Messages.Ban-System.UnBan.Notify.Team.Unban")
                                         .replace("%player%", p).replace("%target%", string2));
                         all.sendMessage("");
                     }
@@ -386,18 +386,18 @@ public class ReportManager {
             }
         } else if (string.equalsIgnoreCase("WARN")) {
             for (Player all : Bukkit.getOnlinePlayers()) {
-                if (all.hasPermission(Main.getPermissionNotice("Permissions.Warn.Notify")) || all
-                        .hasPermission(Main.getPermissionNotice("Permissions.Everything"))) {
-                    if (Main.getInstance().actionbar) {
+                if (all.hasPermission(staffCore.getStaffCoreLoader().getPermission("Warn.Notify")) || all
+                        .hasPermission(staffCore.getStaffCoreLoader().getPermission("Everything"))) {
+                    if (staffCore.getStaffCoreLoader().getActionBarHook().isEnabled()) {
                         ActionBarAPI.sendActionBar(all,
-                                Main.getPrefix() + Main.getMSG("Messages.Warn-System.Warn.Notify")
+                                staffCore.getStaffCoreLoader().getPrefix() + staffCore.getStaffCoreLoader().getMessage("Messages.Warn-System.Warn.Notify")
                                         .replace("%player%", p).replace("%target%", string2) + ChatColor.DARK_GRAY
                                         + " � " + ChatColor.YELLOW + reason);
                     } else {
                         all.sendMessage("");
-                        all.sendMessage(Main.getPrefix() + Main.getMSG("Messages.Warn-System.Warn.Notify")
+                        all.sendMessage(staffCore.getStaffCoreLoader().getPrefix() + staffCore.getStaffCoreLoader().getMessage("Messages.Warn-System.Warn.Notify")
                                 .replace("%player%", p).replace("%target%", string2));
-                        all.sendMessage(Main.getPrefix() + ChatColor.YELLOW + reason);
+                        all.sendMessage(staffCore.getStaffCoreLoader().getPrefix() + ChatColor.YELLOW + reason);
                         all.sendMessage("");
                     }
                 }
@@ -405,12 +405,12 @@ public class ReportManager {
         }
     }
 
-    public static void createReportReason(String name, ItemStack item, String senderName) {
-        if (MySQL.isConnected()) {
-            Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), () -> {
+    public void createReportReason(String name, ItemStack item, String senderName) {
+        if (staffCore.getStaffCoreLoader().getMySQL().isConnected()) {
+            Bukkit.getScheduler().runTaskAsynchronously(staffCore, () -> {
                 if (!existsReportReason(name)) {
                     try {
-                        PreparedStatement st = MySQL.getCon().prepareStatement(
+                        PreparedStatement st = staffCore.getStaffCoreLoader().getMySQL().getCon().prepareStatement(
                                 "INSERT INTO ReportSystem_reasonsdb(TYPE,NAME,REPORT_ITEM) VALUES ('REPORT','"
                                         + name + "','" + item.getType().toString() + "')");
                         st.executeUpdate();
@@ -418,10 +418,11 @@ public class ReportManager {
                         new BukkitRunnable() {
                             @Override
                             public void run() {
-                                Bukkit.getServer().getPluginManager()
-                                        .callEvent(new ReportReasonCreateEvent(name, item));
+                                // TODO: 26.07.2021 EVENT
+                                //Bukkit.getServer().getPluginManager()
+                                //        .callEvent(new ReportReasonCreateEvent(name, item));
                             }
-                        }.runTask(Main.getInstance());
+                        }.runTask(staffCore);
 
                     } catch (SQLException e) {
                         e.printStackTrace();
@@ -431,9 +432,9 @@ public class ReportManager {
         }
     }
 
-    public static boolean existsReportReason(String name) {
-        if (MySQL.isConnected()) {
-            ResultSet rs = MySQL.getResult("SELECT NAME FROM ReportSystem_reasonsdb WHERE NAME = '" + name
+    public boolean existsReportReason(String name) {
+        if (staffCore.getStaffCoreLoader().getMySQL().isConnected()) {
+            ResultSet rs = staffCore.getStaffCoreLoader().getMySQL().getResult("SELECT NAME FROM ReportSystem_reasonsdb WHERE NAME = '" + name
                     + "' AND TYPE = 'REPORT'");
             try {
                 if (rs.next()) {
@@ -446,21 +447,22 @@ public class ReportManager {
         return false;
     }
 
-    public static void deleteReportReason(String name, String senderName) {
-        if (MySQL.isConnected()) {
+    public void deleteReportReason(String name, String senderName) {
+        if (staffCore.getStaffCoreLoader().getMySQL().isConnected()) {
             if (existsReportReason(name)) {
-                Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), () -> {
+                Bukkit.getScheduler().runTaskAsynchronously(staffCore, () -> {
                     try {
-                        PreparedStatement st = MySQL.getCon().prepareStatement(
+                        PreparedStatement st = staffCore.getStaffCoreLoader().getMySQL().getCon().prepareStatement(
                                 "DELETE FROM ReportSystem_reasonsdb WHERE NAME = '" + name
                                         + "' AND TYPE = 'REPORT'");
                         st.executeUpdate();
                         new BukkitRunnable() {
                             @Override
                             public void run() {
-                                Bukkit.getServer().getPluginManager().callEvent(new ReportReasonDeleteEvent(name));
+                                // TODO: 26.07.2021 EVENT
+                                //Bukkit.getServer().getPluginManager().callEvent(new ReportReasonDeleteEvent(name));
                             }
-                        }.runTask(Main.getInstance());
+                        }.runTask(staffCore);
 
                     } catch (SQLException e) {
                         e.printStackTrace();
@@ -471,16 +473,16 @@ public class ReportManager {
         }
     }
 
-    public static void claimReport(Player p, String targetuuid) {
-        Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), () -> {
+    public void claimReport(Player p, String targetuuid) {
+        Bukkit.getScheduler().runTaskAsynchronously(staffCore, () -> {
             try {
-                Player target = Bukkit.getPlayer(SystemManager.getUsernameByUUID(targetuuid));
+                Player target = Bukkit.getPlayer(staffCore.getStaffCoreLoader().getSystemManager().getUsernameByUUID(targetuuid));
 
                 ArrayList<String> reporter_uuids = new ArrayList<>();
 
                 if (isReportOpen(targetuuid)) {
                     if (target != null) {
-                        PreparedStatement st = MySQL.getCon().prepareStatement(
+                        PreparedStatement st = staffCore.getStaffCoreLoader().getMySQL().getCon().prepareStatement(
                                 "UPDATE ReportSystem_reportsdb SET STATUS = '1', TEAM_UUID = '" + p.getUniqueId()
                                         .toString() + "' WHERE REPORTED_UUID = '" + targetuuid + "'");
                         st.executeUpdate();
@@ -489,21 +491,22 @@ public class ReportManager {
 
                             @Override
                             public void run() {
-                                if (Main.getInstance().getConfig().getBoolean("General.Force-SpectatorMode")) {
+                                if (staffCore.getStaffCoreLoader().getConfigProvider().getBoolean("General.Force-SpectatorMode")) {
 
                                     p.setGameMode(GameMode.SPECTATOR);
 
                                 }
-                                Bukkit.getPluginManager().callEvent(new ReportClaimEvent(p, targetuuid));
+                                // TODO: 26.07.2021 EVENT
+                                //Bukkit.getPluginManager().callEvent(new ReportClaimEvent(p, targetuuid));
                                 p.teleport(target.getLocation());
                             }
 
-                        }.runTask(Main.getInstance());
+                        }.runTask(staffCore);
                         p.sendMessage(
-                                Main.getPrefix() + Main.getMSG("Messages.Report-System.Notify.Team.Claimed")
+                                staffCore.getStaffCoreLoader().getPrefix() + staffCore.getStaffCoreLoader().getMessage("Messages.Report-System.Notify.Team.Claimed")
                                         .replace("%target%", target.getName()));
 
-                        ResultSet rs1 = MySQL.getResult(
+                        ResultSet rs1 = staffCore.getStaffCoreLoader().getMySQL().getResult(
                                 "SELECT * FROM ReportSystem_reportsdb WHERE REPORTED_UUID = '" + targetuuid + "'");
                         if (rs1.next()) {
                             while (rs1.next()) {
@@ -512,26 +515,25 @@ public class ReportManager {
                                 }
                             }
                             for (int i = 0; i < reporter_uuids.size(); i++) {
-                                if (SystemManager.existsPlayerData(reporter_uuids.get(i))) {
+                                if (staffCore.getStaffCoreLoader().getSystemManager().existsPlayerData(reporter_uuids.get(i))) {
                                     Player reporter = Bukkit
-                                            .getPlayer(SystemManager.getUsernameByUUID(reporter_uuids.get(i)));
+                                            .getPlayer(staffCore.getStaffCoreLoader().getSystemManager().getUsernameByUUID(reporter_uuids.get(i)));
 
                                     if (reporter != null) {
-                                        reporter.sendMessage(Main.getPrefix() + Main
-                                                .getMSG("Messages.Report-System.Notify.User.Team-Claimed-Report"));
+                                        reporter.sendMessage(staffCore.getStaffCoreLoader().getPrefix() + staffCore.getStaffCoreLoader().getMessage("Messages.Report-System.Notify.User.Team-Claimed-Report"));
                                     } else {
-                                        ActionManager
+                                        staffCore.getStaffCoreLoader().getActionManager()
                                                 .createAction("CLAIMED_REPORT", reporter_uuids.get(i), target.getName());
                                     }
                                 }
                             }
                         }
                     } else {
-                        p.sendMessage(Main.getPrefix() + Main.getMSG("Messages.Report-System.Target-offline"));
+                        p.sendMessage(staffCore.getStaffCoreLoader().getPrefix() + staffCore.getStaffCoreLoader().getMessage("Messages.Report-System.Target-offline"));
                     }
                 } else {
                     p.sendMessage(
-                            Main.getPrefix() + Main.getMSG("Messages.Report-System.Notify.Team.Already-Claimed"));
+                            staffCore.getStaffCoreLoader().getPrefix() + staffCore.getStaffCoreLoader().getMessage("Messages.Report-System.Notify.Team.Already-Claimed"));
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -542,9 +544,9 @@ public class ReportManager {
 
     }
 
-    public static boolean isReportOpen(String targetuuid) {
-        if (MySQL.isConnected()) {
-            ResultSet rs = MySQL.getResult(
+    public boolean isReportOpen(String targetuuid) {
+        if (staffCore.getStaffCoreLoader().getMySQL().isConnected()) {
+            ResultSet rs = staffCore.getStaffCoreLoader().getMySQL().getResult(
                     "SELECT * FROM ReportSystem_reportsdb WHERE REPORTED_UUID = '" + targetuuid + "'");
             try {
                 while (rs.next()) {

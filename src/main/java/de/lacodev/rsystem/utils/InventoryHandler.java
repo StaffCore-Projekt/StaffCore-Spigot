@@ -1,6 +1,9 @@
 package de.lacodev.rsystem.utils;
 
+import de.lacodev.rsystem.StaffCore;
 import de.lacodev.rsystem.enums.XMaterial;
+import lombok.AccessLevel;
+import lombok.Getter;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -8,10 +11,16 @@ import org.bukkit.inventory.Inventory;
 import java.util.ArrayList;
 
 public class InventoryHandler {
+    @Getter(AccessLevel.NONE)
+    private final StaffCore staffCore;
 
-    public static ArrayList<Player> filter = new ArrayList<>();
+    public InventoryHandler(StaffCore staffCore) {
+        this.staffCore = staffCore;
+    }
 
-    public static void openChatFilterSettings(Player p) {
+    public ArrayList<Player> filter = new ArrayList<>();
+
+    public void openChatFilterSettings(Player p) {
         Inventory inv = p.getServer().createInventory(null, 27,
                 ChatColor.GRAY + "Settings " + ChatColor.DARK_GRAY + "- " + ChatColor.YELLOW
                         + "ChatFilter");

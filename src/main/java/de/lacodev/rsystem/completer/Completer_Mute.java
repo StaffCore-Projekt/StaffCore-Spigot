@@ -1,5 +1,6 @@
 package de.lacodev.rsystem.completer;
 
+import de.lacodev.rsystem.StaffCore;
 import de.lacodev.rsystem.mysql.MySQL;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -13,6 +14,13 @@ import java.util.stream.Collectors;
 
 public class Completer_Mute implements TabCompleter {
 
+    private final StaffCore staffCore;
+
+    public Completer_Mute(StaffCore staffCore) {
+        this.staffCore = staffCore;
+        this.staffCore.getCommand("mute").setTabCompleter(this);
+    }
+
     @Override
     public List<String> onTabComplete(CommandSender sender, Command cmd, String label,
                                       String[] args) {
@@ -21,7 +29,7 @@ public class Completer_Mute implements TabCompleter {
 
             ArrayList<String> reasons = new ArrayList<>();
 
-            ResultSet rs = MySQL.getResult("SELECT * FROM ReportSystem_reasonsdb WHERE TYPE = 'MUTE'");
+            ResultSet rs = staffCore.getStaffCoreLoader().getMySQL().getResult("SELECT * FROM ReportSystem_reasonsdb WHERE TYPE = 'MUTE'");
 
             try {
 

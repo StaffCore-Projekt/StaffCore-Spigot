@@ -1,6 +1,6 @@
 package de.lacodev.rsystem.utils;
 
-import de.lacodev.rsystem.Main;
+import de.lacodev.rsystem.StaffCore;
 import de.lacodev.rsystem.mysql.MySQL;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -10,14 +10,20 @@ import java.sql.SQLException;
 
 public class SettingsManager {
 
+    private final StaffCore staffCore;
+
+    public SettingsManager(StaffCore staffCore) {
+        this.staffCore = staffCore;
+    }
+
     public void set(String key, String value) {
-        if (MySQL.isConnected()) {
+        if (staffCore.getStaffCoreLoader().getMySQL().isConnected()) {
             new BukkitRunnable() {
                 @Override
                 public void run() {
                     try {
                         //INSERT INTO `reportsystem_settings` (`id`, `KEY`, `VALUE`) VALUES (NULL, 'maintenance', '1');
-                        PreparedStatement ps = MySQL.getCon().prepareStatement(
+                        PreparedStatement ps = staffCore.getStaffCoreLoader().getMySQL().getCon().prepareStatement(
                                 "INSERT INTO `reportsystem_settings` (`KEY`, `VALUE`) VALUES ('" + key + "','"
                                         + value + "')");
                         ps.executeUpdate();
@@ -25,23 +31,23 @@ public class SettingsManager {
                         throwables.printStackTrace();
                     }
                 }
-            }.runTaskAsynchronously(Main.getInstance());
+            }.runTaskAsynchronously(staffCore);
         }
     }
 
     public void set(String key, boolean value) {
-        if (MySQL.isConnected()) {
+        if (staffCore.getStaffCoreLoader().getMySQL().isConnected()) {
             new BukkitRunnable() {
                 @Override
                 public void run() {
                     try {
                         PreparedStatement ps;
                         if (value) {
-                            ps = MySQL.getCon().prepareStatement(
+                            ps = staffCore.getStaffCoreLoader().getMySQL().getCon().prepareStatement(
                                     "INSERT INTO `reportsystem_settings` (`KEY`, `VALUE`) VALUES ('" + key
                                             + "','1')");
                         } else {
-                            ps = MySQL.getCon().prepareStatement(
+                            ps = staffCore.getStaffCoreLoader().getMySQL().getCon().prepareStatement(
                                     "INSERT INTO `ReportSystem_settings` (`KEY`,`VALUE`) VALUES ('" + key + "','0')");
                         }
                         ps.executeUpdate();
@@ -49,17 +55,17 @@ public class SettingsManager {
                         throwables.printStackTrace();
                     }
                 }
-            }.runTaskAsynchronously(Main.getInstance());
+            }.runTaskAsynchronously(staffCore);
         }
     }
 
     public void set(String key, int value) {
-        if (MySQL.isConnected()) {
+        if (staffCore.getStaffCoreLoader().getMySQL().isConnected()) {
             new BukkitRunnable() {
                 @Override
                 public void run() {
                     try {
-                        PreparedStatement ps = MySQL.getCon().prepareStatement(
+                        PreparedStatement ps = staffCore.getStaffCoreLoader().getMySQL().getCon().prepareStatement(
                                 "INSERT INTO `ReportSystem_settings` (`KEY`,`VALUE`) VALUES ('" + key + "','"
                                         + value + "')");
                         ps.executeUpdate();
@@ -67,15 +73,15 @@ public class SettingsManager {
                         throwables.printStackTrace();
                     }
                 }
-            }.runTaskAsynchronously(Main.getInstance());
+            }.runTaskAsynchronously(staffCore);
         }
     }
 
 
     public boolean getBoolean(String key) {
-        if (MySQL.isConnected()) {
+        if (staffCore.getStaffCoreLoader().getMySQL().isConnected()) {
             try {
-                ResultSet rs = MySQL
+                ResultSet rs = staffCore.getStaffCoreLoader().getMySQL()
                         .getResult("SELECT `VALUE` FROM `ReportSystem_settings` WHERE `KEY` = '" + key + "'");
 
                 if (rs.next()) {
@@ -93,9 +99,9 @@ public class SettingsManager {
     }
 
     public String get(String key) {
-        if (MySQL.isConnected()) {
+        if (staffCore.getStaffCoreLoader().getMySQL().isConnected()) {
             try {
-                ResultSet rs = MySQL
+                ResultSet rs = staffCore.getStaffCoreLoader().getMySQL()
                         .getResult("SELECT `VALUE` FROM `ReportSystem_settings` WHERE `KEY` = '" + key + "'");
                 if (rs.next()) {
                     return rs.getString("VALUE");
@@ -110,12 +116,12 @@ public class SettingsManager {
 
 
     public void update(String key, String value) {
-        if (MySQL.isConnected()) {
+        if (staffCore.getStaffCoreLoader().getMySQL().isConnected()) {
             new BukkitRunnable() {
                 @Override
                 public void run() {
                     try {
-                        PreparedStatement ps = MySQL.getCon().prepareStatement(
+                        PreparedStatement ps = staffCore.getStaffCoreLoader().getMySQL().getCon().prepareStatement(
                                 "UPDATE `ReportSystem_settings` SET `VALUE` = '" + value + "' WHERE `KEY` = '" + key
                                         + "'");
                         ps.executeUpdate();
@@ -123,22 +129,22 @@ public class SettingsManager {
                         e.printStackTrace();
                     }
                 }
-            }.runTaskAsynchronously(Main.getInstance());
+            }.runTaskAsynchronously(staffCore);
         }
     }
 
     public void update(String key, boolean value) {
-        if (MySQL.isConnected()) {
+        if (staffCore.getStaffCoreLoader().getMySQL().isConnected()) {
             new BukkitRunnable() {
                 @Override
                 public void run() {
                     try {
                         PreparedStatement ps;
                         if (value) {
-                            ps = MySQL.getCon().prepareStatement(
+                            ps = staffCore.getStaffCoreLoader().getMySQL().getCon().prepareStatement(
                                     "UPDATE `ReportSystem_settings` SET `VALUE` = '1' WHERE `KEY` = '" + key + "'");
                         } else {
-                            ps = MySQL.getCon().prepareStatement(
+                            ps = staffCore.getStaffCoreLoader().getMySQL().getCon().prepareStatement(
                                     "UPDATE `ReportSystem_settings` SET `VALUE` = '0' WHERE `KEY` = '" + key + "'");
                         }
                         ps.executeUpdate();
@@ -146,14 +152,14 @@ public class SettingsManager {
                         throwables.printStackTrace();
                     }
                 }
-            }.runTaskAsynchronously(Main.getInstance());
+            }.runTaskAsynchronously(staffCore);
         }
     }
 
 
     public boolean isKey(String key) {
-        if (MySQL.isConnected()) {
-            ResultSet rs = MySQL
+        if (staffCore.getStaffCoreLoader().getMySQL().isConnected()) {
+            ResultSet rs = staffCore.getStaffCoreLoader().getMySQL()
                     .getResult("SELECT * FROM `ReportSystem_settings` WHERE `KEY` = '" + key + "'");
             try {
                 if (rs != null) {

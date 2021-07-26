@@ -1,11 +1,10 @@
 package de.lacodev.rsystem.listeners;
 
-import de.lacodev.rsystem.Main;
-import de.lacodev.rsystem.mysql.MySQL;
+import de.lacodev.rsystem.StaffCore;
 import de.lacodev.rsystem.objects.BanManagerPlayerInput;
 import de.lacodev.rsystem.objects.ReasonEDuration;
 import de.lacodev.rsystem.objects.ReasonRename;
-import de.lacodev.rsystem.utils.*;
+import de.lacodev.rsystem.utils.PanelManager;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ClickEvent.Action;
 import net.md_5.bungee.api.chat.ComponentBuilder;
@@ -24,11 +23,18 @@ import java.net.URL;
 
 public class Listener_PanelManager implements Listener {
 
+    private final StaffCore staffCore;
+
+    public Listener_PanelManager(StaffCore staffCore) {
+        this.staffCore = staffCore;
+        Bukkit.getPluginManager().registerEvents(this, staffCore);
+    }
+
     @SuppressWarnings("deprecation")
     @EventHandler
     public void onPanel(InventoryClickEvent e) {
         Player p = (Player) e.getWhoClicked();
-        PanelManager manager = new PanelManager();
+        PanelManager manager = staffCore.getStaffCoreLoader().getPanelManager();
 
         if (e.getView().getTitle().equalsIgnoreCase(
                 ChatColor.RED + "Staffcore" + ChatColor.DARK_GRAY + " - " + ChatColor.GRAY + "MainMenu")) {
@@ -41,20 +47,20 @@ public class Listener_PanelManager implements Listener {
                         p.closeInventory();
 
                         p.sendMessage("");
-                        p.sendMessage(Main.getPrefix() + Main.getMSG("Messages.System.Bug-Report.Created"));
+                        p.sendMessage(staffCore.getStaffCoreLoader().getPrefix() + staffCore.getStaffCoreLoader().getMessage("Messages.System.Bug-Report.Created"));
 
                         TextComponent tc = new TextComponent();
-                        tc.setText(Main.getMSG("Messages.System.Bug-Report.Button"));
+                        tc.setText(staffCore.getStaffCoreLoader().getMessage("Messages.System.Bug-Report.Button"));
                         URL url;
                         try {
                             url = new URL(
-                                    "https://bugreport.lacodev.de/?product=staffcore&version=" + Main.getInstance()
+                                    "https://bugreport.lacodev.de/?product=staffcore&version=" + staffCore
                                             .getDescription().getVersion() + "&env=" + Bukkit.getVersion()
-                                            .replace("(", "").replace(")", "").replace(" ", "%20") + "&mysql=" + MySQL
+                                            .replace("(", "").replace(")", "").replace(" ", "%20") + "&mysql=" + staffCore.getStaffCoreLoader().getMySQL()
                                             .isConnected());
                             tc.setClickEvent(new ClickEvent(Action.OPEN_URL, url.toURI().toASCIIString()));
                             tc.setHoverEvent(new HoverEvent(net.md_5.bungee.api.chat.HoverEvent.Action.SHOW_TEXT,
-                                    new ComponentBuilder(Main.getMSG("Messages.System.Bug-Report.Hover-Text"))
+                                    new ComponentBuilder(staffCore.getStaffCoreLoader().getMessage("Messages.System.Bug-Report.Hover-Text"))
                                             .create()));
 
                             p.spigot().sendMessage(tc);
@@ -89,11 +95,11 @@ public class Listener_PanelManager implements Listener {
                             .equalsIgnoreCase(ChatColor.GREEN + "Download Latest Release")) {
                         p.closeInventory();
 
-                        if (!Main.getInstance().latest) {
-                            SystemManager.downloadLatestVersion(p);
+                        if (!staffCore.getStaffCoreLoader().getSystemManager().isLatest()) {
+                            staffCore.getStaffCoreLoader().getSystemManager().downloadLatestVersion(p);
                         } else {
                             p.sendMessage(
-                                    Main.getPrefix() + ChatColor.GRAY + "You are using the " + ChatColor.GREEN
+                                    staffCore.getStaffCoreLoader().getPrefix() + ChatColor.GRAY + "You are using the " + ChatColor.GREEN
                                             + "latest build" + ChatColor.GRAY + "!");
                         }
                     }
@@ -101,7 +107,7 @@ public class Listener_PanelManager implements Listener {
                             .equalsIgnoreCase(ChatColor.GOLD + "Download Latest Experimental")) {
                         p.closeInventory();
 
-                        SystemManager.downloadExperimentalVersion(p);
+                        staffCore.getStaffCoreLoader().getSystemManager().downloadExperimentalVersion(p);
                     }
                     if (e.getCurrentItem().getItemMeta().getDisplayName()
                             .equalsIgnoreCase(ChatColor.GREEN + "►")) {
@@ -109,98 +115,98 @@ public class Listener_PanelManager implements Listener {
                                 .stripColor(e.getInventory().getItem(31).getItemMeta().getDisplayName());
 
                         if (lang.matches("de")) {
-                            Main.getInstance().getConfig().set("General.Language", "us");
-                            Main.getInstance().saveConfig();
-                            Main.getInstance().reloadConfig();
+                            staffCore.getStaffCoreLoader().getConfigProvider().getYamlConfiguration().set("General.Language", "us");
+                            staffCore.getStaffCoreLoader().getConfigProvider().save();
+                            staffCore.getStaffCoreLoader().getConfigProvider().init();
 
                             PanelManager.settings.setItem(31, manager.getLanguageHead());
                         }
                         if (lang.matches("us")) {
-                            Main.getInstance().getConfig().set("General.Language", "nl");
-                            Main.getInstance().saveConfig();
-                            Main.getInstance().reloadConfig();
+                            staffCore.getStaffCoreLoader().getConfigProvider().getYamlConfiguration().set("General.Language", "nl");
+                            staffCore.getStaffCoreLoader().getConfigProvider().save();
+                            staffCore.getStaffCoreLoader().getConfigProvider().init();
 
                             PanelManager.settings.setItem(31, manager.getLanguageHead());
                         }
                         if (lang.matches("nl")) {
-                            Main.getInstance().getConfig().set("General.Language", "dk");
-                            Main.getInstance().saveConfig();
-                            Main.getInstance().reloadConfig();
+                            staffCore.getStaffCoreLoader().getConfigProvider().getYamlConfiguration().set("General.Language", "dk");
+                            staffCore.getStaffCoreLoader().getConfigProvider().save();
+                            staffCore.getStaffCoreLoader().getConfigProvider().init();
 
                             PanelManager.settings.setItem(31, manager.getLanguageHead());
                         }
                         if (lang.matches("dk")) {
-                            Main.getInstance().getConfig().set("General.Language", "ru");
-                            Main.getInstance().saveConfig();
-                            Main.getInstance().reloadConfig();
+                            staffCore.getStaffCoreLoader().getConfigProvider().getYamlConfiguration().set("General.Language", "ru");
+                            staffCore.getStaffCoreLoader().getConfigProvider().save();
+                            staffCore.getStaffCoreLoader().getConfigProvider().init();
 
                             PanelManager.settings.setItem(31, manager.getLanguageHead());
                         }
                         if (lang.matches("ru")) {
-                            Main.getInstance().getConfig().set("General.Language", "es");
-                            Main.getInstance().saveConfig();
-                            Main.getInstance().reloadConfig();
+                            staffCore.getStaffCoreLoader().getConfigProvider().getYamlConfiguration().set("General.Language", "es");
+                            staffCore.getStaffCoreLoader().getConfigProvider().save();
+                            staffCore.getStaffCoreLoader().getConfigProvider().init();
 
                             PanelManager.settings.setItem(31, manager.getLanguageHead());
                         }
                         if (lang.matches("es")) {
-                            Main.getInstance().getConfig().set("General.Language", "fr");
-                            Main.getInstance().saveConfig();
-                            Main.getInstance().reloadConfig();
+                            staffCore.getStaffCoreLoader().getConfigProvider().getYamlConfiguration().set("General.Language", "fr");
+                            staffCore.getStaffCoreLoader().getConfigProvider().save();
+                            staffCore.getStaffCoreLoader().getConfigProvider().init();
 
                             PanelManager.settings.setItem(31, manager.getLanguageHead());
                         }
                         if (lang.matches("fr")) {
-                            Main.getInstance().getConfig().set("General.Language", "it");
-                            Main.getInstance().saveConfig();
-                            Main.getInstance().reloadConfig();
+                            staffCore.getStaffCoreLoader().getConfigProvider().getYamlConfiguration().set("General.Language", "it");
+                            staffCore.getStaffCoreLoader().getConfigProvider().save();
+                            staffCore.getStaffCoreLoader().getConfigProvider().init();
 
                             PanelManager.settings.setItem(31, manager.getLanguageHead());
                         }
                         if (lang.matches("it")) {
-                            Main.getInstance().getConfig().set("General.Language", "cz");
-                            Main.getInstance().saveConfig();
-                            Main.getInstance().reloadConfig();
+                            staffCore.getStaffCoreLoader().getConfigProvider().getYamlConfiguration().set("General.Language", "cz");
+                            staffCore.getStaffCoreLoader().getConfigProvider().save();
+                            staffCore.getStaffCoreLoader().getConfigProvider().init();
 
                             PanelManager.settings.setItem(31, manager.getLanguageHead());
                         }
                         if (lang.matches("cz")) {
-                            Main.getInstance().getConfig().set("General.Language", "fi");
-                            Main.getInstance().saveConfig();
-                            Main.getInstance().reloadConfig();
+                            staffCore.getStaffCoreLoader().getConfigProvider().getYamlConfiguration().set("General.Language", "fi");
+                            staffCore.getStaffCoreLoader().getConfigProvider().save();
+                            staffCore.getStaffCoreLoader().getConfigProvider().init();
 
                             PanelManager.settings.setItem(31, manager.getLanguageHead());
                         }
                         if (lang.matches("fi")) {
-                            Main.getInstance().getConfig().set("General.Language", "ee");
-                            Main.getInstance().saveConfig();
-                            Main.getInstance().reloadConfig();
+                            staffCore.getStaffCoreLoader().getConfigProvider().getYamlConfiguration().set("General.Language", "ee");
+                            staffCore.getStaffCoreLoader().getConfigProvider().save();
+                            staffCore.getStaffCoreLoader().getConfigProvider().init();
 
                             PanelManager.settings.setItem(31, manager.getLanguageHead());
                         }
                         if (lang.matches("ee")) {
-                            Main.getInstance().getConfig().set("General.Language", "hr");
-                            Main.getInstance().saveConfig();
-                            Main.getInstance().reloadConfig();
+                            staffCore.getStaffCoreLoader().getConfigProvider().getYamlConfiguration().set("General.Language", "hr");
+                            staffCore.getStaffCoreLoader().getConfigProvider().save();
+                            staffCore.getStaffCoreLoader().getConfigProvider().init();
 
                             PanelManager.settings.setItem(31, manager.getLanguageHead());
                         }
                         if (lang.matches("hr")) {
-                            Main.getInstance().getConfig().set("General.Language", "cn");
-                            Main.getInstance().saveConfig();
-                            Main.getInstance().reloadConfig();
+                            staffCore.getStaffCoreLoader().getConfigProvider().getYamlConfiguration().set("General.Language", "cn");
+                            staffCore.getStaffCoreLoader().getConfigProvider().save();
+                            staffCore.getStaffCoreLoader().getConfigProvider().init();
 
                             PanelManager.settings.setItem(31, manager.getLanguageHead());
                         }
                         if (lang.matches("cn")) {
-                            Main.getInstance().getConfig().set("General.Language", "de");
-                            Main.getInstance().saveConfig();
-                            Main.getInstance().reloadConfig();
+                            staffCore.getStaffCoreLoader().getConfigProvider().getYamlConfiguration().set("General.Language", "de");
+                            staffCore.getStaffCoreLoader().getConfigProvider().save();
+                            staffCore.getStaffCoreLoader().getConfigProvider().init();
 
                             PanelManager.settings.setItem(31, manager.getLanguageHead());
                         }
-                        Main.getTranslator().fetch(
-                                Main.getInstance().getConfig().getString("General.Language").substring(0, 2));
+                        staffCore.getStaffCoreLoader().getTranslationHandler().fetch(
+                                staffCore.getStaffCoreLoader().getConfigProvider().getYamlConfiguration().getString("General.Language").substring(0, 2));
                     }
                     if (e.getCurrentItem().getItemMeta().getDisplayName()
                             .equalsIgnoreCase(ChatColor.GREEN + "◄")) {
@@ -208,111 +214,111 @@ public class Listener_PanelManager implements Listener {
                                 .stripColor(e.getInventory().getItem(31).getItemMeta().getDisplayName());
 
                         if (lang.matches("de")) {
-                            Main.getInstance().getConfig().set("General.Language", "cn");
-                            Main.getInstance().saveConfig();
-                            Main.getInstance().reloadConfig();
+                            staffCore.getStaffCoreLoader().getConfigProvider().getYamlConfiguration().set("General.Language", "cn");
+                            staffCore.getStaffCoreLoader().getConfigProvider().save();
+                            staffCore.getStaffCoreLoader().getConfigProvider().init();
 
                             PanelManager.settings.setItem(31, manager.getLanguageHead());
                         }
                         if (lang.matches("cn")) {
-                            Main.getInstance().getConfig().set("General.Language", "hr");
-                            Main.getInstance().saveConfig();
-                            Main.getInstance().reloadConfig();
+                            staffCore.getStaffCoreLoader().getConfigProvider().getYamlConfiguration().set("General.Language", "hr");
+                            staffCore.getStaffCoreLoader().getConfigProvider().save();
+                            staffCore.getStaffCoreLoader().getConfigProvider().init();
 
                             PanelManager.settings.setItem(31, manager.getLanguageHead());
                         }
                         if (lang.matches("hr")) {
-                            Main.getInstance().getConfig().set("General.Language", "ee");
-                            Main.getInstance().saveConfig();
-                            Main.getInstance().reloadConfig();
+                            staffCore.getStaffCoreLoader().getConfigProvider().getYamlConfiguration().set("General.Language", "ee");
+                            staffCore.getStaffCoreLoader().getConfigProvider().save();
+                            staffCore.getStaffCoreLoader().getConfigProvider().init();
 
                             PanelManager.settings.setItem(31, manager.getLanguageHead());
                         }
                         if (lang.matches("ee")) {
-                            Main.getInstance().getConfig().set("General.Language", "fi");
-                            Main.getInstance().saveConfig();
-                            Main.getInstance().reloadConfig();
+                            staffCore.getStaffCoreLoader().getConfigProvider().getYamlConfiguration().set("General.Language", "fi");
+                            staffCore.getStaffCoreLoader().getConfigProvider().save();
+                            staffCore.getStaffCoreLoader().getConfigProvider().init();
 
                             PanelManager.settings.setItem(31, manager.getLanguageHead());
                         }
                         if (lang.matches("fi")) {
-                            Main.getInstance().getConfig().set("General.Language", "cz");
-                            Main.getInstance().saveConfig();
-                            Main.getInstance().reloadConfig();
+                            staffCore.getStaffCoreLoader().getConfigProvider().getYamlConfiguration().set("General.Language", "cz");
+                            staffCore.getStaffCoreLoader().getConfigProvider().save();
+                            staffCore.getStaffCoreLoader().getConfigProvider().init();
 
                             PanelManager.settings.setItem(31, manager.getLanguageHead());
                         }
                         if (lang.matches("cz")) {
-                            Main.getInstance().getConfig().set("General.Language", "it");
-                            Main.getInstance().saveConfig();
-                            Main.getInstance().reloadConfig();
+                            staffCore.getStaffCoreLoader().getConfigProvider().getYamlConfiguration().set("General.Language", "it");
+                            staffCore.getStaffCoreLoader().getConfigProvider().save();
+                            staffCore.getStaffCoreLoader().getConfigProvider().init();
 
                             PanelManager.settings.setItem(31, manager.getLanguageHead());
                         }
                         if (lang.matches("it")) {
-                            Main.getInstance().getConfig().set("General.Language", "fr");
-                            Main.getInstance().saveConfig();
-                            Main.getInstance().reloadConfig();
+                            staffCore.getStaffCoreLoader().getConfigProvider().getYamlConfiguration().set("General.Language", "fr");
+                            staffCore.getStaffCoreLoader().getConfigProvider().save();
+                            staffCore.getStaffCoreLoader().getConfigProvider().init();
 
                             PanelManager.settings.setItem(31, manager.getLanguageHead());
                         }
                         if (lang.matches("fr")) {
-                            Main.getInstance().getConfig().set("General.Language", "es");
-                            Main.getInstance().saveConfig();
-                            Main.getInstance().reloadConfig();
+                            staffCore.getStaffCoreLoader().getConfigProvider().getYamlConfiguration().set("General.Language", "es");
+                            staffCore.getStaffCoreLoader().getConfigProvider().save();
+                            staffCore.getStaffCoreLoader().getConfigProvider().init();
 
                             PanelManager.settings.setItem(31, manager.getLanguageHead());
                         }
                         if (lang.matches("es")) {
-                            Main.getInstance().getConfig().set("General.Language", "ru");
-                            Main.getInstance().saveConfig();
-                            Main.getInstance().reloadConfig();
+                            staffCore.getStaffCoreLoader().getConfigProvider().getYamlConfiguration().set("General.Language", "ru");
+                            staffCore.getStaffCoreLoader().getConfigProvider().save();
+                            staffCore.getStaffCoreLoader().getConfigProvider().init();
 
                             PanelManager.settings.setItem(31, manager.getLanguageHead());
                         }
                         if (lang.matches("ru")) {
-                            Main.getInstance().getConfig().set("General.Language", "dk");
-                            Main.getInstance().saveConfig();
-                            Main.getInstance().reloadConfig();
+                            staffCore.getStaffCoreLoader().getConfigProvider().getYamlConfiguration().set("General.Language", "dk");
+                            staffCore.getStaffCoreLoader().getConfigProvider().save();
+                            staffCore.getStaffCoreLoader().getConfigProvider().init();
 
                             PanelManager.settings.setItem(31, manager.getLanguageHead());
                         }
                         if (lang.matches("dk")) {
-                            Main.getInstance().getConfig().set("General.Language", "nl");
-                            Main.getInstance().saveConfig();
-                            Main.getInstance().reloadConfig();
+                            staffCore.getStaffCoreLoader().getConfigProvider().getYamlConfiguration().set("General.Language", "nl");
+                            staffCore.getStaffCoreLoader().getConfigProvider().save();
+                            staffCore.getStaffCoreLoader().getConfigProvider().init();
 
                             PanelManager.settings.setItem(31, manager.getLanguageHead());
                         }
                         if (lang.matches("nl")) {
-                            Main.getInstance().getConfig().set("General.Language", "us");
-                            Main.getInstance().saveConfig();
-                            Main.getInstance().reloadConfig();
+                            staffCore.getStaffCoreLoader().getConfigProvider().getYamlConfiguration().set("General.Language", "us");
+                            staffCore.getStaffCoreLoader().getConfigProvider().save();
+                            staffCore.getStaffCoreLoader().getConfigProvider().init();
 
                             PanelManager.settings.setItem(31, manager.getLanguageHead());
                         }
                         if (lang.matches("us")) {
-                            Main.getInstance().getConfig().set("General.Language", "de");
-                            Main.getInstance().saveConfig();
-                            Main.getInstance().reloadConfig();
+                            staffCore.getStaffCoreLoader().getConfigProvider().getYamlConfiguration().set("General.Language", "de");
+                            staffCore.getStaffCoreLoader().getConfigProvider().save();
+                            staffCore.getStaffCoreLoader().getConfigProvider().init();
 
                             PanelManager.settings.setItem(31, manager.getLanguageHead());
                         }
 
-                        Main.getTranslator().fetch(
-                                Main.getInstance().getConfig().getString("General.Language").substring(0, 2));
+                        staffCore.getStaffCoreLoader().getTranslationHandler().fetch(
+                                staffCore.getStaffCoreLoader().getConfigProvider().getYamlConfiguration().getString("General.Language").substring(0, 2));
                     }
                     if (e.getCurrentItem().getItemMeta().getDisplayName()
                             .equalsIgnoreCase(ChatColor.GRAY + "Reload " + ChatColor.RED + "StaffCore")) {
                         p.closeInventory();
 
-                        SystemManager.reloadStaffCore(p);
+                        staffCore.getStaffCoreLoader().getSystemManager().reloadStaffCore(p);
                     }
                     if (e.getCurrentItem().getItemMeta().getDisplayName()
                             .equalsIgnoreCase(ChatColor.GRAY + "Setup " + ChatColor.RED + "StaffCore-UI")) {
                         p.closeInventory();
 
-                        WebUIHandler.setupStaffCoreUI(p);
+                        staffCore.getStaffCoreLoader().getWebUIHandler().setupStaffCoreUI(p);
                     }
                 }
             }
@@ -350,11 +356,11 @@ public class Listener_PanelManager implements Listener {
                     }
                     if (e.getCurrentItem().getItemMeta().getDisplayName()
                             .equalsIgnoreCase(ChatColor.GREEN + "◄")) {
-                        manager.openOnlinePlayerMenu(p, PageManager.page.get(p.getPlayer()) - 1);
+                        manager.openOnlinePlayerMenu(p, staffCore.getStaffCoreLoader().getPageManager().getPage().get(p.getPlayer()) - 1);
                     }
                     if (e.getCurrentItem().getItemMeta().getDisplayName()
                             .equalsIgnoreCase(ChatColor.GREEN + "►")) {
-                        manager.openOnlinePlayerMenu(p, PageManager.page.get(p.getPlayer()) - 1);
+                        manager.openOnlinePlayerMenu(p, staffCore.getStaffCoreLoader().getPageManager().getPage().get(p.getPlayer()) - 1);
                     }
                     if (e.getSlot() > 8 && e.getSlot() < 45) {
                         String target = ChatColor.stripColor(e.getCurrentItem().getItemMeta().getDisplayName());
@@ -376,7 +382,7 @@ public class Listener_PanelManager implements Listener {
 
                     if (e.getCurrentItem().getItemMeta().getDisplayName()
                             .equalsIgnoreCase(ChatColor.RED + "◄ Go back")) {
-                        manager.openOnlinePlayerMenu(p, PageManager.page.get(p.getPlayer()));
+                        manager.openOnlinePlayerMenu(p, staffCore.getStaffCoreLoader().getPageManager().getPage().get(p.getPlayer()));
                     }
                     if (e.getCurrentItem().getItemMeta().getDisplayName()
                             .equalsIgnoreCase(ChatColor.RED + "Check Player")) {
@@ -398,45 +404,45 @@ public class Listener_PanelManager implements Listener {
         }
 
         if (e.getView().getTitle()
-                .equalsIgnoreCase(Main.getMSG("Messages.BanManager.Main-Gui-Title"))) {
+                .equalsIgnoreCase(staffCore.getStaffCoreLoader().getMessage("Messages.BanManager.Main-Gui-Title"))) {
             e.setCancelled(true);
 
             if (e.getCurrentItem() != null) {
                 if (e.getCurrentItem().hasItemMeta()) {
                     if (e.getCurrentItem().getItemMeta().getDisplayName()
-                            .equalsIgnoreCase(Main.getMSG("Messages.BanManager.Add-Reason"))) {
-                        p.sendMessage(Main.getPrefix() + Main.getMSG("Messages.BanManager.Name-Reason"));
+                            .equalsIgnoreCase(staffCore.getStaffCoreLoader().getMessage("Messages.BanManager.Add-Reason"))) {
+                        p.sendMessage(staffCore.getStaffCoreLoader().getPrefix() + staffCore.getStaffCoreLoader().getMessage("Messages.BanManager.Name-Reason"));
                         BanManagerPlayerInput bmpi = new BanManagerPlayerInput(p, null, -1, null, "BAN");
-                        Main.banManagerPlayerInputs.add(bmpi);
+                        staffCore.getStaffCoreLoader().getReasonEditManager().getBanManagerPlayerInputs().add(bmpi);
                         p.closeInventory();
                     }
 
                     if (e.getCurrentItem().getItemMeta().getDisplayName()
-                            .equalsIgnoreCase(Main.getMSG("Messages.BanManager.Add-Reason-Mute"))) {
-                        p.sendMessage(Main.getPrefix() + Main.getMSG("Messages.BanManager.Name-Reason"));
+                            .equalsIgnoreCase(staffCore.getStaffCoreLoader().getMessage("Messages.BanManager.Add-Reason-Mute"))) {
+                        p.sendMessage(staffCore.getStaffCoreLoader().getPrefix() + staffCore.getStaffCoreLoader().getMessage("Messages.BanManager.Name-Reason"));
                         BanManagerPlayerInput bmpi = new BanManagerPlayerInput(p, null, -1, null, "MUTE");
-                        Main.banManagerPlayerInputs.add(bmpi);
+                        staffCore.getStaffCoreLoader().getReasonEditManager().getBanManagerPlayerInputs().add(bmpi);
                         p.closeInventory();
                     }
 
                     if (e.getCurrentItem().getItemMeta().getDisplayName().startsWith(
-                            Main.getMSG("Messages.BanManager.Ban-Reason-Button-Title").replace("%reason%", ""))) {
+                            staffCore.getStaffCoreLoader().getMessage("Messages.BanManager.Ban-Reason-Button-Title").replace("%reason%", ""))) {
                         p.closeInventory();
-                        Integer id = BanManager.getIDFromBanReason(
+                        Integer id = staffCore.getStaffCoreLoader().getBanManager().getIDFromBanReason(
                                 e.getCurrentItem().getItemMeta().getDisplayName().replace(
-                                        Main.getMSG("Messages.BanManager.Ban-Reason-Button-Title")
+                                        staffCore.getStaffCoreLoader().getMessage("Messages.BanManager.Ban-Reason-Button-Title")
                                                 .replace("%reason%", ""), ""));
                         assert id != null;
                         manager.openBanReasonUtils(p, id);
                     }
 
                     if (e.getCurrentItem().getItemMeta().getDisplayName().startsWith(
-                            Main.getMSG("Messages.BanManager.Mute-Reason-Button-Title")
+                            staffCore.getStaffCoreLoader().getMessage("Messages.BanManager.Mute-Reason-Button-Title")
                                     .replace("%reason%", ""))) {
                         p.closeInventory();
-                        Integer id = BanManager.getIDFromMuteReason(ChatColor.stripColor(
+                        Integer id = staffCore.getStaffCoreLoader().getBanManager().getIDFromMuteReason(ChatColor.stripColor(
                                 e.getCurrentItem().getItemMeta().getDisplayName().replace(
-                                        Main.getMSG("Messages.BanManager.Mute-Reason-Button-Title")
+                                        staffCore.getStaffCoreLoader().getMessage("Messages.BanManager.Mute-Reason-Button-Title")
                                                 .replace("%reason%", ""), "")));
                         assert id != null;
                         manager.openMuteReasonUtils(p, id);
@@ -446,7 +452,7 @@ public class Listener_PanelManager implements Listener {
         }
 
         if (e.getView().getTitle()
-                .startsWith(Main.getMSG("Messages.BanManager.Ban-Reason-Title").replace("%reason%", ""))) {
+                .startsWith(staffCore.getStaffCoreLoader().getMessage("Messages.BanManager.Ban-Reason-Title").replace("%reason%", ""))) {
             e.setCancelled(true);
             if (e.getCurrentItem() != null) {
                 if (e.getCurrentItem().hasItemMeta()) {
@@ -455,18 +461,18 @@ public class Listener_PanelManager implements Listener {
                         manager.openBanManagerManu(p);
                     }
                     Integer reason = Integer.parseInt(ChatColor.stripColor(e.getView().getTitle()
-                            .replace(Main.getMSG("Messages.BanManager.Ban-Reason-Title").replace("%reason%", ""),
+                            .replace(staffCore.getStaffCoreLoader().getMessage("Messages.BanManager.Ban-Reason-Title").replace("%reason%", ""),
                                     "")));
                     if (e.getCurrentItem().getItemMeta().getDisplayName()
                             .equalsIgnoreCase(ChatColor.RED + "DELETE")) {
 
-                        if (BanManager.existsBanReason(BanManager.getBanReasonFromID(reason))) {
-                            BanManager.deleteBanReason(BanManager.getBanReasonFromID(reason));
+                        if (staffCore.getStaffCoreLoader().getBanManager().existsBanReason(staffCore.getStaffCoreLoader().getBanManager().getBanReasonFromID(reason))) {
+                            staffCore.getStaffCoreLoader().getBanManager().deleteBanReason(staffCore.getStaffCoreLoader().getBanManager().getBanReasonFromID(reason));
                             p.sendMessage(
-                                    Main.getPrefix() + ChatColor.GRAY + "Reason " + ChatColor.RED + "DELETED");
+                                    staffCore.getStaffCoreLoader().getPrefix() + ChatColor.GRAY + "Reason " + ChatColor.RED + "DELETED");
                             p.closeInventory();
                         } else {
-                            p.sendMessage(Main.getPrefix() + ChatColor.RED + " Something went wrong");
+                            p.sendMessage(staffCore.getStaffCoreLoader().getPrefix() + ChatColor.RED + " Something went wrong");
                             p.closeInventory();
                         }
                     }
@@ -483,13 +489,13 @@ public class Listener_PanelManager implements Listener {
         }
 
         if (e.getView().getTitle()
-                .startsWith(Main.getMSG("Messages.BanManager.Mute-Reason-Title").replace("%reason%", ""))) {
+                .startsWith(staffCore.getStaffCoreLoader().getMessage("Messages.BanManager.Mute-Reason-Title").replace("%reason%", ""))) {
             e.setCancelled(true);
             if (e.getCurrentItem() != null) {
                 if (e.getCurrentItem().hasItemMeta()) {
 
                     Integer reason = Integer.parseInt(ChatColor.stripColor(e.getView().getTitle()
-                            .replace(Main.getMSG("Messages.BanManager.Mute-Reason-Title").replace("%reason%", ""),
+                            .replace(staffCore.getStaffCoreLoader().getMessage("Messages.BanManager.Mute-Reason-Title").replace("%reason%", ""),
                                     "")));
 
                     if (e.getCurrentItem().getItemMeta().getDisplayName()
@@ -500,9 +506,9 @@ public class Listener_PanelManager implements Listener {
                     if (e.getCurrentItem().getItemMeta().getDisplayName()
                             .equalsIgnoreCase(ChatColor.RED + "DELETE")) {
                         p.closeInventory();
-                        BanManager.deleteMuteReason(BanManager.getMuteReasonFromID(reason));
+                        staffCore.getStaffCoreLoader().getBanManager().deleteMuteReason(staffCore.getStaffCoreLoader().getBanManager().getMuteReasonFromID(reason));
                         p.sendMessage(
-                                Main.getPrefix() + ChatColor.GRAY + "Reason " + ChatColor.RED + "DELETED");
+                                staffCore.getStaffCoreLoader().getPrefix() + ChatColor.GRAY + "Reason " + ChatColor.RED + "DELETED");
                     }
 
                     if (e.getCurrentItem().getItemMeta().getDisplayName()
@@ -514,13 +520,13 @@ public class Listener_PanelManager implements Listener {
         }
 
         if (e.getView().getTitle()
-                .startsWith(Main.getMSG("Messages.BanManager.Mute-Edit-Title").replace("%reason%", ""))) {
+                .startsWith(staffCore.getStaffCoreLoader().getMessage("Messages.BanManager.Mute-Edit-Title").replace("%reason%", ""))) {
             e.setCancelled(true);
             if (e.getCurrentItem() != null) {
                 if (e.getCurrentItem().hasItemMeta()) {
                     e.setCancelled(true);
                     Integer reason = Integer.parseInt(ChatColor.stripColor(e.getView().getTitle()
-                            .replace(Main.getMSG("Messages.BanManager.Mute-Edit-Title").replace("%reason%", ""),
+                            .replace(staffCore.getStaffCoreLoader().getMessage("Messages.BanManager.Mute-Edit-Title").replace("%reason%", ""),
                                     "")));
                     if (e.getCurrentItem().getItemMeta().getDisplayName()
                             .equalsIgnoreCase(ChatColor.RED + "◄ Go back")) {
@@ -531,11 +537,11 @@ public class Listener_PanelManager implements Listener {
                             .equalsIgnoreCase(ChatColor.GRAY + "Rename Reason")) {
                         ReasonRename rr = new ReasonRename();
                         rr.setP(p);
-                        rr.setOldName(BanManager.getBanReasonFromID(reason));
+                        rr.setOldName(staffCore.getStaffCoreLoader().getBanManager().getBanReasonFromID(reason));
                         rr.setId(reason);
-                        Main.reasonRename.add(rr);
+                        staffCore.getStaffCoreLoader().getReasonEditManager().reasonRename.add(rr);
 
-                        p.sendMessage(Main.getPrefix() + ChatColor.GRAY
+                        p.sendMessage(staffCore.getStaffCoreLoader().getPrefix() + ChatColor.GRAY
                                 + "Please Type now the new Name in the Chat, to Rename: " + rr.getOldName() + "!");
                         p.closeInventory();
                     }
@@ -545,8 +551,8 @@ public class Listener_PanelManager implements Listener {
                         ReasonEDuration red = new ReasonEDuration();
                         red.setP(p);
                         red.setId(reason);
-                        Main.reasonEDurations.add(red);
-                        p.sendMessage(Main.getPrefix() + ChatColor.GRAY
+                        staffCore.getStaffCoreLoader().getReasonEditManager().reasonEDurations.add(red);
+                        p.sendMessage(staffCore.getStaffCoreLoader().getPrefix() + ChatColor.GRAY
                                 + "Please Type now the new Duration, [time] [perma | d | m | h ]");
                         p.closeInventory();
                     }
@@ -555,7 +561,7 @@ public class Listener_PanelManager implements Listener {
         }
 
         if (e.getView().getTitle()
-                .startsWith(Main.getMSG("Messages.BanManager.Ban-Edit-Title").replace("%reason%", ""))) {
+                .startsWith(staffCore.getStaffCoreLoader().getMessage("Messages.BanManager.Ban-Edit-Title").replace("%reason%", ""))) {
             e.setCancelled(true);
             if (e.getCurrentItem() != null) {
                 if (e.getCurrentItem().hasItemMeta()) {
@@ -572,11 +578,11 @@ public class Listener_PanelManager implements Listener {
                             .equalsIgnoreCase(ChatColor.GRAY + "Rename Reason")) {
                         ReasonRename rr = new ReasonRename();
                         rr.setP(p);
-                        rr.setOldName(BanManager.getBanReasonFromID(reason));
+                        rr.setOldName(staffCore.getStaffCoreLoader().getBanManager().getBanReasonFromID(reason));
                         rr.setId(reason);
-                        Main.reasonRename.add(rr);
+                        staffCore.getStaffCoreLoader().getReasonEditManager().reasonRename.add(rr);
 
-                        p.sendMessage(Main.getPrefix() + ChatColor.GRAY
+                        p.sendMessage(staffCore.getStaffCoreLoader().getPrefix() + ChatColor.GRAY
                                 + "Please Type now the new Name in the Chat, to Rename: " + rr.getOldName() + "!");
                         p.closeInventory();
                     }
@@ -587,10 +593,10 @@ public class Listener_PanelManager implements Listener {
                         red.setP(p);
                         red.setId(reason);
 
-                        p.sendMessage(Main.getPrefix() + ChatColor.GRAY
+                        p.sendMessage(staffCore.getStaffCoreLoader().getPrefix() + ChatColor.GRAY
                                 + "Please Type now the new Duration, [time] [perma | d | m | h ]");
                         p.closeInventory();
-                        Main.reasonEDurations.add(red);
+                        staffCore.getStaffCoreLoader().getReasonEditManager().reasonEDurations.add(red);
                     }
                 }
             }

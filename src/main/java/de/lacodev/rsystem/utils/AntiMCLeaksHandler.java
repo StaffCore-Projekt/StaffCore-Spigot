@@ -1,5 +1,8 @@
 package de.lacodev.rsystem.utils;
 
+import de.lacodev.rsystem.StaffCore;
+import lombok.AccessLevel;
+import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.json.simple.JSONObject;
@@ -9,18 +12,29 @@ import org.json.simple.parser.ParseException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.List;
 
 public class AntiMCLeaksHandler {
 
     // Handler for anti-mcleaks.lacodev.de Services
+    @Getter(AccessLevel.NONE)
+    private final StaffCore staffCore;
 
     private final ArrayList<String> cache = new ArrayList<>();
 
-    public AntiMCLeaksHandler() {
-        super();
+    public AntiMCLeaksHandler(StaffCore staffCore) {
+        this.staffCore = staffCore;
+    }
+
+    public void init(){
+        if (staffCore.getStaffCoreLoader().getConfigProvider().getBoolean("MCLeaks-Blocker.Enable")){
+            cacheAccounts();
+            if (staffCore.getStaffCoreLoader().getConfigProvider().getBoolean("MCLeaks-Blocker.Cache-Updater.Enable")){
+                startCacheTimer(staffCore.getStaffCoreLoader().getConfigProvider().getInt("MCLeaks-Blocker.Cache-Updater.Period-In-Minutes"));
+            }
+        }
     }
 
     public void cacheAccounts() {
@@ -51,7 +65,7 @@ public class AntiMCLeaksHandler {
         return cache.contains(uuid);
     }
 
-    public ArrayList<String> getAccountCache() {
+    public List<String> getAccountCache() {
         return cache;
     }
 
@@ -68,5 +82,9 @@ public class AntiMCLeaksHandler {
 
         }
         return null;
+    }
+
+    public void startCacheTimer(Integer integer){
+        Bukkit.getScheduler().runTaskTimerAsynchronously(staffCore, this::cacheAccounts, 0,integer*1200L);
     }
 }

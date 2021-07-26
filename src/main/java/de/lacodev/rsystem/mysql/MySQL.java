@@ -1,7 +1,6 @@
 package de.lacodev.rsystem.mysql;
 
-import de.lacodev.rsystem.Main;
-import de.lacodev.rsystem.utils.SystemManager;
+import de.lacodev.rsystem.StaffCore;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -11,21 +10,33 @@ import java.sql.*;
 
 public class MySQL {
 
+    private final StaffCore staffCore;
+
+    public MySQL(StaffCore staffCore) {
+        this.staffCore = staffCore;
+        this.host = staffCore.getStaffCoreLoader().getMySQLProvider().getYamlConfiguration().getString("MySQL.Host");
+        this.port = staffCore.getStaffCoreLoader().getMySQLProvider().getYamlConfiguration().getInt("MySQL.Port");
+        this.username = staffCore.getStaffCoreLoader().getMySQLProvider().getYamlConfiguration().getString("MySQL.Username");
+        this.password = staffCore.getStaffCoreLoader().getMySQLProvider().getYamlConfiguration().getString("MySQL.Password");
+        this.database = staffCore.getStaffCoreLoader().getMySQLProvider().getYamlConfiguration().getString("MySQL.Database");
+
+    }
+
     // Defines Login credentials for MySQL Database
-    private static final String host = Main.getInstance().host;
-    private static final String port = Main.getInstance().port;
-    private static final String username = Main.getInstance().username;
-    private static final String password = Main.getInstance().password;
-    private static final String database = Main.getInstance().database;
+    private final String host;
+    private final Integer port;
+    private final String username;
+    private final String password;
+    private final String database;
 
-    private static Connection con;
+    private Connection con;
 
-    private static final String mysql =
+    private final String mysql =
             ChatColor.RED + "System " + ChatColor.DARK_GRAY + "(" + ChatColor.GRAY + "MySQL"
                     + ChatColor.DARK_GRAY + ") - ";
 
     // Opens MySQL Connection
-    public static void connect() {
+    public void connect() {
         Bukkit.getConsoleSender().sendMessage(
                 mysql + ChatColor.GRAY + "Hooking " + ChatColor.RED + "Database Services" + ChatColor.GRAY
                         + "...");
@@ -39,7 +50,7 @@ public class MySQL {
                     mysql + ChatColor.GREEN + "Successfully " + ChatColor.GRAY + "hooked " + ChatColor.GREEN
                             + "Database " + database);
         } catch (SQLException e) {
-            if (Main.getInstance().getConfig().getBoolean("General.MySQL.Debug")) {
+            if (staffCore.getStaffCoreLoader().getMySQLProvider().getBoolean("MySQL.Debug")) {
                 getDebug(e);
             } else {
                 Bukkit.getConsoleSender().sendMessage(
@@ -51,7 +62,7 @@ public class MySQL {
                         .sendMessage(mysql + ChatColor.GRAY + "Please check your database host!");
             }
         } catch (ClassNotFoundException e) {
-            if (Main.getInstance().getConfig().getBoolean("General.MySQL.Debug")) {
+            if (staffCore.getStaffCoreLoader().getMySQLProvider().getBoolean("MySQL.Debug")) {
                 getDebug(e);
             } else {
                 Bukkit.getConsoleSender().sendMessage(
@@ -65,7 +76,7 @@ public class MySQL {
         }
     }
 
-    public static void getDebug(ClassNotFoundException e) {
+    public void getDebug(ClassNotFoundException e) {
         Bukkit.getConsoleSender().sendMessage(
                 mysql + ChatColor.RED + "Failed " + ChatColor.GRAY + "to hook " + ChatColor.GREEN
                         + "Database Services");
@@ -74,7 +85,7 @@ public class MySQL {
                         + "Java 8 or above");
     }
 
-    public static void getDebug(SQLException e) {
+    public void getDebug(SQLException e) {
         Bukkit.getConsoleSender()
                 .sendMessage(ChatColor.DARK_GRAY + "==================================================");
         Bukkit.getConsoleSender().sendMessage(
@@ -89,7 +100,7 @@ public class MySQL {
                 .sendMessage(ChatColor.DARK_GRAY + "==================================================");
     }
 
-    public static String getMySQLError(String sqlState) {
+    public String getMySQLError(String sqlState) {
         if (sqlState.matches("08S01")) {
             return
                     "\n - Cant get hostname for your address! \n - Bad handshake \n - Unknown command \n - Server shutdown in progress "
@@ -118,11 +129,11 @@ public class MySQL {
     }
 
     // Returns boolean if MySQL isConnected
-    public static boolean isConnected() {
+    public boolean isConnected() {
         return (getCon() != null);
     }
 
-    public static void disconnect() {
+    public void disconnect() {
         if (isConnected()) {
             Bukkit.getConsoleSender().sendMessage(
                     mysql + ChatColor.GRAY + "Detaching from " + ChatColor.RED + "Database Services"
@@ -145,7 +156,7 @@ public class MySQL {
     }
 
     // Creates MySQL Table
-    public static void createTable() {
+    public void createTable() {
         if (isConnected()) {
             try {
                 PreparedStatement st1 = getCon().prepareStatement(
@@ -197,7 +208,7 @@ public class MySQL {
                         mysql + ChatColor.GREEN + "Successfully " + ChatColor.GRAY + "created/loaded "
                                 + ChatColor.GREEN + "MySQL-Table");
             } catch (SQLException e) {
-                if (Main.getInstance().getConfig().getBoolean("General.MySQL.Debug")) {
+                if (staffCore.getStaffCoreLoader().getMySQLProvider().getBoolean("MySQL.Debug")) {
                     getDebug(e);
                 } else {
                     Bukkit.getConsoleSender()
@@ -205,16 +216,16 @@ public class MySQL {
                 }
             }
 
-            MySQL.updateTable("ALTER TABLE ReportSystem_playerdb ADD LAST_ONLINE LONG");
-            MySQL.updateTable("ALTER TABLE ReportSystem_playerdb ADD WARNS INT(6)");
-            MySQL.updateTable("ALTER TABLE ReportSystem_playerdb ADD PROTECTED INT(6)");
-            MySQL.updateTable("ALTER TABLE ReportSystem_ipbans ADD PLAYERNAME VARCHAR(255)");
-            MySQL.updateTable(
+            updateTable("ALTER TABLE ReportSystem_playerdb ADD LAST_ONLINE LONG");
+            updateTable("ALTER TABLE ReportSystem_playerdb ADD WARNS INT(6)");
+            updateTable("ALTER TABLE ReportSystem_playerdb ADD PROTECTED INT(6)");
+            updateTable("ALTER TABLE ReportSystem_ipbans ADD PLAYERNAME VARCHAR(255)");
+            updateTable(
                     "ALTER TABLE ReportSystem_reportsdb ADD reg_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP");
         }
     }
 
-    public static void update(String qry) {
+    public void update(String qry) {
         if (isConnected()) {
             new BukkitRunnable() {
                 @Override
@@ -222,7 +233,7 @@ public class MySQL {
                     try {
                         getCon().createStatement().executeUpdate(qry);
                     } catch (SQLException e) {
-                        if (Main.getInstance().getConfig().getBoolean("General.MySQL.Debug")) {
+                        if (staffCore.getStaffCoreLoader().getMySQLProvider().getBoolean("MySQL.Debug")) {
                             getDebug(e);
                         } else {
                             Bukkit.getConsoleSender()
@@ -231,22 +242,22 @@ public class MySQL {
                     }
                 }
 
-            }.runTaskAsynchronously(Main.getInstance());
+            }.runTaskAsynchronously(staffCore);
         }
     }
 
-    public static void updateMaterial(Material mat) {
+    public void updateMaterial(Material mat) {
         if (isConnected()) {
             new BukkitRunnable() {
                 @Override
                 public void run() {
                     try {
-                        if (!SystemManager.existsMaterial(mat.toString())) {
+                        if (!staffCore.getStaffCoreLoader().getSystemManager().existsMaterial(mat.toString())) {
                             getCon().createStatement().executeUpdate(
                                     "INSERT INTO ReportSystem_materialsdb(TYPE) VALUES ('" + mat + "')");
                         }
                     } catch (SQLException e) {
-                        if (Main.getInstance().getConfig().getBoolean("General.MySQL.Debug")) {
+                        if (staffCore.getStaffCoreLoader().getMySQLProvider().getBoolean("MySQL.Debug")) {
                             getDebug(e);
                         } else {
                             Bukkit.getConsoleSender()
@@ -255,11 +266,11 @@ public class MySQL {
                     }
                 }
 
-            }.runTaskAsynchronously(Main.getInstance());
+            }.runTaskAsynchronously(staffCore);
         }
     }
 
-    public static void updateTable(String qry) {
+    public void updateTable(String qry) {
         if (isConnected()) {
             try {
                 getCon().createStatement().executeUpdate(qry);
@@ -270,12 +281,12 @@ public class MySQL {
         }
     }
 
-    public static ResultSet getResult(String qry) {
+    public ResultSet getResult(String qry) {
         if (isConnected()) {
             try {
-                return getCon().createStatement().executeQuery(qry);
+                return this.con.createStatement().executeQuery(qry);
             } catch (SQLException e) {
-                if (Main.getInstance().getConfig().getBoolean("General.MySQL.Debug")) {
+                if (staffCore.getStaffCoreLoader().getMySQLProvider().getBoolean("MySQL.Debug")) {
                     getDebug(e);
                 } else {
                     Bukkit.getConsoleSender()
@@ -290,12 +301,12 @@ public class MySQL {
         return null;
     }
 
-    public static ResultSet getResultSync(String qry) {
+    public ResultSet getResultSync(String qry) {
         if (isConnected()) {
             try {
                 return getCon().createStatement().executeQuery(qry);
             } catch (SQLException e) {
-                if (Main.getInstance().getConfig().getBoolean("General.MySQL.Debug")) {
+                if (staffCore.getStaffCoreLoader().getMySQLProvider().getBoolean("MySQL.Debug")) {
                     getDebug(e);
                 } else {
                     Bukkit.getConsoleSender().sendMessage(
@@ -309,12 +320,12 @@ public class MySQL {
         return null;
     }
 
-    public static Connection getCon() {
+    public Connection getCon() {
         return con;
     }
 
-    public static void setCon(Connection con) {
-        MySQL.con = con;
+    public void setCon(Connection con) {
+        this.con = con;
     }
 
 
