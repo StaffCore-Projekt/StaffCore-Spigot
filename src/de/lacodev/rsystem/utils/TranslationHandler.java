@@ -29,7 +29,7 @@ public class TranslationHandler {
 
     fallback.clear();
     try {
-      JSONObject message_keys = readJsonFromUrl("https://translate.lacodev.de/api/v1/keys");
+      JSONObject message_keys = readJsonFromUrl("https://www.lacodev.de/services/api/v1/keys");
       int totalKeys = message_keys.size();
 
       for (int i = 1; i <= totalKeys; i++) {
@@ -39,7 +39,7 @@ public class TranslationHandler {
         keys.add(data.get("key").toString());
       }
 
-      JSONObject translation = readJsonFromUrl("https://translate.lacodev.de/api/v1/all/lang/us");
+      JSONObject translation = readJsonFromUrl("https://www.lacodev.de/services/api/v1/all/lang/us");
 
       for (String key : keys) {
 
@@ -74,7 +74,7 @@ public class TranslationHandler {
     language.clear();
 
     JSONObject translation = readJsonFromUrl(
-        "https://translate.lacodev.de/api/v1/all/lang/" + lang);
+        "https://www.lacodev.de/services/api/v1/all/lang/" + lang);
 
     for (String key : keys) {
 
@@ -101,7 +101,7 @@ public class TranslationHandler {
     custom.clear();
 
     JSONObject translation = readJsonFromUrl(
-        "https://translate.lacodev.de/api/v1/restricted/key/" + restapikey);
+        "https://www.lacodev.de/services/api/v1/restricted/key/" + restapikey);
 
     for (String key : keys) {
 
