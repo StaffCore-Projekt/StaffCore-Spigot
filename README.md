@@ -1,1 +1,1 @@
-[![Time](https://wakatime.com/badge/github/ViaEnder/StaffCore.svg)
+![Time](https://wakatime.com/badge/github/ViaEnder/StaffCore.svg)
